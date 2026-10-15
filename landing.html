@@ -59,28 +59,36 @@
   .top .entrar { font-size: 13px; font-weight: 700; color: var(--ink-2); cursor: default; }
 
   /* ===== 1. HERO ===== */
-  .hero { padding-top: 56px; padding-bottom: 56px; }
-  .hero-grid { display: grid; grid-template-columns: 1fr; gap: 40px; align-items: center; }
+  .hero { padding-top: 32px; padding-bottom: 40px; }
+  .hero-grid { display: grid; grid-template-columns: 1fr; gap: 24px; align-items: center; }
   @media (min-width: 900px) { .hero-grid { grid-template-columns: 1.1fr 0.9fr; } }
   .hero h1 { font-size: 34px; line-height: 1.12; }
   @media (min-width: 700px) { .hero h1 { font-size: 46px; } }
-  .hero h1 em { font-style: normal; color: var(--azul); }
+  .hero h1 em { font-style: normal; color: var(--azul-sombra); }
   .hero .sub { margin-top: 16px; font-size: 16px; color: var(--ink-2); font-weight: 600; max-width: 52ch; }
   .hero .cta-row { margin-top: 26px; display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
   .prueba-industria { margin-top: 16px; display: flex; align-items: center; gap: 10px; font-size: 12.5px; font-weight: 700; color: var(--ink-2); }
   .prueba-industria .chip { width: 26px; height: 26px; border-radius: 8px; background: var(--surface); border: 2px solid var(--ink);
                              display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .hero-visual { position: relative; }
-  .phone-mini { width: 260px; margin: 0 auto; aspect-ratio: 9/18; border: 9px solid var(--ink); border-radius: 38px;
+  .phone-mini { width: 220px; margin: 0 auto; aspect-ratio: 9/18; border: 8px solid var(--ink); border-radius: 32px;
                 background: var(--bg); overflow: hidden; box-shadow: 0 20px 44px rgb(0 0 0 / 0.14); }
-  .phone-mini .scr { padding: 18px 16px; }
-  .phone-mini .racha { background: var(--amarillo); border: 3px solid var(--ink); border-radius: 20px; padding: 14px; }
-  .phone-mini .mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+  .phone-mini .scr { padding: 14px 13px; }
+  .phone-mini .racha { background: var(--amarillo); border: 3px solid var(--ink); border-radius: 20px; padding: 11px; }
+  .phone-mini .mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+  .mockup-boton {
+    width: 100%; margin-top: 10px; height: 36px; border-radius: 16px; border: 3px solid var(--ink);
+    background: var(--verde-sombra); color: var(--ink); font-family: var(--font-display); font-weight: 800;
+    font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.01em;
+    display: flex; align-items: center; justify-content: center;
+    pointer-events: none; cursor: default; opacity: 0.92;
+  }
   .phone-mini .racha .l { font-size: 11px; font-weight: 800; text-transform: uppercase; display: flex; align-items: center; gap: 5px; }
   .ic-flame { display: inline-flex; flex-shrink: 0; }
-  .phone-mini .racha .n { font-family: var(--font-display); font-size: 34px; font-weight: 800; }
-  .float-chip { position: absolute; background: var(--verde); color: #fff; border: 3px solid var(--ink); border-radius: 14px;
-                padding: 8px 12px; font-size: 12px; font-weight: 800; box-shadow: 0 10px 20px rgb(0 0 0 / 0.12); }
+  .phone-mini .racha .n { font-family: var(--font-display); font-size: 28px; font-weight: 800; }
+  .float-chip { position: absolute; background: var(--verde); color: var(--ink); border: 3px solid var(--ink); border-radius: 14px;
+                padding: 8px 12px; font-size: 12px; font-weight: 800; box-shadow: 0 10px 20px rgb(0 0 0 / 0.12);
+                display: inline-flex; align-items: center; gap: 6px; }
   .float-chip.a { top: -18px; left: -14px; } .float-chip.b { bottom: 8%; right: -8%; background: var(--azul); }
 
   /* ===== 2. PROBLEMA ===== */
@@ -107,7 +115,7 @@
   .big-idea { text-align: center; max-width: 760px; margin: 0 auto; }
   .big-idea h2 { font-size: 26px; }
   @media (min-width: 700px) { .big-idea h2 { font-size: 32px; } }
-  .big-idea .mec { color: var(--azul); }
+  .big-idea .mec { color: var(--azul-sombra); }
   .pasos { margin-top: 44px; display: grid; gap: 20px; grid-template-columns: 1fr; }
   @media (min-width: 800px) { .pasos { grid-template-columns: repeat(3, 1fr); } }
   .paso { background: var(--bg); border: 3px solid var(--ink); border-radius: 20px; padding: 22px; position: relative; }
@@ -138,8 +146,9 @@
   .flecha { width: 36px; height: 36px; border-radius: 999px; border: 2.5px solid var(--ink); background: var(--surface);
             color: var(--ink); display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0;
             transition: transform 120ms ease; }
-  .flecha:hover { background: var(--amarillo); }
-  .flecha:active { transform: scale(0.92); }
+  .flecha:hover:not(:disabled) { background: var(--amarillo); }
+  .flecha:active:not(:disabled) { transform: scale(0.92); }
+  .flecha:disabled { opacity: 0.35; cursor: not-allowed; }
   .dots { display: flex; justify-content: center; gap: 8px; }
   .dots button { width: 10px; height: 10px; padding: 0; border-radius: 999px; background: #e4dcc4; border: none; cursor: pointer; }
   .dots button.on { background: var(--ink); width: 22px; border-radius: 999px; }
@@ -261,10 +270,10 @@
             <div class="mini-chip"><p class="n">9/12</p><p class="l">MÓDULOS</p></div>
             <div class="mini-chip"><p class="n">2°</p><p class="l">RANKING</p></div>
           </div>
-          <div class="boton boton-verde" style="width:100%; height:42px; font-size:11px; margin-top:14px;">Empezar mi reto</div>
+          <div class="mockup-boton" aria-hidden="true">Empezar mi reto</div>
         </div>
       </div>
-      <span class="float-chip a">✓ LOTO completado</span>
+      <span class="float-chip a"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>LOTO completado</span>
       <span class="float-chip b">Pase vigente hoy</span>
     </div>
   </div>
@@ -590,10 +599,18 @@
     const actual = Math.round(carrusel.scrollLeft / anchoSlide());
     irASlide(Math.min(slides.length - 1, actual + 1));
   });
+  const flechaPrev = document.getElementById('carruselPrev');
+  const flechaNext = document.getElementById('carruselNext');
+  function actualizarFlechas(idx) {
+    flechaPrev.disabled = idx <= 0;
+    flechaNext.disabled = idx >= slides.length - 1;
+  }
   carrusel.addEventListener('scroll', () => {
     const idx = Math.round(carrusel.scrollLeft / anchoSlide());
     dots.forEach((d, i) => { d.classList.toggle('on', i === idx); d.setAttribute('aria-selected', i === idx); });
+    actualizarFlechas(idx);
   });
+  actualizarFlechas(0);
 
   // Movimiento: revelado al hacer scroll, con stagger corto entre secciones
   const reveals = document.querySelectorAll('.reveal');
