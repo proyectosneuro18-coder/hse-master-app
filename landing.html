@@ -8,12 +8,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500..800&family=DM+Sans:wght@400..800&display=swap" rel="stylesheet">
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html { scroll-behavior: smooth; }
   :root {
     --bg: #fffaf0; --surface: #ffffff; --ink: #1a1a1a; --ink-2: #6b6b6b;
     --amarillo: #ffc800; --amarillo-sombra: #e0a500;
-    --verde: #58cc02; --verde-sombra: #46a302;
+    --verde: #58cc02; --verde-sombra: #3d9202;
     --azul: #1cb0f6; --azul-sombra: #0d96d4;
     --rojo: #ff4b4b; --rojo-sombra: #d93838;
     --font-display: 'Baloo 2', sans-serif; --font-body: 'DM Sans', sans-serif;
@@ -29,7 +29,7 @@
   .wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; position: relative; }
   section { padding: 72px 0; }
   h1, h2, h3 { font-family: var(--font-display); font-weight: 800; letter-spacing: -0.01em; }
-  a:focus-visible, button:focus-visible, .boton:focus-visible, summary:focus-visible {
+  a:focus-visible, button:focus-visible, .boton:focus-visible, summary:focus-visible, .carrusel:focus-visible {
     outline: 3px solid var(--azul); outline-offset: 3px; border-radius: 4px;
   }
   .boton:hover { filter: brightness(1.04); }
@@ -187,6 +187,12 @@
   .plan .nota { font-size: 12px; font-weight: 700; color: var(--ink-2); margin-top: 4px; }
   .plan.rec .nota { color: var(--ink); }
   .plan .boton { width: 100%; margin-top: 16px; height: 48px; font-size: 13px; }
+  .link-secundario {
+    display: flex; align-items: center; justify-content: center; width: 100%; margin-top: 16px; height: 48px;
+    font-family: var(--font-display); font-weight: 800; font-size: 13px; color: var(--ink-2);
+    text-decoration: underline; text-underline-offset: 3px;
+  }
+  .link-secundario:hover { color: var(--ink); }
   .trial-strip { max-width: 680px; margin: 20px auto 0; text-align: center; font-size: 13px; font-weight: 700; color: var(--ink-2); }
 
   /* ===== 7. GARANTÍA ===== */
@@ -271,7 +277,7 @@
         <span class="chip">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
         </span>
-        Basado en las 9 Reglas que Salvan Vidas, el estándar de la IOGP que usan las principales petroleras del mundo.
+        Basado en las 9 Reglas que Salvan Vidas — el estándar publicado por la IOGP (International Association of Oil &amp; Gas Producers) y adoptado por las principales petroleras del mundo.
       </div>
     </div>
     <div class="hero-visual">
@@ -489,7 +495,7 @@
         <p class="nombre">Mensual</p>
         <p class="precio">US$8<small>/usuario/mes</small></p>
         <p class="nota">Cancela cuando quieras</p>
-        <a href="#oferta" class="boton boton-verde">Empezar prueba gratis</a>
+        <a href="#oferta" class="link-secundario">Elegir el plan mensual</a>
       </div>
     </div>
     <p class="trial-strip">Los 14 días de prueba son iguales en ambos planes — decides después de ver la adopción real de tu cuadrilla.</p>
