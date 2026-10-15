@@ -54,7 +54,8 @@
   /* ===== HEADER ===== */
   header.top { position: sticky; top: 0; z-index: 50; background: var(--bg); border-bottom: 3px solid var(--ink); }
   header.top .wrap { display: flex; align-items: center; justify-content: space-between; padding-top: 14px; padding-bottom: 14px; }
-  .logo { font-family: var(--font-display); font-size: 18px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+  .logo { font-family: var(--font-display); font-size: 18px; font-weight: 800; display: flex; align-items: center; gap: 8px;
+           color: var(--ink); text-decoration: none; }
   .logo .dot { width: 30px; height: 30px; border-radius: 9px; background: var(--amarillo); border: 2.5px solid var(--ink); }
   .top .entrar { font-size: 13px; font-weight: 700; color: var(--ink-2); cursor: default; }
 
@@ -73,7 +74,7 @@
   .hero-visual { position: relative; }
   .phone-mini { width: 220px; margin: 0 auto; aspect-ratio: 9/18; border: 8px solid var(--ink); border-radius: 32px;
                 background: var(--bg); overflow: hidden; box-shadow: 0 20px 44px rgb(0 0 0 / 0.14); }
-  .phone-mini .scr { padding: 14px 13px; }
+  .phone-mini .scr { padding: 14px 13px; box-shadow: inset 0 3px 10px rgb(0 0 0 / 0.08); }
   .phone-mini .racha { background: var(--amarillo); border: 3px solid var(--ink); border-radius: 20px; padding: 11px; }
   .phone-mini .mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
   .mockup-boton {
@@ -90,6 +91,7 @@
                 padding: 8px 12px; font-size: 12px; font-weight: 800; box-shadow: 0 10px 20px rgb(0 0 0 / 0.12);
                 display: inline-flex; align-items: center; gap: 6px; }
   .float-chip.a { top: -18px; left: -14px; } .float-chip.b { bottom: 8%; right: -8%; background: var(--azul); }
+  @media (max-width: 400px) { .float-chip.a { left: -4px; } }
 
   /* ===== 2. PROBLEMA ===== */
   .problema { background: var(--surface); border-top: 3px solid var(--ink); border-bottom: 3px solid var(--ink); }
@@ -183,6 +185,7 @@
   .plan .precio { font-family: var(--font-display); font-size: 30px; font-weight: 800; margin-top: 8px; }
   .plan .precio small { font-size: 13px; font-weight: 700; font-family: var(--font-body); }
   .plan .nota { font-size: 12px; font-weight: 700; color: var(--ink-2); margin-top: 4px; }
+  .plan.rec .nota { color: var(--ink); }
   .plan .boton { width: 100%; margin-top: 16px; height: 48px; font-size: 13px; }
   .trial-strip { max-width: 680px; margin: 20px auto 0; text-align: center; font-size: 13px; font-weight: 700; color: var(--ink-2); }
 
@@ -222,7 +225,7 @@
   footer.legal .cols { display: flex; flex-wrap: wrap; gap: 32px; justify-content: space-between; }
   footer.legal .brand { font-family: var(--font-display); font-weight: 800; color: #fff; font-size: 16px; }
   footer.legal .links { display: flex; flex-wrap: wrap; gap: 18px; font-size: 12.5px; }
-  footer.legal .links a { color: #cfcfcf; text-decoration: none; }
+  footer.legal .links a, footer.legal .links span { color: #cfcfcf; text-decoration: none; }
   footer.legal .pendiente { font-size: 10.5px; color: #8a8a8a; margin-left: 4px; }
   footer.legal .copy { margin-top: 28px; font-size: 11.5px; color: #8a8a8a; border-top: 1px solid #333; padding-top: 18px; }
 
@@ -238,7 +241,7 @@
 <header class="top">
   <div class="wrap">
     <a class="logo" href="#"><span class="dot"></span>HSE Master App</a>
-    <span class="entrar" title="Disponible cuando actives tu prueba">Entrar</span>
+    <span class="entrar">Entrar <span class="pendiente">(con tu prueba)</span></span>
   </div>
 </header>
 
@@ -264,7 +267,7 @@
         <div class="scr">
           <div class="racha">
             <p class="l"><svg class="ic-flame" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>Racha de seguridad</p>
-            <p class="n">12 días</p>
+            <p class="n"><span id="rachaNum">0</span> días</p>
           </div>
           <div class="mini-grid">
             <div class="mini-chip"><p class="n">9/12</p><p class="l">MÓDULOS</p></div>
@@ -558,9 +561,9 @@
     <div class="cols">
       <span class="brand">HSE Master App</span>
       <div class="links">
-        <a href="#">Política de Privacidad<span class="pendiente">(pendiente — Sesión Legal)</span></a>
-        <a href="#">Términos y Condiciones<span class="pendiente">(pendiente)</span></a>
-        <a href="#">Política de reembolso<span class="pendiente">(pendiente)</span></a>
+        <span>Política de Privacidad<span class="pendiente">(pendiente — Sesión Legal)</span></span>
+        <span>Términos y Condiciones<span class="pendiente">(pendiente)</span></span>
+        <span>Política de reembolso<span class="pendiente">(pendiente)</span></span>
         <a href="mailto:soporte@hsemasterapp.com">soporte@hsemasterapp.com</a>
       </div>
     </div>
@@ -573,6 +576,24 @@
 </div>
 
 <script>
+  // Conteo animado del dato héroe (la racha) — respeta reduced-motion
+  const rachaEl = document.getElementById('rachaNum');
+  const sinMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (rachaEl) {
+    if (sinMovimiento) {
+      rachaEl.textContent = '12';
+    } else {
+      const destino = 12; const duracion = 700; const inicio = performance.now();
+      function tick(ahora) {
+        const t = Math.min(1, (ahora - inicio) / duracion);
+        const easeOut = 1 - Math.pow(1 - t, 3);
+        rachaEl.textContent = Math.round(easeOut * destino);
+        if (t < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }
+  }
+
   const heroBtn = document.querySelector('.hero .boton');
   const sticky = document.getElementById('stickyCta');
   const io = new IntersectionObserver(([e]) => {
