@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="es" data-kit="abc-v2">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tour de la app — HSE Master App (dirección Turno Nocturno)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400..700&family=Manrope:wght@400..700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  :root {
+    --bg: #0a1526; --surface: #101e36; --text-1: #e9f1fc; --text-2: #8ea2c2;
+    --accent: #2f8bff; --radius-card: 14px; --radius-btn: 10px;
+    --font-display: 'Lexend', monospace; --font-body: 'Manrope', monospace;
+    --shadow-tinta: 10 20 40;
+  }
+  body {
+    background:
+      radial-gradient(1100px 520px at 12% -6%, #141f36, transparent 62%),
+      radial-gradient(900px 460px at 92% 4%, #0d1626, transparent 58%),
+      linear-gradient(180deg, #0a0f1a, #070b12);
+    color: #e9f1fc;
+    font-family: var(--font-body);
+    padding: 32px 20px 64px;
+  }
+  .cabecera { max-width: 1180px; margin: 0 auto 28px; }
+  .cabecera h1 { font-family: var(--font-display); font-size: 24px; font-weight: 700; letter-spacing: -0.01em; }
+  .cabecera p { margin-top: 6px; font-size: 14px; color: #8ea2c2; max-width: 70ch; }
+
+  .frames { max-width: 1180px; margin: 0 auto; display: grid; gap: 32px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+  .frame { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .rotulo { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #6d84a8; }
+
+  .telefono {
+    width: 300px; aspect-ratio: 9 / 19.5; border: 10px solid #04070c; border-radius: 46px;
+    box-shadow: 0 24px 60px rgb(0 0 0 / 0.5); overflow: hidden; position: relative;
+    display: flex; flex-direction: column; background: var(--bg); font-family: var(--font-body); color: var(--text-1);
+  }
+  .statusbar { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px 4px;
+               font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .statusbar .der { display: flex; align-items: center; gap: 5px; }
+  .statusbar svg { display: block; }
+  .home-indicator { position: absolute; bottom: 7px; left: 50%; transform: translateX(-50%);
+                     width: 110px; height: 5px; border-radius: 999px; background: var(--text-1); opacity: 0.85; }
+  .pantalla { flex: 1; display: flex; flex-direction: column; overflow: hidden; padding: 0 18px; }
+
+  .cta { margin-top: auto; margin-bottom: 0; display: flex; align-items: center; justify-content: center;
+         height: 46px; border-radius: var(--radius-btn); font-size: 14px; font-weight: 700;
+         background: var(--accent); color: #04101f;
+         box-shadow: 0 8px 24px color-mix(in oklab, var(--accent) 28%, transparent); }
+
+  .tabbar { display: flex; align-items: stretch; justify-content: space-around; margin: 10px -18px 0;
+            padding: 8px 8px 16px; border-top: 1px solid rgba(255,255,255,0.08); background: rgba(16,30,54,0.9); }
+  .tabbar a { display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 9px; font-weight: 600;
+              color: var(--text-2); text-decoration: none; }
+  .tabbar a.activa { color: var(--accent); }
+  .tabbar .tab-chip { display: flex; align-items: center; justify-content: center; width: 34px; height: 24px; border-radius: 8px; }
+  .tabbar a.activa .tab-chip { background: color-mix(in oklab, var(--accent) 16%, transparent); }
+
+  /* ── Frame 1: M0 principal (reusa la pantalla "Hoy") ── */
+  .encabezado-b { margin-top: 10px; text-align: center; }
+  .periodo { font-size: 11px; font-weight: 600; color: var(--text-2); }
+  .titulo-b { font-family: var(--font-display); font-size: 20px; font-weight: 700; margin-top: 2px; }
+  .anillo-wrap { margin: 12px auto 0; position: relative; width: 118px; height: 118px; }
+  .anillo-wrap .centro { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .anillo-wrap .pct { font-family: var(--font-display); font-size: 26px; font-weight: 700; }
+  .anillo-wrap .pct-label { font-size: 10px; color: var(--text-2); font-weight: 600; }
+  .grid2x2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; }
+  .tile { background: var(--surface); border-radius: var(--radius-card); border: 1px solid rgba(255,255,255,0.07); padding: 10px; }
+  .tile .t-label { font-size: 9.5px; font-weight: 600; color: var(--text-2); }
+  .tile .t-dato { margin-top: 4px; font-family: var(--font-display); font-size: 18px; font-weight: 700; }
+
+  /* ── Frame 2: onboarding quiz ── */
+  .progreso-dots { display: flex; gap: 5px; margin-top: 12px; }
+  .progreso-dots span { height: 4px; flex: 1; border-radius: 99px; background: rgba(255,255,255,0.12); }
+  .progreso-dots span.activo { background: var(--accent); }
+  .pregunta { font-family: var(--font-display); font-size: 19px; font-weight: 700; margin-top: 20px; line-height: 1.3; }
+  .pregunta-sub { font-size: 12.5px; color: var(--text-2); margin-top: 6px; }
+  .opciones-quiz { margin-top: 18px; display: flex; flex-direction: column; gap: 10px; }
+  .opcion-quiz { border-radius: var(--radius-card); border: 1.5px solid rgba(255,255,255,0.1); background: var(--surface);
+                 padding: 14px; font-size: 13.5px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
+  .opcion-quiz.sel { border-color: var(--accent); background: color-mix(in oklab, var(--accent) 12%, var(--surface)); }
+  .opcion-quiz .chk { width: 18px; height: 18px; border-radius: 999px; border: 2px solid var(--text-2); }
+  .opcion-quiz.sel .chk { border-color: var(--accent); background: var(--accent); }
+
+  /* ── Frame 3: paywall ── */
+  .paywall-h { font-family: var(--font-display); font-size: 19px; font-weight: 700; margin-top: 16px; text-align: center; }
+  .paywall-sub { font-size: 12px; color: var(--text-2); text-align: center; margin-top: 6px; }
+  .planes { margin-top: 16px; display: flex; flex-direction: column; gap: 10px; }
+  .plan { border-radius: var(--radius-card); border: 1.5px solid rgba(255,255,255,0.1); background: var(--surface); padding: 12px 14px; }
+  .plan.recomendado { border-color: var(--accent); background: color-mix(in oklab, var(--accent) 10%, var(--surface)); position: relative; }
+  .plan .badge { position: absolute; top: -9px; right: 12px; background: var(--accent); color: #04101f;
+                 font-size: 9px; font-weight: 800; padding: 3px 8px; border-radius: 999px; }
+  .plan .fila { display: flex; justify-content: space-between; align-items: baseline; }
+  .plan .nombre { font-size: 13px; font-weight: 700; }
+  .plan .precio { font-family: var(--font-display); font-size: 17px; font-weight: 700; }
+  .plan .precio small { font-size: 10px; color: var(--text-2); font-weight: 600; }
+  .plan .detalle { margin-top: 2px; font-size: 10.5px; color: var(--text-2); }
+  .trial-nota { margin-top: 12px; font-size: 10.5px; color: var(--text-2); text-align: center; }
+
+  /* ── Frame 4: pase digital QR ── */
+  .pase { margin-top: 18px; border-radius: 18px; background: var(--surface); border: 1.5px solid rgba(47,139,255,0.3);
+          padding: 18px; text-align: center; }
+  .pase .qr { width: 130px; height: 130px; margin: 0 auto; border-radius: 10px;
+              background:
+                repeating-linear-gradient(0deg, #e9f1fc 0 6px, transparent 6px 12px),
+                repeating-linear-gradient(90deg, #e9f1fc 0 6px, transparent 6px 12px);
+              background-blend-mode: multiply; background-color: #0a1526;
+              border: 6px solid #e9f1fc; }
+  .pase .nombre-trab { margin-top: 12px; font-family: var(--font-display); font-size: 15px; font-weight: 700; }
+  .pase .cuadrilla { font-size: 11px; color: var(--text-2); margin-top: 2px; }
+  .competencias { margin-top: 14px; display: flex; flex-direction: column; gap: 6px; }
+  .competencias .item { display: flex; align-items: center; gap: 8px; font-size: 11.5px; }
+  .competencias .punto { width: 7px; height: 7px; border-radius: 999px; background: #3ecf8e; flex-shrink: 0; }
+</style>
+</head>
+<body>
+
+<header class="cabecera">
+  <h1>Así se vería tu app por dentro — Turno Nocturno</h1>
+  <p>4 vistas clave con el estilo que elegiste: la pantalla de cada día, el inicio, el pago y tu pase digital.</p>
+</header>
+
+<div class="frames">
+
+  <!-- FRAME 1 — M0 principal -->
+  <div class="frame">
+    <p class="rotulo">Tu pantalla de cada día</p>
+    <div class="telefono">
+      <div class="statusbar">
+        <span>9:41</span>
+        <span class="der">
+          <svg width="16" height="11" viewBox="0 0 17 11" fill="currentColor" aria-hidden="true">
+            <rect x="0" y="7" width="3" height="4" rx="0.8"/><rect x="4.5" y="5" width="3" height="6" rx="0.8"/>
+            <rect x="9" y="3" width="3" height="8" rx="0.8"/><rect x="13.5" y="0.5" width="3" height="10.5" rx="0.8"/>
+          </svg>
+          <svg width="24" height="12" viewBox="0 0 25 12" aria-hidden="true">
+            <rect x="0.5" y="0.5" width="21" height="11" rx="3" fill="none" stroke="currentColor" opacity="0.4"/>
+            <rect x="2" y="2" width="15" height="8" rx="1.6" fill="currentColor"/>
+            <rect x="22.5" y="3.8" width="2" height="4.4" rx="1" fill="currentColor" opacity="0.4"/>
+          </svg>
+        </span>
+      </div>
+      <div class="pantalla">
+        <div class="encabezado-b">
+          <p class="periodo">Ago 4 – 10, 2026</p>
+          <h3 class="titulo-b">Tu semana en el pozo</h3>
+        </div>
+        <div class="anillo-wrap">
+          <svg width="118" height="118" viewBox="0 0 118 118">
+            <circle cx="59" cy="59" r="50" fill="none" stroke-width="10" stroke="rgba(47,139,255,0.14)"/>
+            <circle cx="59" cy="59" r="50" fill="none" stroke-width="10" stroke="#2f8bff" stroke-linecap="round"
+                    stroke-dasharray="314" stroke-dashoffset="100" transform="rotate(-90 59 59)"/>
+          </svg>
+          <div class="centro"><span class="pct">68%</span><span class="pct-label">de tu cuadrilla</span></div>
+        </div>
+        <div class="grid2x2">
+          <div class="tile"><p class="t-label">Módulos IOGP</p><p class="t-dato">9/12</p></div>
+          <div class="tile"><p class="t-label">Minutos/día</p><p class="t-dato">3 min</p></div>
+          <div class="tile"><p class="t-label">Vidas (cascos)</p><p class="t-dato">3</p></div>
+          <div class="tile"><p class="t-label">Racha</p><p class="t-dato">12 días</p></div>
+        </div>
+        <div class="cta">Seguir mi racha hoy</div>
+        <nav class="tabbar">
+          <a class="activa" href="#"><span class="tab-chip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg></span>Hoy</a>
+          <a href="#"><span class="tab-chip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg></span>Progreso</a>
+          <a href="#"><span class="tab-chip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 0 1-10 0V4Z"/><path d="M7 5H4v2a3 3 0 0 0 3 3M17 5h3v2a3 3 0 0 1-3 3"/></svg></span>Ranking</a>
+          <a href="#"><span class="tab-chip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg></span>Perfil</a>
+        </nav>
+      </div>
+      <div class="home-indicator"></div>
+    </div>
+  </div>
+
+  <!-- FRAME 2 — onboarding quiz -->
+  <div class="frame">
+    <p class="rotulo">Así te pregunta al empezar</p>
+    <div class="telefono">
+      <div class="statusbar">
+        <span>9:41</span>
+        <span class="der">
+          <svg width="16" height="11" viewBox="0 0 17 11" fill="currentColor" aria-hidden="true">
+            <rect x="0" y="7" width="3" height="4" rx="0.8"/><rect x="4.5" y="5" width="3" height="6" rx="0.8"/>
+            <rect x="9" y="3" width="3" height="8" rx="0.8"/><rect x="13.5" y="0.5" width="3" height="10.5" rx="0.8"/>
+          </svg>
+          <svg width="24" height="12" viewBox="0 0 25 12" aria-hidden="true">
+            <rect x="0.5" y="0.5" width="21" height="11" rx="3" fill="none" stroke="currentColor" opacity="0.4"/>
+            <rect x="2" y="2" width="15" height="8" rx="1.6" fill="currentColor"/>
+            <rect x="22.5" y="3.8" width="2" height="4.4" rx="1" fill="currentColor" opacity="0.4"/>
+          </svg>
+        </span>
+      </div>
+      <div class="pantalla">
+        <div class="progreso-dots">
+          <span class="activo"></span><span class="activo"></span><span></span><span></span><span></span>
+        </div>
+        <p class="pregunta">¿Cuántos trabajadores tiene tu cuadrilla?</p>
+        <p class="pregunta-sub">Así ajustamos tu prueba gratis de 14 días.</p>
+        <div class="opciones-quiz">
+          <div class="opcion-quiz">Menos de 10<span class="chk"></span></div>
+          <div class="opcion-quiz sel">Entre 10 y 20<span class="chk"></span></div>
+          <div class="opcion-quiz">Más de 20<span class="chk"></span></div>
+        </div>
+        <div class="cta">Continuar</div>
+      </div>
+      <div class="home-indicator"></div>
+    </div>
+  </div>
+
+  <!-- FRAME 3 — paywall -->
+  <div class="frame">
+    <p class="rotulo">Aquí eliges tu plan</p>
+    <div class="telefono">
+      <div class="statusbar">
+        <span>9:41</span>
+        <span class="der">
+          <svg width="16" height="11" viewBox="0 0 17 11" fill="currentColor" aria-hidden="true">
+            <rect x="0" y="7" width="3" height="4" rx="0.8"/><rect x="4.5" y="5" width="3" height="6" rx="0.8"/>
+            <rect x="9" y="3" width="3" height="8" rx="0.8"/><rect x="13.5" y="0.5" width="3" height="10.5" rx="0.8"/>
+          </svg>
+          <svg width="24" height="12" viewBox="0 0 25 12" aria-hidden="true">
+            <rect x="0.5" y="0.5" width="21" height="11" rx="3" fill="none" stroke="currentColor" opacity="0.4"/>
+            <rect x="2" y="2" width="15" height="8" rx="1.6" fill="currentColor"/>
+            <rect x="22.5" y="3.8" width="2" height="4.4" rx="1" fill="currentColor" opacity="0.4"/>
+          </svg>
+        </span>
+      </div>
+      <div class="pantalla">
+        <p class="paywall-h">14 días gratis para tu cuadrilla</p>
+        <p class="paywall-sub">Sin tarjeta · cancela cuando quieras</p>
+        <div class="planes">
+          <div class="plan recomendado">
+            <span class="badge">2 meses gratis</span>
+            <div class="fila"><span class="nombre">Anual</span><span class="precio">US$80<small>/usuario/año</small></span></div>
+            <p class="detalle">Equivale a US$6.70/usuario al mes</p>
+          </div>
+          <div class="plan">
+            <div class="fila"><span class="nombre">Mensual</span><span class="precio">US$8<small>/usuario/mes</small></span></div>
+            <p class="detalle">Cancela cuando quieras</p>
+          </div>
+        </div>
+        <div class="cta">Empezar mi prueba gratis</div>
+        <p class="trial-nota">Incluye dashboard completo del Gerente de HSE</p>
+      </div>
+      <div class="home-indicator"></div>
+    </div>
+  </div>
+
+  <!-- FRAME 4 — pase digital QR (mecanismo en acción) -->
+  <div class="frame">
+    <p class="rotulo">Tu pase digital, listo para el auditor</p>
+    <div class="telefono">
+      <div class="statusbar">
+        <span>9:41</span>
+        <span class="der">
+          <svg width="16" height="11" viewBox="0 0 17 11" fill="currentColor" aria-hidden="true">
+            <rect x="0" y="7" width="3" height="4" rx="0.8"/><rect x="4.5" y="5" width="3" height="6" rx="0.8"/>
+            <rect x="9" y="3" width="3" height="8" rx="0.8"/><rect x="13.5" y="0.5" width="3" height="10.5" rx="0.8"/>
+          </svg>
+          <svg width="24" height="12" viewBox="0 0 25 12" aria-hidden="true">
+            <rect x="0.5" y="0.5" width="21" height="11" rx="3" fill="none" stroke="currentColor" opacity="0.4"/>
+            <rect x="2" y="2" width="15" height="8" rx="1.6" fill="currentColor"/>
+            <rect x="22.5" y="3.8" width="2" height="4.4" rx="1" fill="currentColor" opacity="0.4"/>
+          </svg>
+        </span>
+      </div>
+      <div class="pantalla">
+        <div class="pase">
+          <div class="qr"></div>
+          <p class="nombre-trab">Luis Fernández</p>
+          <p class="cuadrilla">Cuadrilla Pozo 7 · Vigente hoy</p>
+          <div class="competencias">
+            <div class="item"><span class="punto"></span>Aislamiento de Energía (LOTO)</div>
+            <div class="item"><span class="punto"></span>Espacios confinados</div>
+            <div class="item"><span class="punto"></span>Racha de seguridad: 12 días</div>
+          </div>
+        </div>
+        <div class="cta">Mostrar al supervisor</div>
+      </div>
+      <div class="home-indicator"></div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

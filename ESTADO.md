@@ -1,7 +1,7 @@
 # ESTADO — HSE Master App
-Última actualización: 2026-10-15 | Sesión actual: 1
+Última actualización: 2026-10-15 | Sesión actual: 2 (cerrada)
 
-⏸️ CHECKPOINT — Sesión 2 en curso: direcciones-abc.html creado (3 direcciones, todas en azul por pedido del usuario, gamificación incluida) y verificado con screenshot / Siguiente acción exacta: esperar que el usuario elija A, B, C, combine o pida ajustes; luego fijar FICHA-ARTE.md.
+⏸️ CHECKPOINT — Sesión 2 CERRADA: usuario eligió dirección B "Turno Nocturno", FICHA-ARTE.md aprobada, tour de la app (vista-previa-app.html) confirmado / Siguiente acción exacta: arrancar Sesión 3 (página de ventas) — leer 19-PAGINA-DE-VENTAS.md + 52 + 55 y derivar el copy de FICHA-AVATAR.md.
 
 ## Qué es esta app (3 líneas máximo)
 Plataforma móvil B2B de microaprendizaje gamificado (estilo Duolingo) para capacitar, evaluar y certificar diariamente al personal de campo y contratistas en seguridad industrial (HSE/IOGP) en la industria petrolera. El trabajador usa la app en el celular 3 min/día; el Gerente de HSE paga la suscripción y ve un dashboard de adopción y riesgo por cuadrilla.
@@ -27,6 +27,15 @@ Plataforma móvil B2B de microaprendizaje gamificado (estilo Duolingo) para capa
 - Pricing propuesto: US$8/usuario/mes (mensual) · US$80/usuario/año (~2 meses gratis). Punto medio del benchmark validado; ajustable cuando se corra el gate de Unit Economics (40) con el costo real de IA/infra por usuario.
 - Canal de venta: NO autoservicio puro — venta directa B2B en LinkedIn a Gerentes de HSE (campo 15 del documento). La landing vende y captura el lead/trial; el cierre de planes grandes puede requerir contacto humano. Esto se documenta para que Sesión 3 (landing) y Sesión 8 (adquisición) no asuman un checkout 100% self-service.
 - Pasarela: Hotmart (default del SO) para cobrar la suscripción recurrente; a validar en Sesión 6 si maneja bien "N asientos por cuadrilla" o si hace falta una capa propia de facturación por asientos sobre Hotmart.
+
+## Dirección de Arte (Sesión 2 — NO cambiar sin justificación)
+> La ficha COMPLETA vive en `FICHA-ARTE.md` en la raíz.
+- FICHA-ARTE.md: existe y APROBADA por el usuario (2026-10-15)
+- ¿Hubo referencia visual del usuario?: NO (restricción de color dada explícitamente: azul)
+- Resumen: dirección "Turno Nocturno" · fondo #0A1526 · acento #2F8BFF · Display "Lexend" · Body "Manrope" · radio 14px cards / 10px botones
+- Personalidad: nocturna · competitiva · confiable (compilada en la ficha)
+- REGISTRO ANTI-REPETICIÓN (29/54): paleta azul eléctrico/navy y par Lexend+Manrope vetados para el próximo proyecto del SO. Dirección del banco 54 usada: anillo de progreso central (dispositivo ownable).
+- Mapa de rutas: `/` → `/onboarding` → `/paywall` → `/login` → `/app`
 
 ## Gamificación y retención (se documenta en Sesión 4, se construye en Sesión 5)
 - Mecánicas ya definidas por el usuario: rachas diarias, vidas (cascos de seguridad), tabla de posiciones por cuadrilla/empresa, Pasaporte Digital QR.
@@ -60,13 +69,14 @@ Plataforma móvil B2B de microaprendizaje gamificado (estilo Duolingo) para capa
 
 ## Sesiones completadas ✅
 - Sesión 1 — Validación recibida · Avatar aprobado · App modelo (Duolingo) aprobada · Monetización/pricing/auth/BD/unit economics decididos — cerrada 2026-10-15.
+- Sesión 2 — Identidad visual: dirección "Turno Nocturno" (B) elegida por el usuario de entre 3 opciones en azul · FICHA-ARTE.md aprobada · tour de la app confirmado — cerrada 2026-10-15.
 
 ## Sesión en progreso 🔧
-- Sesión 2 — Identidad visual: comparativa `direcciones-abc.html` creada con 3 direcciones, todas en azul (pedido explícito del usuario) e incluyendo gamificación (racha, vidas/cascos, ranking) en los 3 mockups. Opción A "Casco Azul" (claro, Space Grotesk/Public Sans) · Opción B "Turno Nocturno" (oscuro, Lexend/Manrope) · Opción C "Bitácora de Pozo" (editorial/institucional, Fraunces/IBM Plex Sans). Pendiente: elección del usuario.
+(ninguna — lista para arrancar Sesión 3)
 
 ## Próximas sesiones 📋
-- Sesión 2: Identidad visual — dirección de arte, paleta, tipografía (16/29/54).
 - Sesión 3: Página de ventas.
+- Sesión 4: Onboarding, paywall y login.
 
 ## Problemas conocidos ⚠️
 - FICHA-MODELO (Duolingo): ángulos de venta pagada (§6, Meta Ads Library) quedaron NO ENCONTRADO — no aplica, nuestro canal es venta directa B2B en LinkedIn (campo 15 del documento validado), no ads. Documentado, no bloqueante.
