@@ -18,18 +18,36 @@
     --rojo: #ff4b4b; --rojo-sombra: #d93838;
     --font-display: 'Baloo 2', sans-serif; --font-body: 'DM Sans', sans-serif;
   }
-  body { background: var(--bg); color: var(--ink); font-family: var(--font-body); line-height: 1.5; }
-  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+  body {
+    background:
+      radial-gradient(540px 320px at 8% 0%, color-mix(in oklab, var(--amarillo) 16%, transparent), transparent 60%),
+      radial-gradient(480px 300px at 96% 14%, color-mix(in oklab, var(--azul) 12%, transparent), transparent 60%),
+      radial-gradient(460px 280px at 4% 72%, color-mix(in oklab, var(--verde) 10%, transparent), transparent 60%),
+      var(--bg);
+    color: var(--ink); font-family: var(--font-body); line-height: 1.5;
+  }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; position: relative; }
   section { padding: 72px 0; }
   h1, h2, h3 { font-family: var(--font-display); font-weight: 800; letter-spacing: -0.01em; }
+  a:focus-visible, button:focus-visible, .boton:focus-visible, summary:focus-visible {
+    outline: 3px solid var(--azul); outline-offset: 3px; border-radius: 4px;
+  }
+  .boton:hover { filter: brightness(1.04); }
+  .top a.entrar:hover { color: var(--ink); text-decoration: underline; }
+  /* ── Movimiento: revelado al hacer scroll (respeta reduced-motion) ── */
+  .reveal { opacity: 0; transform: translateY(18px); transition: opacity 500ms ease, transform 500ms ease; }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
   .boton {
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
     height: 56px; padding: 0 28px; border-radius: 16px; font-family: var(--font-display);
-    font-size: 16px; font-weight: 800; text-decoration: none; border: none; cursor: pointer;
-    text-transform: uppercase; letter-spacing: 0.02em;
+    font-size: 15px; font-weight: 800; text-decoration: none; cursor: pointer;
+    text-transform: uppercase; letter-spacing: 0.01em; border: 3px solid var(--ink);
+    transition: transform 120ms ease, border-bottom-width 120ms ease, margin-top 120ms ease;
   }
-  .boton-verde { background: var(--verde); color: #fff; border-bottom: 5px solid var(--verde-sombra); }
-  .boton-amarillo { background: var(--amarillo); color: var(--ink); border-bottom: 5px solid var(--amarillo-sombra); }
+  .boton-verde { background: var(--verde); color: #fff; border-bottom: 6px solid var(--verde-sombra); }
+  .boton-amarillo { background: var(--amarillo); color: var(--ink); border-bottom: 6px solid var(--amarillo-sombra); }
+  .boton:active { border-bottom-width: 3px; transform: translateY(3px); }
   .badge { display: inline-flex; align-items: center; gap: 6px; background: var(--rojo); color: #fff;
            border: 2.5px solid var(--ink); border-radius: 999px; padding: 6px 14px; font-size: 12px; font-weight: 800; }
   .bloque { border-radius: 20px; border: 3px solid var(--ink); }
@@ -58,7 +76,8 @@
                 background: var(--bg); overflow: hidden; box-shadow: 0 20px 44px rgb(0 0 0 / 0.14); }
   .phone-mini .scr { padding: 18px 16px; }
   .phone-mini .racha { background: var(--amarillo); border: 3px solid var(--ink); border-radius: 18px; padding: 14px; }
-  .phone-mini .racha .l { font-size: 11px; font-weight: 800; text-transform: uppercase; }
+  .phone-mini .racha .l { font-size: 11px; font-weight: 800; text-transform: uppercase; display: flex; align-items: center; gap: 5px; }
+  .ic-flame { display: inline-flex; flex-shrink: 0; }
   .phone-mini .racha .n { font-family: var(--font-display); font-size: 34px; font-weight: 800; }
   .float-chip { position: absolute; background: var(--verde); color: #fff; border: 3px solid var(--ink); border-radius: 14px;
                 padding: 8px 12px; font-size: 12px; font-weight: 800; box-shadow: 0 10px 20px rgb(0 0 0 / 0.12); }
@@ -70,7 +89,9 @@
   @media (min-width: 700px) { .problema h2 { font-size: 34px; } }
   .preguntas { margin-top: 36px; display: grid; gap: 14px; grid-template-columns: 1fr; }
   @media (min-width: 700px) { .preguntas { grid-template-columns: 1fr 1fr; } }
-  .pregunta-card { display: flex; gap: 14px; align-items: flex-start; background: var(--bg); border: 3px solid var(--ink); border-radius: 18px; padding: 16px; }
+  .pregunta-card { display: flex; gap: 14px; align-items: flex-start; background: var(--bg); border: 3px solid var(--ink); border-radius: 18px; padding: 16px;
+                   transition: transform 150ms ease, box-shadow 150ms ease; }
+  .pregunta-card:hover { transform: translateY(-3px); box-shadow: 0 8px 0 -4px rgb(26 26 26 / 0.12), 0 10px 16px rgb(26 26 26 / 0.08); }
   .pregunta-card .ic { width: 42px; height: 42px; border-radius: 12px; background: var(--rojo); border: 2.5px solid var(--ink);
                         display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .pregunta-card p { font-size: 14.5px; font-weight: 700; }
@@ -163,7 +184,9 @@
   .faq h2 { text-align: center; font-size: 28px; }
   .faq-list { max-width: 720px; margin: 36px auto 0; display: flex; flex-direction: column; gap: 12px; }
   .faq-item { background: var(--bg); border: 3px solid var(--ink); border-radius: 16px; padding: 18px 20px; }
+  .faq-item { transition: background 150ms ease; }
   .faq-item summary { font-weight: 800; font-size: 14.5px; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+  .faq-item summary:hover { color: var(--azul-sombra); }
   .faq-item summary::-webkit-details-marker { display: none; }
   .faq-item p { margin-top: 10px; font-size: 13.5px; color: var(--ink-2); font-weight: 600; line-height: 1.6; }
   .chev { transition: transform 0.2s; }
@@ -212,7 +235,7 @@
       <h1 style="margin-top:14px;">Capacita a tu cuadrilla en <em>3 minutos al día</em> — y pruébalo con un código QR</h1>
       <p class="sub">El Pase de los 3 Minutos convierte las 9 Reglas que Salvan Vidas de la IOGP en un hábito diario. Sin aulas, sin PDFs de 50 páginas, sin señal en el pozo.</p>
       <div class="cta-row">
-        <a href="#oferta" class="boton boton-verde">Quiero mi prueba gratis de 14 días</a>
+        <a href="#oferta" class="boton boton-verde">Probar gratis 14 días</a>
       </div>
       <div class="prueba-industria">
         <span class="chip">
@@ -225,7 +248,7 @@
       <div class="phone-mini">
         <div class="scr">
           <div class="racha">
-            <p class="l">🔥 Racha de seguridad</p>
+            <p class="l"><svg class="ic-flame" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>Racha de seguridad</p>
             <p class="n">12 días</p>
           </div>
         </div>
@@ -238,7 +261,7 @@
 
 <!-- 2. PROBLEMA -->
 <section class="problema">
-  <div class="wrap">
+  <div class="wrap reveal">
     <h2>¿Te suena familiar?</h2>
     <div class="preguntas">
       <div class="pregunta-card">
@@ -267,15 +290,17 @@
 
 <!-- 3. AGITACIÓN -->
 <section class="agitacion">
-  <div class="wrap">
+  <div class="wrap reveal">
     <h2>El problema no es que no des charlas. Es que nadie prueba que entendieron.</h2>
-    <p>Cada mes que sigue igual no es solo papeleo acumulado: es la posibilidad real de una <b>fatalidad que cierra la operación</b>, destruye tu carrera y te lleva a responder legalmente. Si nada cambia, en 6 meses vas a seguir haciendo inducciones repetitivas por la rotación de contratistas, sin saber <b>qué no saben</b> tus trabajadores — hasta que un near miss te lo diga de la peor forma. Ya probaste PowerPoint, e-learnings y talleres presenciales: fallan porque solo miden <b>"asistencia"</b>, no comprensión — la gente le da "siguiente, siguiente" sin leer un párrafo.</p>
+    <p>Cada mes que sigue igual no es solo papeleo acumulado: es la posibilidad real de una <b>fatalidad que cierra la operación</b>, destruye tu carrera y te lleva a responder legalmente.</p>
+    <p style="margin-top:16px;">Si nada cambia, en 6 meses sigues haciendo inducciones repetitivas por la rotación de contratistas, sin saber <b>qué no saben</b> tus trabajadores — hasta que un near miss te lo diga de la peor forma.</p>
+    <p style="margin-top:16px;">Ya probaste PowerPoint, e-learnings y talleres presenciales: fallan porque solo miden <b>"asistencia"</b>, no comprensión — la gente le da "siguiente, siguiente" sin leer un párrafo.</p>
   </div>
 </section>
 
 <!-- 4. SOLUCIÓN -->
 <section class="solucion">
-  <div class="wrap">
+  <div class="wrap reveal">
     <div class="big-idea">
       <h2>No es tu gente la que falla la seguridad — es la firma de trámite la que no prueba nada. <span class="mec">El Pase de los 3 Minutos</span> lo reemplaza por una prueba real.</h2>
     </div>
@@ -311,7 +336,7 @@
 
 <!-- 5. LA APP POR DENTRO -->
 <section class="app-dentro">
-  <div class="wrap">
+  <div class="wrap reveal">
     <h2 style="text-align:center; font-size:28px;">Así se ve el Pase de los 3 Minutos por dentro</h2>
     <p style="text-align:center; margin-top:10px; color:var(--ink-2); font-weight:600;">Mini-demos reales del mecanismo — construidos con el estilo final de la app, no capturas de otra herramienta.</p>
     <div class="carrusel-wrap">
@@ -323,7 +348,7 @@
               <div class="mini-chip"><p class="n">2°</p><p class="l">RANKING</p></div>
             </div>
             <div class="racha" style="margin-top:10px; padding:12px;">
-              <p class="l" style="font-size:9px;">🔥 RACHA</p>
+              <p class="l" style="font-size:9px;"><svg class="ic-flame" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>RACHA</p>
               <p class="n" style="font-size:24px;">12 días</p>
             </div>
           </div></div>
@@ -376,7 +401,7 @@
 
 <!-- 6. OFERTA -->
 <section class="oferta" id="oferta">
-  <div class="wrap">
+  <div class="wrap reveal">
     <h2>14 días gratis, sin tarjeta, para 1 cuadrilla</h2>
     <p class="sub">Hasta 20 trabajadores, con el dashboard completo del Gerente de HSE desde el primer día.</p>
 
@@ -410,13 +435,13 @@
         <p class="nombre">Anual</p>
         <p class="precio">US$6.67<small>/usuario/mes</small></p>
         <p class="nota">Se cobra US$80/usuario/año</p>
-        <a href="#" class="boton boton-verde">Empezar mi prueba gratis</a>
+        <a href="#" class="boton boton-verde">Empezar prueba gratis</a>
       </div>
       <div class="plan">
         <p class="nombre">Mensual</p>
         <p class="precio">US$8<small>/usuario/mes</small></p>
         <p class="nota">Cancela cuando quieras</p>
-        <a href="#" class="boton boton-amarillo">Empezar mi prueba gratis</a>
+        <a href="#" class="boton boton-amarillo">Empezar prueba gratis</a>
       </div>
     </div>
     <p class="trial-strip">Los 14 días de prueba son iguales en ambos planes — decides después de ver la adopción real de tu cuadrilla.</p>
@@ -425,7 +450,7 @@
 
 <!-- 7. GARANTÍA -->
 <section class="garantia">
-  <div class="wrap">
+  <div class="wrap reveal">
     <div class="escudo">
       <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg>
     </div>
@@ -437,7 +462,7 @@
 
 <!-- 8. FAQ -->
 <section class="faq">
-  <div class="wrap">
+  <div class="wrap reveal">
     <h2>Preguntas antes de empezar</h2>
     <div class="faq-list">
       <details class="faq-item" open>
@@ -482,11 +507,11 @@
 
 <!-- 9. CTA FINAL EMOCIONAL -->
 <section class="cta-final">
-  <div class="wrap">
+  <div class="wrap reveal">
     <h2>Imagina abrir tu panel mañana a las 5 AM y ver, en 10 segundos, que toda tu cuadrilla completó su reto de hoy.</h2>
     <p class="fp">Ese es el día de el líder que modernizó la cultura de seguridad de su empresa — no el que frena el trabajo. 14 días gratis, sin tarjeta, con la Garantía del Primer Pase.</p>
     <div class="cta-row">
-      <a href="#oferta" class="boton boton-verde">Quiero mi prueba gratis de 14 días</a>
+      <a href="#oferta" class="boton boton-verde">Probar gratis 14 días</a>
     </div>
     <div class="ps">
       <b>PD:</b> El Pase de los 3 Minutos convierte las 9 Reglas que Salvan Vidas en un hábito diario de 3 minutos, con un código QR que prueba quién está realmente listo para entrar al pozo. Hoy: 14 días gratis, sin tarjeta, para 1 cuadrilla de hasta 20 trabajadores, con la Garantía del Primer Pase incluida.
@@ -528,6 +553,23 @@
     const idx = Math.round(carrusel.scrollLeft / (carrusel.scrollWidth / dots.length));
     dots.forEach((d, i) => d.classList.toggle('on', i === idx));
   });
+
+  // Movimiento: revelado al hacer scroll, con stagger corto entre secciones
+  const reveals = document.querySelectorAll('.reveal');
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!prefersReduced && 'IntersectionObserver' in window) {
+    const revealIo = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('in'), i * 60);
+          revealIo.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach((el) => revealIo.observe(el));
+  } else {
+    reveals.forEach((el) => el.classList.add('in'));
+  }
 </script>
 
 </body>

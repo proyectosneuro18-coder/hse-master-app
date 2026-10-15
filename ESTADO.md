@@ -1,7 +1,7 @@
 # ESTADO — HSE Master App
 Última actualización: 2026-10-15 | Sesión actual: 3
 
-⏸️ CHECKPOINT — Sesión 3 en curso: landing.html construida (10 secciones canónicas, copy en docs/copy/landing.md trazado a FICHA-AVATAR.md, mecanismo bautizado "El Pase de los 3 Minutos"), verificada a 375px y enviada a revisión independiente (gate de la Regla 7) / Siguiente acción exacta: leer el veredicto del revisor cuando llegue, corregir lo que marque, y solo entonces declarar la landing lista.
+⏸️ CHECKPOINT — Sesión 3 en curso: primera revisión independiente dio NO LISTA (usabilidad 24/40, craft 11/20, copy 19/20) — se corrigieron los 5 defectos top (borde+contraste del CTA, estado :active, párrafo de agitación partido, texto del CTA a una línea, emoji 🔥 reemplazado por SVG) y se sumaron mejoras de movimiento (scroll-reveal con reduced-motion), foco de teclado y profundidad de fondo. Reenviado a segunda revisión independiente / Siguiente acción exacta: leer el segundo veredicto; si pasa el gate (≥36/40, ≥16/20, ≥16/20) declarar la landing lista, si no, repetir el ciclo.
 
 ## Qué es esta app (3 líneas máximo)
 Plataforma móvil B2B de microaprendizaje gamificado (estilo Duolingo) para capacitar, evaluar y certificar diariamente al personal de campo y contratistas en seguridad industrial (HSE/IOGP) en la industria petrolera. El trabajador usa la app en el celular 3 min/día; el Gerente de HSE paga la suscripción y ve un dashboard de adopción y riesgo por cuadrilla.
