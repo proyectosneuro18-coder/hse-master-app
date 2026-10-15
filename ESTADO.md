@@ -1,7 +1,7 @@
 # ESTADO — HSE Master App
 Última actualización: 2026-10-15 | Sesión actual: 3
 
-⏸️ CHECKPOINT — Sesión 3 en curso: primera revisión independiente dio NO LISTA (usabilidad 24/40, craft 11/20, copy 19/20) — se corrigieron los 5 defectos top (borde+contraste del CTA, estado :active, párrafo de agitación partido, texto del CTA a una línea, emoji 🔥 reemplazado por SVG) y se sumaron mejoras de movimiento (scroll-reveal con reduced-motion), foco de teclado y profundidad de fondo. Reenviado a segunda revisión independiente / Siguiente acción exacta: leer el segundo veredicto; si pasa el gate (≥36/40, ≥16/20, ≥16/20) declarar la landing lista, si no, repetir el ciclo.
+⏸️ CHECKPOINT — Sesión 3 en curso, ronda 3 de revisión: ronda 1 NO LISTA (24/40, 11/20) → corregidos 5 defectos (borde/contraste CTA, :active, párrafo agitación, CTA una línea, emoji→SVG) + movimiento/foco/profundidad. Ronda 2 NO LISTA (28/40, 14/20, copy 17/20) → corregidos: contraste del botón verde y amarillo (fill más oscuro), texto de la tarjeta "Después" a tinta oscura sobre verde, badges rojos a tono más oscuro, enlaces muertos href="#" de los planes a "#oferta", y carrusel con flechas + puntos CLICABLES (antes decorativos). Reenviado a tercera revisión independiente / Siguiente acción exacta: leer el tercer veredicto; si pasa el gate (≥36/40, ≥16/20, ≥16/20) declarar la landing lista, si no, repetir el ciclo.
 
 ## Qué es esta app (3 líneas máximo)
 Plataforma móvil B2B de microaprendizaje gamificado (estilo Duolingo) para capacitar, evaluar y certificar diariamente al personal de campo y contratistas en seguridad industrial (HSE/IOGP) en la industria petrolera. El trabajador usa la app en el celular 3 min/día; el Gerente de HSE paga la suscripción y ve un dashboard de adopción y riesgo por cuadrilla.
@@ -80,7 +80,7 @@ Plataforma móvil B2B de microaprendizaje gamificado (estilo Duolingo) para capa
 
 ## Problemas conocidos ⚠️
 - FICHA-MODELO (Duolingo): ángulos de venta pagada (§6, Meta Ads Library) quedaron NO ENCONTRADO — no aplica, nuestro canal es venta directa B2B en LinkedIn (campo 15 del documento validado), no ads. Documentado, no bloqueante.
-- veredicto:landing — la primera revisión independiente dio NO LISTA (usabilidad 24/40, craft 11/20). Se corrigieron sus 5 defectos top y se relanzó una SEGUNDA revisión independiente (agente en background, contexto fresco), que todavía no entregó su resultado — docs/revisiones/landing-veredicto.md en disco sigue siendo el de la primera ronda (NO LISTA) hasta que el segundo agente lo sobrescriba. La landing NO se declara LISTA hasta leer ese segundo veredicto y, si vuelve a fallar el gate (≥36/40 usabilidad, ≥16/20 craft, ≥16/20 copy), repetir el ciclo. Investigando/en curso, no pospuesto.
+- veredicto:landing — 2 rondas de revisión independiente dieron NO LISTA (ronda 1: 24/40·11/20·copy19/20; ronda 2: 28/40·14/20·copy17/20). Se corrigieron los defectos de ambas rondas y se relanzó una TERCERA revisión independiente (agente en background, contexto fresco), que todavía no entregó su resultado — docs/revisiones/landing-veredicto.md en disco sigue siendo el de la ronda 2 (NO LISTA) hasta que este tercer agente lo sobrescriba. La landing NO se declara LISTA hasta leer ese veredicto y, si vuelve a fallar el gate (≥36/40 usabilidad, ≥16/20 craft, ≥16/20 copy), repetir el ciclo. Investigando/en curso, no pospuesto.
 
 ## Pendientes del usuario (acciones que el usuario debe hacer)
 - [ ] Ninguna por ahora — todo lo de esta sesión lo resuelve el agente.
