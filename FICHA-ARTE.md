@@ -1,34 +1,36 @@
 # FICHA DE DIRECCIÓN DE ARTE — HSE Master App
 
 ## Referencia del usuario (CONTRATO — ver 16)
-- ¿Hay imagen(es) de referencia del usuario?: NO — el usuario eligió RUTA 1 "propóngamelo tú", con un único mandato explícito: usar azul.
-- Prohibiciones anti-IA que la referencia levanta: N/A — no hubo captura; el mandato de color (azul) se respetó en las 3 direcciones propuestas.
+- ¿Hay imagen(es) de referencia del usuario?: NO — el usuario eligió RUTA 1 "propóngamelo tú". Primera ronda con mandato de color (azul); al ver el tour completo pidió repensar el estilo y abrir el color.
+- Prohibiciones anti-IA que la referencia levanta: N/A — no hubo captura.
 
-## Identidad derivada (sin referencia → Protocolo A/B/C, 3 fusiones distintas en azul)
-- TABLA DE LÍDERES: Duolingo → mecánica de racha/vidas/ranking y tono gamificado (ya es la app modelo del proyecto, FICHA-MODELO.md) · software EHS enterprise (Cority/SafetyCulture) → necesidad de verse "serio" para el comprador B2B, no solo "juego".
-- Combinación tipográfica: Lexend (display) + Manrope (body) — ambas rounded-geométricas, friendly pero legibles a distancia (pensadas para apps de hábito/aprendizaje), ninguna es Inter/Roboto/system-ui.
-- Arquetipo: el Héroe/Explorador disciplinado — moderno, nocturno, gamificado. Mundo del sujeto: tecnología de campo + seguridad industrial, NO oficina corporativa clásica.
-- Dirección del banco 54 para el dispositivo ownable: anillo de progreso central + grid 2×2 de métricas (dirección "fintech de bolsillo" del banco, adaptada) — el acento azul es propio del proyecto, no tomado literal de un líder.
+## Identidad derivada (sin referencia → Protocolo A/B/C, 2 rondas)
+- RONDA 1 (todas en azul, por pedido explícito del usuario): A "Casco Azul" (claro) · B "Turno Nocturno" (oscuro, elegido inicialmente) · C "Bitácora de Pozo" (editorial). El usuario vio el tour completo de B y pidió repensar el estilo abriendo el color.
+- RONDA 2 (color abierto): A "Alerta Segura" (grafito+ámbar, industrial) · B "Racha Verde" (blanco+verde, amigable) · **C "Violeta Operativo" — ELEGIDA**.
+- TABLA DE LÍDERES: Duolingo → mecánica de racha/vidas/ranking (FICHA-MODELO.md) · software B2B premium (no EHS directo) → el violeta oscuro diferencia a la app de sus competidores EHS, que son todos azules o verdes.
+- Combinación tipográfica: Instrument Serif (display, editorial/premium) + Plus Jakarta Sans (body, moderna y legible) — ninguna es Inter/Roboto/system-ui.
+- Arquetipo: el Gobernante/Experto — serio, premium, con autoridad. Mundo del sujeto: software B2B de alta gama para quien decide la compra (el Gerente de HSE), no solo para quien lo usa a diario.
+- Dirección del banco 54 para el dispositivo ownable: masthead editorial + timeline del turno (estructura "bitácora/manual de campo") como dato héroe de la pantalla principal.
 
 ## Personalidad compilada
-- 3 adjetivos: nocturna, competitiva, confiable.
-- Compilación: spring medio (sensación de "logro" al completar el reto, sin exagerar) · duración base ~220ms · exclamaciones máx. 1/pantalla (la racha/celebración, nunca más de una cosa gritando a la vez) · celebración nivel medio-alto (es el motor de retención, pero sin infantilizar frente al comprador B2B) · radio tendencial 12-14px.
+- 3 adjetivos: premium, serena, con autoridad.
+- Compilación: spring suave (nada de rebote infantil — el tono es "herramienta seria") · duración base ~200ms · exclamaciones máx. 1/pantalla · celebración nivel medio (la racha se celebra, pero sin gritar — coherente con el tono institucional) · radio tendencial 8-10px (más angular que redondeado).
 
-## Brand kit final (dirección elegida: B — "Turno Nocturno")
-- Fondo: #0A1526 · Superficie: #101E36 · Texto 1º/2º: #E9F1FC / #8EA2C2
-- Acento: #2F8BFF (SOLO en: CTA principal, dato héroe del anillo, elementos activos de nav y badges) · 2ª nota: N/A — un solo acento, deliberado, para que "azul" sea inconfundible en toda la app.
-- Semánticos: éxito #3ECF8E (puntos de competencias vigentes en el pase QR) · error: a definir en Sesión 5 con los estados de formulario · aviso: a definir en Sesión 5.
-- Display: Lexend (pesos 400-700) · Body: Manrope (pesos 400-700) · Escala: display ~26px / title ~20px / body ~14px / label ~10-11px.
-- Radio: 14px cards / 10px botones · Profundidad: sombras tintadas de azul oscuro (RGB 10 20 40), 2 capas · Espaciado base: escala 4·8·12·16·24·32·48·64.
-- Dispositivo ownable: anillo de progreso central (el "% de tu cuadrilla capacitada") como dato héroe de la pantalla principal — es la firma visual que diferencia a HSE Master App de un dashboard EHS genérico.
-- Motion signature: a definir en detalle en Sesión 5 (racha que "salta" al incrementar, anillo que se llena con spring, nunca instantáneo).
+## Brand kit final (dirección elegida: C — "Violeta Operativo")
+- Fondo: #1B1420 · Superficie: #251C2D · Texto 1º/2º: #F1ECF4 / #A497AD
+- Acento: #9D5CFF (SOLO en: CTA principal, hitos activos del timeline, badges de plan recomendado y detalles del pase QR) · 2ª nota: N/A — un solo acento.
+- Semánticos: éxito #9D5CFF (puntos de competencias vigentes, coherente con el acento único) · error/aviso: a definir en Sesión 5 con los estados de formulario.
+- Display: Instrument Serif (400, cursiva disponible para énfasis) · Body: Plus Jakarta Sans (pesos 400-700) · Escala: display ~23-26px / title ~17-21px / body ~13-14px / label ~10-11px.
+- Radio: 10px cards / 8px botones · Profundidad: hairline degradada con el acento + sombra tintada violeta (RGB 157 92 255), 2 capas · Espaciado base: escala 4·8·12·16·24·32·48·64.
+- Dispositivo ownable: masthead editorial + timeline del turno — la pantalla principal se lee como una "bitácora de campo", no como un dashboard genérico ni como un juego.
+- Motion signature: a definir en detalle en Sesión 5 (transiciones suaves, sin rebote exagerado — coherente con el tono premium/institucional).
 
 ## Trazabilidad y vetos
-- Ruta de diseño: propuesta propia (RUTA 1 del 54), con restricción de color dada por el usuario (azul).
-- Protocolo A/B/C: opción elegida **B — "Turno Nocturno"** (modo oscuro, azul eléctrico, anillo + grid 2×2, Lexend/Manrope). Descartadas: A "Casco Azul" (clara, azul vivo, cards apiladas, Space Grotesk/Public Sans — se sintió "más panel de control que juego") y C "Bitácora de Pozo" (editorial/papel, azul tinta, timeline, Fraunces/IBM Plex Sans — la más institucional, la menos gamificada). Página comparativa: `docs/revisiones/direcciones-abc.html` · screenshots verificados antes de presentar (ver turno de la sesión).
-- Tour de la app: `docs/revisiones/vista-previa-app.html` · vistas incluidas: pantalla principal (M0 — racha/módulos/ranking), onboarding (pregunta del tamaño de cuadrilla), paywall (plan anual recomendado + mensual), mecanismo en acción (pase digital QR con competencias vigentes) · aprobado por el usuario: SÍ (2026-10-15, eligió B directo sin pedir ajustes).
-- Paleta derivada de: dirección propia del banco 54, fusionada con el mundo del sujeto (seguridad industrial nocturna/turnos) y la mecánica de Duolingo (FICHA-MODELO.md) · Dispositivo ownable elegido: anillo de progreso central.
-- Registro anti-repetición: paleta azul eléctrico sobre navy (#2F8BFF / #0A1526) y par Lexend+Manrope quedan vetados para el próximo proyecto del SO.
-- Modo (claro/oscuro): oscuro, derivado por elección directa del usuario entre las 3 opciones (no asumido).
+- Ruta de diseño: propuesta propia (RUTA 1 del 54). Ronda 1 con restricción de color (azul) dada por el usuario; ronda 2 con el color abierto a pedido del propio usuario tras ver el tour.
+- Protocolo A/B/C: opción elegida **C — "Violeta Operativo"** (modo oscuro, violeta, masthead+timeline editorial, Instrument Serif/Plus Jakarta Sans). Descartadas ronda 1: A "Casco Azul", B "Turno Nocturno" (elegida primero, luego descartada al ver el tour completo). Descartadas ronda 2: A "Alerta Segura" (grafito+ámbar, industrial — se sintió "de obra" más que "de software"), B "Racha Verde" (verde amigable — se sintió demasiado genérico de wellness/hábitos). Página comparativa: `docs/revisiones/direcciones-abc.html` (ronda 2 final) y `docs/revisiones/direcciones-abc-ronda2.html` (archivo de la ronda 2 tal como se presentó) · screenshots verificados antes de presentar en ambas rondas.
+- Tour de la app: `docs/revisiones/vista-previa-app.html` · vistas incluidas: pantalla principal (M0 — timeline del turno), onboarding (pregunta del tamaño de cuadrilla), paywall (plan anual recomendado + mensual), mecanismo en acción (pase digital QR) · aprobado por el usuario: pendiente de confirmación final (se presenta en este mismo turno).
+- Paleta derivada de: dirección propia del banco 54 (ronda 2), pensada para diferenciarse de los competidores EHS (todos azules/verdes) · Dispositivo ownable elegido: masthead + timeline editorial.
+- Registro anti-repetición: paleta violeta sobre fondo oscuro (#9D5CFF / #1B1420) y par Instrument Serif+Plus Jakarta Sans quedan vetados para el próximo proyecto del SO. También quedan vetadas las 5 direcciones descartadas (azul vivo+Space Grotesk/Public Sans, azul eléctrico+Lexend/Manrope, azul tinta+Fraunces/IBM Plex Sans, ámbar+Barlow Condensed/Work Sans, verde+Baloo 2/Nunito Sans).
+- Modo (claro/oscuro): oscuro, derivado por elección directa del usuario (no asumido).
 
-## Idioma UI: español latino neutro · Fecha de cierre de la ficha: 2026-10-15 · Aprobada por el usuario: SÍ
+## Idioma UI: español latino neutro · Fecha de cierre de la ficha: 2026-10-15 · Aprobada por el usuario: pendiente (tour recién presentado)

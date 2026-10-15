@@ -3,39 +3,37 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tour de la app — HSE Master App (dirección Turno Nocturno)</title>
+<title>Tour de la app — HSE Master App (dirección Violeta Operativo)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400..700&family=Manrope:wght@400..700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400..700&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { -webkit-text-size-adjust: 100%; }
   :root {
-    --bg: #0a1526; --surface: #101e36; --text-1: #e9f1fc; --text-2: #8ea2c2;
-    --accent: #2f8bff; --radius-card: 14px; --radius-btn: 10px;
-    --font-display: 'Lexend', monospace; --font-body: 'Manrope', monospace;
-    --shadow-tinta: 10 20 40;
+    --bg: #1b1420; --surface: #251c2d; --text-1: #f1ecf4; --text-2: #a497ad;
+    --accent: #9d5cff; --radius-card: 10px; --radius-btn: 8px;
+    --font-display: 'Instrument Serif', monospace; --font-body: 'Plus Jakarta Sans', monospace;
+    --shadow-tinta: 157 92 255;
   }
   body {
     background:
-      radial-gradient(1100px 520px at 12% -6%, #141f36, transparent 62%),
-      radial-gradient(900px 460px at 92% 4%, #0d1626, transparent 58%),
-      linear-gradient(180deg, #0a0f1a, #070b12);
-    color: #e9f1fc;
-    font-family: var(--font-body);
-    padding: 32px 20px 64px;
+      radial-gradient(1100px 520px at 12% -6%, #241a2e, transparent 62%),
+      radial-gradient(900px 460px at 92% 4%, #180f1f, transparent 58%),
+      linear-gradient(180deg, #140d1a, #0e0912);
+    color: var(--text-1); font-family: var(--font-body); padding: 32px 20px 64px;
   }
   .cabecera { max-width: 1180px; margin: 0 auto 28px; }
-  .cabecera h1 { font-family: var(--font-display); font-size: 24px; font-weight: 700; letter-spacing: -0.01em; }
-  .cabecera p { margin-top: 6px; font-size: 14px; color: #8ea2c2; max-width: 70ch; }
+  .cabecera h1 { font-family: var(--font-display); font-size: 26px; font-weight: 400; letter-spacing: -0.01em; }
+  .cabecera p { margin-top: 6px; font-size: 14px; color: var(--text-2); max-width: 70ch; }
 
   .frames { max-width: 1180px; margin: 0 auto; display: grid; gap: 32px;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
   .frame { display: flex; flex-direction: column; align-items: center; gap: 12px; }
-  .rotulo { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #6d84a8; }
+  .rotulo { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #6d5e7a; }
 
   .telefono {
-    width: 300px; aspect-ratio: 9 / 19.5; border: 10px solid #04070c; border-radius: 46px;
+    width: 300px; aspect-ratio: 9 / 19.5; border: 10px solid #04030a; border-radius: 46px;
     box-shadow: 0 24px 60px rgb(0 0 0 / 0.5); overflow: hidden; position: relative;
     display: flex; flex-direction: column; background: var(--bg); font-family: var(--font-body); color: var(--text-1);
   }
@@ -45,88 +43,102 @@
   .statusbar svg { display: block; }
   .home-indicator { position: absolute; bottom: 7px; left: 50%; transform: translateX(-50%);
                      width: 110px; height: 5px; border-radius: 999px; background: var(--text-1); opacity: 0.85; }
-  .pantalla { flex: 1; display: flex; flex-direction: column; overflow: hidden; padding: 0 18px; }
+  .pantalla { flex: 1; display: flex; flex-direction: column; overflow: hidden; padding: 0 20px; }
 
   .cta { margin-top: auto; margin-bottom: 0; display: flex; align-items: center; justify-content: center;
          height: 46px; border-radius: var(--radius-btn); font-size: 14px; font-weight: 700;
-         background: var(--accent); color: #04101f;
-         box-shadow: 0 8px 24px color-mix(in oklab, var(--accent) 28%, transparent); }
+         background: var(--accent); color: #140a1f; font-family: var(--font-body);
+         box-shadow: 0 8px 24px color-mix(in oklab, var(--accent) 30%, transparent); }
 
-  .tabbar { display: flex; align-items: stretch; justify-content: space-around; margin: 10px -18px 0;
-            padding: 8px 8px 16px; border-top: 1px solid rgba(255,255,255,0.08); background: rgba(16,30,54,0.9); }
+  .tabbar { display: flex; align-items: stretch; justify-content: space-around; margin: 10px -20px 0;
+            padding: 8px 8px 16px; border-top: 1px solid rgba(255,255,255,0.08); background: rgba(37,28,45,0.9); }
   .tabbar a { display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 9px; font-weight: 600;
               color: var(--text-2); text-decoration: none; }
   .tabbar a.activa { color: var(--accent); }
   .tabbar .tab-chip { display: flex; align-items: center; justify-content: center; width: 34px; height: 24px; border-radius: 8px; }
   .tabbar a.activa .tab-chip { background: color-mix(in oklab, var(--accent) 16%, transparent); }
 
-  /* ── Frame 1: M0 principal (reusa la pantalla "Hoy") ── */
-  .encabezado-b { margin-top: 10px; text-align: center; }
-  .periodo { font-size: 11px; font-weight: 600; color: var(--text-2); }
-  .titulo-b { font-family: var(--font-display); font-size: 20px; font-weight: 700; margin-top: 2px; }
-  .anillo-wrap { margin: 12px auto 0; position: relative; width: 118px; height: 118px; }
-  .anillo-wrap .centro { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-  .anillo-wrap .pct { font-family: var(--font-display); font-size: 26px; font-weight: 700; }
-  .anillo-wrap .pct-label { font-size: 10px; color: var(--text-2); font-weight: 600; }
-  .grid2x2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; }
-  .tile { background: var(--surface); border-radius: var(--radius-card); border: 1px solid rgba(255,255,255,0.07); padding: 10px; }
-  .tile .t-label { font-size: 9.5px; font-weight: 600; color: var(--text-2); }
-  .tile .t-dato { margin-top: 4px; font-family: var(--font-display); font-size: 18px; font-weight: 700; }
+  /* ── masthead editorial compartido ── */
+  .masthead { margin-top: 10px; border-bottom: 2px solid var(--text-1); padding-bottom: 8px; position: relative; }
+  .masthead::after { content: ''; position: absolute; left: 0; right: 0; bottom: -5px; border-bottom: 1px solid var(--text-1); }
+  .masthead .edicion { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-2); }
+  .masthead h3 { font-family: var(--font-display); font-size: 23px; font-weight: 400; line-height: 1.12; margin-top: 2px; }
+
+  /* ── Frame 1: M0 principal (timeline del turno) ── */
+  .timeline { margin-top: 16px; display: flex; flex-direction: column; }
+  .evento { display: grid; grid-template-columns: 40px 14px 1fr; gap: 0 8px; padding-bottom: 14px; position: relative; }
+  .evento .hora { font-size: 11px; font-weight: 600; color: var(--text-2); padding-top: 1px; }
+  .evento .nodo { position: relative; display: flex; justify-content: center; }
+  .evento .nodo::before { content: ''; position: absolute; top: 14px; bottom: -4px; width: 1.5px; background: rgba(164,151,173,0.35); }
+  .evento:last-child .nodo::before { display: none; }
+  .evento .punto { width: 9px; height: 9px; border-radius: 999px; margin-top: 3px; border: 2px solid rgba(164,151,173,0.55); background: var(--bg); }
+  .evento.activo .punto { border-color: var(--accent); background: var(--accent); }
+  .evento h4 { font-size: 13.5px; font-weight: 700; line-height: 1.3; }
+  .evento.activo h4 { color: var(--accent); }
+  .evento p { margin-top: 2px; font-size: 11.5px; color: var(--text-2); line-height: 1.4; }
+  .nota { margin-top: 4px; border: 1px solid transparent; border-radius: var(--radius-card);
+          background: linear-gradient(var(--surface), var(--surface)) padding-box,
+                      linear-gradient(135deg, color-mix(in oklab, var(--accent) 40%, transparent), transparent 60%) border-box;
+          padding: 12px 14px; display: flex; gap: 10px; align-items: flex-start; }
+  .nota p { font-size: 12px; color: var(--text-2); line-height: 1.5; }
+  .nota p b { color: var(--text-1); }
+  .chip { width: 34px; height: 34px; border-radius: var(--radius-btn); flex-shrink: 0;
+          background: color-mix(in oklab, var(--accent) 12%, transparent); display: flex; align-items: center; justify-content: center; }
 
   /* ── Frame 2: onboarding quiz ── */
   .progreso-dots { display: flex; gap: 5px; margin-top: 12px; }
-  .progreso-dots span { height: 4px; flex: 1; border-radius: 99px; background: rgba(255,255,255,0.12); }
+  .progreso-dots span { height: 3px; flex: 1; border-radius: 99px; background: rgba(255,255,255,0.1); }
   .progreso-dots span.activo { background: var(--accent); }
-  .pregunta { font-family: var(--font-display); font-size: 19px; font-weight: 700; margin-top: 20px; line-height: 1.3; }
-  .pregunta-sub { font-size: 12.5px; color: var(--text-2); margin-top: 6px; }
-  .opciones-quiz { margin-top: 18px; display: flex; flex-direction: column; gap: 10px; }
-  .opcion-quiz { border-radius: var(--radius-card); border: 1.5px solid rgba(255,255,255,0.1); background: var(--surface);
-                 padding: 14px; font-size: 13.5px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
+  .pregunta { font-family: var(--font-display); font-size: 21px; font-weight: 400; margin-top: 18px; line-height: 1.3; }
+  .pregunta-sub { font-size: 12px; color: var(--text-2); margin-top: 6px; }
+  .opciones-quiz { margin-top: 18px; display: flex; flex-direction: column; gap: 8px; }
+  .opcion-quiz { border-radius: var(--radius-card); border: 1.5px solid rgba(255,255,255,0.08); background: var(--surface);
+                 padding: 13px 14px; font-size: 13px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
   .opcion-quiz.sel { border-color: var(--accent); background: color-mix(in oklab, var(--accent) 12%, var(--surface)); }
-  .opcion-quiz .chk { width: 18px; height: 18px; border-radius: 999px; border: 2px solid var(--text-2); }
+  .opcion-quiz .chk { width: 16px; height: 16px; border-radius: 999px; border: 2px solid var(--text-2); flex-shrink: 0; }
   .opcion-quiz.sel .chk { border-color: var(--accent); background: var(--accent); }
 
   /* ── Frame 3: paywall ── */
-  .paywall-h { font-family: var(--font-display); font-size: 19px; font-weight: 700; margin-top: 16px; text-align: center; }
-  .paywall-sub { font-size: 12px; color: var(--text-2); text-align: center; margin-top: 6px; }
+  .paywall-h { font-family: var(--font-display); font-size: 21px; font-weight: 400; margin-top: 16px; text-align: center; }
+  .paywall-sub { font-size: 11.5px; color: var(--text-2); text-align: center; margin-top: 6px; }
   .planes { margin-top: 16px; display: flex; flex-direction: column; gap: 10px; }
-  .plan { border-radius: var(--radius-card); border: 1.5px solid rgba(255,255,255,0.1); background: var(--surface); padding: 12px 14px; }
-  .plan.recomendado { border-color: var(--accent); background: color-mix(in oklab, var(--accent) 10%, var(--surface)); position: relative; }
-  .plan .badge { position: absolute; top: -9px; right: 12px; background: var(--accent); color: #04101f;
+  .plan { border-radius: var(--radius-card); border: 1.5px solid rgba(255,255,255,0.08); background: var(--surface); padding: 12px 14px; position: relative; }
+  .plan.recomendado { border-color: var(--accent); background: color-mix(in oklab, var(--accent) 10%, var(--surface)); }
+  .plan .badge { position: absolute; top: -9px; right: 12px; background: var(--accent); color: #140a1f;
                  font-size: 9px; font-weight: 800; padding: 3px 8px; border-radius: 999px; }
   .plan .fila { display: flex; justify-content: space-between; align-items: baseline; }
-  .plan .nombre { font-size: 13px; font-weight: 700; }
-  .plan .precio { font-family: var(--font-display); font-size: 17px; font-weight: 700; }
-  .plan .precio small { font-size: 10px; color: var(--text-2); font-weight: 600; }
-  .plan .detalle { margin-top: 2px; font-size: 10.5px; color: var(--text-2); }
+  .plan .nombre { font-size: 12.5px; font-weight: 700; }
+  .plan .precio { font-family: var(--font-display); font-size: 18px; font-weight: 400; }
+  .plan .precio small { font-size: 10px; color: var(--text-2); font-weight: 600; font-family: var(--font-body); }
+  .plan .detalle { margin-top: 2px; font-size: 10px; color: var(--text-2); }
   .trial-nota { margin-top: 12px; font-size: 10.5px; color: var(--text-2); text-align: center; }
 
   /* ── Frame 4: pase digital QR ── */
-  .pase { margin-top: 18px; border-radius: 18px; background: var(--surface); border: 1.5px solid rgba(47,139,255,0.3);
+  .pase { margin-top: 16px; border-radius: 16px; background: var(--surface); border: 1.5px solid color-mix(in oklab, var(--accent) 30%, transparent);
           padding: 18px; text-align: center; }
-  .pase .qr { width: 130px; height: 130px; margin: 0 auto; border-radius: 10px;
+  .pase .qr { width: 120px; height: 120px; margin: 0 auto; border-radius: 10px;
               background:
-                repeating-linear-gradient(0deg, #e9f1fc 0 6px, transparent 6px 12px),
-                repeating-linear-gradient(90deg, #e9f1fc 0 6px, transparent 6px 12px);
-              background-blend-mode: multiply; background-color: #0a1526;
-              border: 6px solid #e9f1fc; }
-  .pase .nombre-trab { margin-top: 12px; font-family: var(--font-display); font-size: 15px; font-weight: 700; }
-  .pase .cuadrilla { font-size: 11px; color: var(--text-2); margin-top: 2px; }
-  .competencias { margin-top: 14px; display: flex; flex-direction: column; gap: 6px; }
-  .competencias .item { display: flex; align-items: center; gap: 8px; font-size: 11.5px; }
-  .competencias .punto { width: 7px; height: 7px; border-radius: 999px; background: #3ecf8e; flex-shrink: 0; }
+                repeating-linear-gradient(0deg, #f1ecf4 0 6px, transparent 6px 12px),
+                repeating-linear-gradient(90deg, #f1ecf4 0 6px, transparent 6px 12px);
+              background-blend-mode: multiply; background-color: #1b1420;
+              border: 6px solid #f1ecf4; }
+  .pase .nombre-trab { margin-top: 12px; font-family: var(--font-display); font-size: 17px; font-weight: 400; }
+  .pase .cuadrilla { font-size: 10.5px; color: var(--text-2); margin-top: 2px; }
+  .competencias { margin-top: 14px; display: flex; flex-direction: column; gap: 6px; text-align: left; }
+  .competencias .item { display: flex; align-items: center; gap: 8px; font-size: 11px; }
+  .competencias .punto2 { width: 7px; height: 7px; border-radius: 999px; background: #9d5cff; flex-shrink: 0; }
 </style>
 </head>
 <body>
 
 <header class="cabecera">
-  <h1>Así se vería tu app por dentro — Turno Nocturno</h1>
+  <h1>Así se vería tu app por dentro — Violeta Operativo</h1>
   <p>4 vistas clave con el estilo que elegiste: la pantalla de cada día, el inicio, el pago y tu pase digital.</p>
 </header>
 
 <div class="frames">
 
-  <!-- FRAME 1 — M0 principal -->
+  <!-- FRAME 1 — M0 principal (timeline del turno, idéntico a la opción C elegida) -->
   <div class="frame">
     <p class="rotulo">Tu pantalla de cada día</p>
     <div class="telefono">
@@ -145,25 +157,36 @@
         </span>
       </div>
       <div class="pantalla">
-        <div class="encabezado-b">
-          <p class="periodo">Ago 4 – 10, 2026</p>
-          <h3 class="titulo-b">Tu semana en el pozo</h3>
+        <div class="masthead">
+          <p class="edicion">Bitácora · martes 6 ago 2026</p>
+          <h3>Tu turno en seguridad</h3>
         </div>
-        <div class="anillo-wrap">
-          <svg width="118" height="118" viewBox="0 0 118 118">
-            <circle cx="59" cy="59" r="50" fill="none" stroke-width="10" stroke="rgba(47,139,255,0.14)"/>
-            <circle cx="59" cy="59" r="50" fill="none" stroke-width="10" stroke="#2f8bff" stroke-linecap="round"
-                    stroke-dasharray="314" stroke-dashoffset="100" transform="rotate(-90 59 59)"/>
-          </svg>
-          <div class="centro"><span class="pct">68%</span><span class="pct-label">de tu cuadrilla</span></div>
+        <div class="timeline">
+          <div class="evento activo">
+            <span class="hora">8:00</span>
+            <span class="nodo"><span class="punto"></span></span>
+            <div><h4>Charla pre-turno · LOTO</h4><p>3 minutos · sin conexión, sincroniza después.</p></div>
+          </div>
+          <div class="evento">
+            <span class="hora">11:30</span>
+            <span class="nodo"><span class="punto"></span></span>
+            <div><h4>Evaluación · espacios confinados</h4><p>3 minutos · toma de decisiones con temporizador.</p></div>
+          </div>
+          <div class="evento">
+            <span class="hora">16:00</span>
+            <span class="nodo"><span class="punto"></span></span>
+            <div><h4>Revisión de racha de la cuadrilla</h4><p>12 días sin perder la racha de seguridad.</p></div>
+          </div>
         </div>
-        <div class="grid2x2">
-          <div class="tile"><p class="t-label">Módulos IOGP</p><p class="t-dato">9/12</p></div>
-          <div class="tile"><p class="t-label">Minutos/día</p><p class="t-dato">3 min</p></div>
-          <div class="tile"><p class="t-label">Vidas (cascos)</p><p class="t-dato">3</p></div>
-          <div class="tile"><p class="t-label">Racha</p><p class="t-dato">12 días</p></div>
+        <div class="nota">
+          <span class="chip">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9d5cff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+            </svg>
+          </span>
+          <p><b>Tu pase digital ya está listo.</b> Muéstralo con el código QR antes de entrar al pozo.</p>
         </div>
-        <div class="cta">Seguir mi racha hoy</div>
+        <div class="cta">Empezar la charla de hoy</div>
         <nav class="tabbar">
           <a class="activa" href="#"><span class="tab-chip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg></span>Hoy</a>
           <a href="#"><span class="tab-chip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg></span>Progreso</a>
@@ -194,9 +217,7 @@
         </span>
       </div>
       <div class="pantalla">
-        <div class="progreso-dots">
-          <span class="activo"></span><span class="activo"></span><span></span><span></span><span></span>
-        </div>
+        <div class="progreso-dots"><span class="activo"></span><span class="activo"></span><span></span><span></span><span></span></div>
         <p class="pregunta">¿Cuántos trabajadores tiene tu cuadrilla?</p>
         <p class="pregunta-sub">Así ajustamos tu prueba gratis de 14 días.</p>
         <div class="opciones-quiz">
@@ -273,9 +294,9 @@
           <p class="nombre-trab">Luis Fernández</p>
           <p class="cuadrilla">Cuadrilla Pozo 7 · Vigente hoy</p>
           <div class="competencias">
-            <div class="item"><span class="punto"></span>Aislamiento de Energía (LOTO)</div>
-            <div class="item"><span class="punto"></span>Espacios confinados</div>
-            <div class="item"><span class="punto"></span>Racha de seguridad: 12 días</div>
+            <div class="item"><span class="punto2"></span>Aislamiento de Energía (LOTO)</div>
+            <div class="item"><span class="punto2"></span>Espacios confinados</div>
+            <div class="item"><span class="punto2"></span>Racha de seguridad: 12 días</div>
           </div>
         </div>
         <div class="cta">Mostrar al supervisor</div>

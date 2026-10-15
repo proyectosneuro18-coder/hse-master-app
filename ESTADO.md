@@ -1,7 +1,7 @@
 # ESTADO — HSE Master App
-Última actualización: 2026-10-15 | Sesión actual: 2 (cerrada)
+Última actualización: 2026-10-15 | Sesión actual: 2 (pendiente de cierre)
 
-⏸️ CHECKPOINT — Sesión 2 CERRADA: usuario eligió dirección B "Turno Nocturno", FICHA-ARTE.md aprobada, tour de la app (vista-previa-app.html) confirmado / Siguiente acción exacta: arrancar Sesión 3 (página de ventas) — leer 19-PAGINA-DE-VENTAS.md + 52 + 55 y derivar el copy de FICHA-AVATAR.md.
+⏸️ CHECKPOINT — Sesión 2 en curso: usuario pidió repensar el estilo tras ver el tour de "Turno Nocturno", se abrió el color (ronda 2 sin azul), eligió "Violeta Operativo" (C) y ya se presentó su tour completo / Siguiente acción exacta: esperar confirmación final del usuario (1/2/3) sobre el tour; si aprueba, cerrar FICHA-ARTE.md y pasar a Sesión 3.
 
 ## Qué es esta app (3 líneas máximo)
 Plataforma móvil B2B de microaprendizaje gamificado (estilo Duolingo) para capacitar, evaluar y certificar diariamente al personal de campo y contratistas en seguridad industrial (HSE/IOGP) en la industria petrolera. El trabajador usa la app en el celular 3 min/día; el Gerente de HSE paga la suscripción y ve un dashboard de adopción y riesgo por cuadrilla.
@@ -30,11 +30,11 @@ Plataforma móvil B2B de microaprendizaje gamificado (estilo Duolingo) para capa
 
 ## Dirección de Arte (Sesión 2 — NO cambiar sin justificación)
 > La ficha COMPLETA vive en `FICHA-ARTE.md` en la raíz.
-- FICHA-ARTE.md: existe y APROBADA por el usuario (2026-10-15)
-- ¿Hubo referencia visual del usuario?: NO (restricción de color dada explícitamente: azul)
-- Resumen: dirección "Turno Nocturno" · fondo #0A1526 · acento #2F8BFF · Display "Lexend" · Body "Manrope" · radio 14px cards / 10px botones
-- Personalidad: nocturna · competitiva · confiable (compilada en la ficha)
-- REGISTRO ANTI-REPETICIÓN (29/54): paleta azul eléctrico/navy y par Lexend+Manrope vetados para el próximo proyecto del SO. Dirección del banco 54 usada: anillo de progreso central (dispositivo ownable).
+- FICHA-ARTE.md: existe, PENDIENTE de confirmación final del usuario sobre el tour (recién presentado)
+- ¿Hubo referencia visual del usuario?: NO (ronda 1 con restricción de color azul; ronda 2 con color abierto, a pedido del usuario)
+- Resumen: dirección "Violeta Operativo" (C) · fondo #1B1420 · acento #9D5CFF · Display "Instrument Serif" · Body "Plus Jakarta Sans" · radio 10px cards / 8px botones
+- Personalidad: premium · serena · con autoridad (compilada en la ficha)
+- REGISTRO ANTI-REPETICIÓN (29/54): paleta violeta/oscuro y par Instrument Serif+Plus Jakarta Sans vetados para el próximo proyecto del SO. También vetadas las 5 direcciones descartadas (ver FICHA-ARTE.md).
 - Mapa de rutas: `/` → `/onboarding` → `/paywall` → `/login` → `/app`
 
 ## Gamificación y retención (se documenta en Sesión 4, se construye en Sesión 5)
@@ -69,10 +69,9 @@ Plataforma móvil B2B de microaprendizaje gamificado (estilo Duolingo) para capa
 
 ## Sesiones completadas ✅
 - Sesión 1 — Validación recibida · Avatar aprobado · App modelo (Duolingo) aprobada · Monetización/pricing/auth/BD/unit economics decididos — cerrada 2026-10-15.
-- Sesión 2 — Identidad visual: dirección "Turno Nocturno" (B) elegida por el usuario de entre 3 opciones en azul · FICHA-ARTE.md aprobada · tour de la app confirmado — cerrada 2026-10-15.
 
 ## Sesión en progreso 🔧
-(ninguna — lista para arrancar Sesión 3)
+- Sesión 2 — Identidad visual: 2 rondas de A/B/C. Ronda 1 en azul (usuario eligió B "Turno Nocturno" pero al ver el tour completo pidió repensar y abrir el color). Ronda 2 sin azul: usuario eligió C "Violeta Operativo". Tour de esa dirección ya presentado, pendiente confirmación final.
 
 ## Próximas sesiones 📋
 - Sesión 3: Página de ventas.
