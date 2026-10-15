@@ -1,7 +1,7 @@
 # ESTADO — HSE Master App
 Última actualización: 2026-10-15 | Sesión actual: 1
 
-⏸️ CHECKPOINT — Última acción completada: Sistema instalado + idea validada recibida y leída / Siguiente acción exacta: completar FICHA-AVATAR.md (aprobación del usuario) y decidir arquitectura técnica de Sesión 1.
+⏸️ CHECKPOINT — Última acción completada: FICHA-AVATAR.md y FICHA-MODELO.md (Duolingo, revenue verificado) creadas / Siguiente acción exacta: esperar confirmación del usuario sobre el avatar, luego cerrar Sesión 1 (auth/BD/unit economics).
 
 ## Qué es esta app (3 líneas máximo)
 Plataforma móvil B2B de microaprendizaje gamificado (estilo Duolingo) para capacitar, evaluar y certificar diariamente al personal de campo y contratistas en seguridad industrial (HSE/IOGP) en la industria petrolera. El trabajador usa la app en el celular 3 min/día; el Gerente de HSE paga la suscripción y ve un dashboard de adopción y riesgo por cuadrilla.
@@ -69,7 +69,7 @@ Plataforma móvil B2B de microaprendizaje gamificado (estilo Duolingo) para capa
 - Sesión 3: Página de ventas.
 
 ## Problemas conocidos ⚠️
-- Ninguno todavía.
+- FICHA-MODELO (Duolingo): ángulos de venta pagada (§6, Meta Ads Library) quedaron NO ENCONTRADO — no aplica, nuestro canal es venta directa B2B en LinkedIn (campo 15 del documento validado), no ads. Documentado, no bloqueante.
 
 ## Pendientes del usuario (acciones que el usuario debe hacer)
 - [ ] Ninguna por ahora — todo lo de esta sesión lo resuelve el agente.
