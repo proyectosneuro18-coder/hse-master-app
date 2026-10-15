@@ -3,142 +3,140 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tour de la app — HSE Master App (dirección Violeta Operativo)</title>
+<title>Tour de la app — HSE Master App (dirección Casco de Oro)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400..700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500..800&family=DM+Sans:wght@400..800&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { -webkit-text-size-adjust: 100%; }
   :root {
-    --bg: #1b1420; --surface: #251c2d; --text-1: #f1ecf4; --text-2: #a497ad;
-    --accent: #9d5cff; --radius-card: 10px; --radius-btn: 8px;
-    --font-display: 'Instrument Serif', monospace; --font-body: 'Plus Jakarta Sans', monospace;
-    --shadow-tinta: 157 92 255;
+    --bg: #fffaf0; --surface: #ffffff; --ink: #1a1a1a; --ink-2: #6b6b6b;
+    --amarillo: #ffc800; --amarillo-sombra: #e0a500;
+    --verde: #58cc02; --verde-sombra: #46a302;
+    --azul: #1cb0f6; --azul-sombra: #0d96d4;
+    --rojo: #ff4b4b; --rojo-sombra: #d93838;
+    --radius-card: 20px; --radius-btn: 16px;
+    --font-display: 'Baloo 2', monospace; --font-body: 'DM Sans', monospace;
   }
   body {
-    background:
-      radial-gradient(1100px 520px at 12% -6%, #241a2e, transparent 62%),
-      radial-gradient(900px 460px at 92% 4%, #180f1f, transparent 58%),
-      linear-gradient(180deg, #140d1a, #0e0912);
-    color: var(--text-1); font-family: var(--font-body); padding: 32px 20px 64px;
+    background: var(--bg); color: var(--ink); font-family: var(--font-body); padding: 32px 20px 64px;
   }
   .cabecera { max-width: 1180px; margin: 0 auto 28px; }
-  .cabecera h1 { font-family: var(--font-display); font-size: 26px; font-weight: 400; letter-spacing: -0.01em; }
-  .cabecera p { margin-top: 6px; font-size: 14px; color: var(--text-2); max-width: 70ch; }
+  .cabecera h1 { font-family: var(--font-display); font-size: 26px; font-weight: 800; letter-spacing: -0.01em; }
+  .cabecera p { margin-top: 6px; font-size: 14px; color: var(--ink-2); max-width: 70ch; }
 
   .frames { max-width: 1180px; margin: 0 auto; display: grid; gap: 32px;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
   .frame { display: flex; flex-direction: column; align-items: center; gap: 12px; }
-  .rotulo { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #6d5e7a; }
+  .rotulo { font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #b5a26a; }
 
   .telefono {
-    width: 300px; aspect-ratio: 9 / 19.5; border: 10px solid #04030a; border-radius: 46px;
-    box-shadow: 0 24px 60px rgb(0 0 0 / 0.5); overflow: hidden; position: relative;
-    display: flex; flex-direction: column; background: var(--bg); font-family: var(--font-body); color: var(--text-1);
+    width: 300px; aspect-ratio: 9 / 19.5; border: 10px solid #1a1a1a; border-radius: 46px;
+    box-shadow: 0 24px 50px rgb(0 0 0 / 0.18); overflow: hidden; position: relative;
+    display: flex; flex-direction: column; background: var(--bg); font-family: var(--font-body); color: var(--ink);
   }
   .statusbar { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px 4px;
-               font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums; }
+               font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; }
   .statusbar .der { display: flex; align-items: center; gap: 5px; }
   .statusbar svg { display: block; }
   .home-indicator { position: absolute; bottom: 7px; left: 50%; transform: translateX(-50%);
-                     width: 110px; height: 5px; border-radius: 999px; background: var(--text-1); opacity: 0.85; }
-  .pantalla { flex: 1; display: flex; flex-direction: column; overflow: hidden; padding: 0 20px; }
+                     width: 110px; height: 5px; border-radius: 999px; background: var(--ink); opacity: 0.85; }
+  .pantalla { flex: 1; display: flex; flex-direction: column; overflow: hidden; padding: 0 16px; }
 
-  .cta { margin-top: auto; margin-bottom: 0; display: flex; align-items: center; justify-content: center;
-         height: 46px; border-radius: var(--radius-btn); font-size: 14px; font-weight: 700;
-         background: var(--accent); color: #140a1f; font-family: var(--font-body);
-         box-shadow: 0 8px 24px color-mix(in oklab, var(--accent) 30%, transparent); }
+  /* Botón gordo "presionable" estilo Duolingo: sombra sólida (no blur) que simula el 3D */
+  .cta { margin-top: auto; margin-bottom: 4px; display: flex; align-items: center; justify-content: center;
+         height: 50px; border-radius: var(--radius-btn); font-size: 14.5px; font-weight: 800;
+         font-family: var(--font-display); background: var(--verde); color: #ffffff;
+         border-bottom: 4px solid var(--verde-sombra); text-transform: uppercase; letter-spacing: 0.02em; }
 
-  .tabbar { display: flex; align-items: stretch; justify-content: space-around; margin: 10px -20px 0;
-            padding: 8px 8px 16px; border-top: 1px solid rgba(255,255,255,0.08); background: rgba(37,28,45,0.9); }
-  .tabbar a { display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 9px; font-weight: 600;
-              color: var(--text-2); text-decoration: none; }
-  .tabbar a.activa { color: var(--accent); }
+  .tabbar { display: flex; align-items: stretch; justify-content: space-around; margin: 10px -16px 0;
+            padding: 8px 8px 16px; border-top: 2px solid #f0e6c8; background: var(--surface); }
+  .tabbar a { display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 9px; font-weight: 700;
+              color: #c6c6c6; text-decoration: none; }
+  .tabbar a.activa { color: var(--azul); }
   .tabbar .tab-chip { display: flex; align-items: center; justify-content: center; width: 34px; height: 24px; border-radius: 8px; }
-  .tabbar a.activa .tab-chip { background: color-mix(in oklab, var(--accent) 16%, transparent); }
+  .tabbar a.activa .tab-chip { background: color-mix(in oklab, var(--azul) 16%, transparent); }
 
-  /* ── masthead editorial compartido ── */
-  .masthead { margin-top: 10px; border-bottom: 2px solid var(--text-1); padding-bottom: 8px; position: relative; }
-  .masthead::after { content: ''; position: absolute; left: 0; right: 0; bottom: -5px; border-bottom: 1px solid var(--text-1); }
-  .masthead .edicion { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-2); }
-  .masthead h3 { font-family: var(--font-display); font-size: 23px; font-weight: 400; line-height: 1.12; margin-top: 2px; }
+  /* Bloque grande de color — la firma del estilo (84 sólido, borde grueso oscuro, esquinas gordas) */
+  .bloque { border-radius: var(--radius-card); border: 3px solid var(--ink); padding: 16px; position: relative; }
+  .bloque.amarillo { background: var(--amarillo); }
+  .bloque.verde { background: var(--verde); color: #fff; }
+  .bloque.azul { background: var(--azul); color: #fff; }
 
-  /* ── Frame 1: M0 principal (timeline del turno) ── */
-  .timeline { margin-top: 16px; display: flex; flex-direction: column; }
-  .evento { display: grid; grid-template-columns: 40px 14px 1fr; gap: 0 8px; padding-bottom: 14px; position: relative; }
-  .evento .hora { font-size: 11px; font-weight: 600; color: var(--text-2); padding-top: 1px; }
-  .evento .nodo { position: relative; display: flex; justify-content: center; }
-  .evento .nodo::before { content: ''; position: absolute; top: 14px; bottom: -4px; width: 1.5px; background: rgba(164,151,173,0.35); }
-  .evento:last-child .nodo::before { display: none; }
-  .evento .punto { width: 9px; height: 9px; border-radius: 999px; margin-top: 3px; border: 2px solid rgba(164,151,173,0.55); background: var(--bg); }
-  .evento.activo .punto { border-color: var(--accent); background: var(--accent); }
-  .evento h4 { font-size: 13.5px; font-weight: 700; line-height: 1.3; }
-  .evento.activo h4 { color: var(--accent); }
-  .evento p { margin-top: 2px; font-size: 11.5px; color: var(--text-2); line-height: 1.4; }
-  .nota { margin-top: 4px; border: 1px solid transparent; border-radius: var(--radius-card);
-          background: linear-gradient(var(--surface), var(--surface)) padding-box,
-                      linear-gradient(135deg, color-mix(in oklab, var(--accent) 40%, transparent), transparent 60%) border-box;
-          padding: 12px 14px; display: flex; gap: 10px; align-items: flex-start; }
-  .nota p { font-size: 12px; color: var(--text-2); line-height: 1.5; }
-  .nota p b { color: var(--text-1); }
-  .chip { width: 34px; height: 34px; border-radius: var(--radius-btn); flex-shrink: 0;
-          background: color-mix(in oklab, var(--accent) 12%, transparent); display: flex; align-items: center; justify-content: center; }
+  /* ── Frame 1: M0 principal ── */
+  .saludo-cuadrilla { margin-top: 10px; font-size: 12px; font-weight: 700; color: var(--ink-2); }
+  h3.titulo-m0 { font-family: var(--font-display); font-size: 23px; font-weight: 800; margin-top: 2px; }
+  .heroe-racha { margin-top: 14px; }
+  .heroe-racha .label { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; }
+  .heroe-racha .dato { font-family: var(--font-display); font-size: 40px; font-weight: 800; line-height: 1.05; margin-top: 2px; }
+  .heroe-racha .dato small { font-size: 15px; font-weight: 700; }
+  .fila-chips { display: flex; gap: 8px; margin-top: 12px; }
+  .chip-mini { flex: 1; background: var(--surface); border: 2.5px solid var(--ink); border-radius: 14px; padding: 9px; text-align: center; }
+  .chip-mini .n { font-family: var(--font-display); font-size: 17px; font-weight: 800; }
+  .chip-mini .l { font-size: 9px; font-weight: 700; color: var(--ink-2); }
+  .reto-card { margin-top: 12px; background: var(--surface); border: 3px solid var(--ink); border-radius: var(--radius-card);
+               padding: 14px; display: flex; gap: 12px; align-items: center; }
+  .reto-card .icono { width: 42px; height: 42px; border-radius: 12px; background: var(--amarillo); border: 2.5px solid var(--ink);
+                       display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .reto-card h4 { font-size: 13.5px; font-weight: 800; }
+  .reto-card p { font-size: 11.5px; color: var(--ink-2); margin-top: 1px; }
 
   /* ── Frame 2: onboarding quiz ── */
   .progreso-dots { display: flex; gap: 5px; margin-top: 12px; }
-  .progreso-dots span { height: 3px; flex: 1; border-radius: 99px; background: rgba(255,255,255,0.1); }
-  .progreso-dots span.activo { background: var(--accent); }
-  .pregunta { font-family: var(--font-display); font-size: 21px; font-weight: 400; margin-top: 18px; line-height: 1.3; }
-  .pregunta-sub { font-size: 12px; color: var(--text-2); margin-top: 6px; }
-  .opciones-quiz { margin-top: 18px; display: flex; flex-direction: column; gap: 8px; }
-  .opcion-quiz { border-radius: var(--radius-card); border: 1.5px solid rgba(255,255,255,0.08); background: var(--surface);
-                 padding: 13px 14px; font-size: 13px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
-  .opcion-quiz.sel { border-color: var(--accent); background: color-mix(in oklab, var(--accent) 12%, var(--surface)); }
-  .opcion-quiz .chk { width: 16px; height: 16px; border-radius: 999px; border: 2px solid var(--text-2); flex-shrink: 0; }
-  .opcion-quiz.sel .chk { border-color: var(--accent); background: var(--accent); }
+  .progreso-dots span { height: 8px; flex: 1; border-radius: 99px; background: #f0e6c8; }
+  .progreso-dots span.activo { background: var(--amarillo); }
+  .pregunta { font-family: var(--font-display); font-size: 20px; font-weight: 800; margin-top: 18px; line-height: 1.25; }
+  .pregunta-sub { font-size: 12px; color: var(--ink-2); margin-top: 6px; font-weight: 600; }
+  .opciones-quiz { margin-top: 16px; display: flex; flex-direction: column; gap: 10px; }
+  .opcion-quiz { border-radius: 14px; border: 3px solid var(--ink); background: var(--surface);
+                 padding: 13px 14px; font-size: 13.5px; font-weight: 800; display: flex; justify-content: space-between; align-items: center; }
+  .opcion-quiz.sel { background: var(--amarillo); }
+  .opcion-quiz .chk { width: 20px; height: 20px; border-radius: 999px; border: 2.5px solid var(--ink); flex-shrink: 0; }
+  .opcion-quiz.sel .chk { background: var(--ink); }
 
   /* ── Frame 3: paywall ── */
-  .paywall-h { font-family: var(--font-display); font-size: 21px; font-weight: 400; margin-top: 16px; text-align: center; }
-  .paywall-sub { font-size: 11.5px; color: var(--text-2); text-align: center; margin-top: 6px; }
-  .planes { margin-top: 16px; display: flex; flex-direction: column; gap: 10px; }
-  .plan { border-radius: var(--radius-card); border: 1.5px solid rgba(255,255,255,0.08); background: var(--surface); padding: 12px 14px; position: relative; }
-  .plan.recomendado { border-color: var(--accent); background: color-mix(in oklab, var(--accent) 10%, var(--surface)); }
-  .plan .badge { position: absolute; top: -9px; right: 12px; background: var(--accent); color: #140a1f;
-                 font-size: 9px; font-weight: 800; padding: 3px 8px; border-radius: 999px; }
+  .paywall-h { font-family: var(--font-display); font-size: 21px; font-weight: 800; margin-top: 14px; text-align: center; line-height: 1.2; }
+  .paywall-sub { font-size: 12px; color: var(--ink-2); text-align: center; margin-top: 6px; font-weight: 600; }
+  .planes { margin-top: 14px; display: flex; flex-direction: column; gap: 10px; }
+  .plan { border-radius: var(--radius-card); border: 3px solid var(--ink); background: var(--surface); padding: 12px 14px; position: relative; }
+  .plan.recomendado { background: var(--amarillo); }
+  .plan .badge { position: absolute; top: -11px; right: 12px; background: var(--rojo); color: #fff; border: 2.5px solid var(--ink);
+                 font-size: 9px; font-weight: 800; padding: 3px 9px; border-radius: 999px; }
   .plan .fila { display: flex; justify-content: space-between; align-items: baseline; }
-  .plan .nombre { font-size: 12.5px; font-weight: 700; }
-  .plan .precio { font-family: var(--font-display); font-size: 18px; font-weight: 400; }
-  .plan .precio small { font-size: 10px; color: var(--text-2); font-weight: 600; font-family: var(--font-body); }
-  .plan .detalle { margin-top: 2px; font-size: 10px; color: var(--text-2); }
-  .trial-nota { margin-top: 12px; font-size: 10.5px; color: var(--text-2); text-align: center; }
+  .plan .nombre { font-size: 13px; font-weight: 800; }
+  .plan .precio { font-family: var(--font-display); font-size: 18px; font-weight: 800; }
+  .plan .precio small { font-size: 10px; font-weight: 700; font-family: var(--font-body); }
+  .plan .detalle { margin-top: 2px; font-size: 10.5px; color: var(--ink-2); font-weight: 600; }
+  .trial-nota { margin-top: 10px; font-size: 10.5px; color: var(--ink-2); text-align: center; font-weight: 600; }
 
   /* ── Frame 4: pase digital QR ── */
-  .pase { margin-top: 16px; border-radius: 16px; background: var(--surface); border: 1.5px solid color-mix(in oklab, var(--accent) 30%, transparent);
+  .pase { margin-top: 14px; border-radius: var(--radius-card); background: var(--surface); border: 3px solid var(--ink);
           padding: 18px; text-align: center; }
   .pase .qr { width: 120px; height: 120px; margin: 0 auto; border-radius: 10px;
               background:
-                repeating-linear-gradient(0deg, #f1ecf4 0 6px, transparent 6px 12px),
-                repeating-linear-gradient(90deg, #f1ecf4 0 6px, transparent 6px 12px);
-              background-blend-mode: multiply; background-color: #1b1420;
-              border: 6px solid #f1ecf4; }
-  .pase .nombre-trab { margin-top: 12px; font-family: var(--font-display); font-size: 17px; font-weight: 400; }
-  .pase .cuadrilla { font-size: 10.5px; color: var(--text-2); margin-top: 2px; }
-  .competencias { margin-top: 14px; display: flex; flex-direction: column; gap: 6px; text-align: left; }
-  .competencias .item { display: flex; align-items: center; gap: 8px; font-size: 11px; }
-  .competencias .punto2 { width: 7px; height: 7px; border-radius: 999px; background: #9d5cff; flex-shrink: 0; }
+                repeating-linear-gradient(0deg, var(--ink) 0 6px, transparent 6px 12px),
+                repeating-linear-gradient(90deg, var(--ink) 0 6px, transparent 6px 12px);
+              background-blend-mode: multiply; background-color: var(--amarillo);
+              border: 3px solid var(--ink); }
+  .pase .nombre-trab { margin-top: 12px; font-family: var(--font-display); font-size: 17px; font-weight: 800; }
+  .pase .cuadrilla { font-size: 10.5px; color: var(--ink-2); margin-top: 2px; font-weight: 600; }
+  .competencias { margin-top: 12px; display: flex; flex-direction: column; gap: 6px; text-align: left; }
+  .competencias .item { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; }
+  .competencias .punto2 { width: 16px; height: 16px; border-radius: 999px; background: var(--verde); flex-shrink: 0;
+                           display: flex; align-items: center; justify-content: center; }
 </style>
 </head>
 <body>
 
 <header class="cabecera">
-  <h1>Así se vería tu app por dentro — Violeta Operativo</h1>
-  <p>4 vistas clave con el estilo que elegiste: la pantalla de cada día, el inicio, el pago y tu pase digital.</p>
+  <h1>Así se vería tu app por dentro — Casco de Oro</h1>
+  <p>Amarillo como protagonista + los colores de apoyo que usa Duolingo (verde de logro, azul de navegación, rojo de alerta), bloques grandes con borde grueso y botones "presionables".</p>
 </header>
 
 <div class="frames">
 
-  <!-- FRAME 1 — M0 principal (timeline del turno, idéntico a la opción C elegida) -->
+  <!-- FRAME 1 — M0 principal -->
   <div class="frame">
     <p class="rotulo">Tu pantalla de cada día</p>
     <div class="telefono">
@@ -157,41 +155,37 @@
         </span>
       </div>
       <div class="pantalla">
-        <div class="masthead">
-          <p class="edicion">Bitácora · martes 6 ago 2026</p>
-          <h3>Tu turno en seguridad</h3>
+        <p class="saludo-cuadrilla">Martes 6 de agosto · Cuadrilla Pozo 7</p>
+        <h3 class="titulo-m0">Buenos días, Luis</h3>
+
+        <div class="bloque amarillo heroe-racha">
+          <p class="label">🔥 Racha de seguridad</p>
+          <p class="dato">12 <small>días</small></p>
         </div>
-        <div class="timeline">
-          <div class="evento activo">
-            <span class="hora">8:00</span>
-            <span class="nodo"><span class="punto"></span></span>
-            <div><h4>Charla pre-turno · LOTO</h4><p>3 minutos · sin conexión, sincroniza después.</p></div>
-          </div>
-          <div class="evento">
-            <span class="hora">11:30</span>
-            <span class="nodo"><span class="punto"></span></span>
-            <div><h4>Evaluación · espacios confinados</h4><p>3 minutos · toma de decisiones con temporizador.</p></div>
-          </div>
-          <div class="evento">
-            <span class="hora">16:00</span>
-            <span class="nodo"><span class="punto"></span></span>
-            <div><h4>Revisión de racha de la cuadrilla</h4><p>12 días sin perder la racha de seguridad.</p></div>
-          </div>
+
+        <div class="fila-chips">
+          <div class="chip-mini"><p class="n">9/12</p><p class="l">MÓDULOS</p></div>
+          <div class="chip-mini"><p class="n">3</p><p class="l">VIDAS</p></div>
+          <div class="chip-mini"><p class="n">2°</p><p class="l">RANKING</p></div>
         </div>
-        <div class="nota">
-          <span class="chip">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9d5cff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/>
-            </svg>
+
+        <div class="reto-card">
+          <span class="icono">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
           </span>
-          <p><b>Tu pase digital ya está listo.</b> Muéstralo con el código QR antes de entrar al pozo.</p>
+          <div>
+            <h4>Reto de hoy · Aislamiento de Energía</h4>
+            <p>3 minutos · toca el peligro en la imagen</p>
+          </div>
         </div>
-        <div class="cta">Empezar la charla de hoy</div>
+
+        <div class="cta">Empezar mi reto</div>
+
         <nav class="tabbar">
-          <a class="activa" href="#"><span class="tab-chip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg></span>Hoy</a>
-          <a href="#"><span class="tab-chip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg></span>Progreso</a>
-          <a href="#"><span class="tab-chip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 0 1-10 0V4Z"/><path d="M7 5H4v2a3 3 0 0 0 3 3M17 5h3v2a3 3 0 0 1-3 3"/></svg></span>Ranking</a>
-          <a href="#"><span class="tab-chip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg></span>Perfil</a>
+          <a class="activa" href="#"><span class="tab-chip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg></span>Hoy</a>
+          <a href="#"><span class="tab-chip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg></span>Progreso</a>
+          <a href="#"><span class="tab-chip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 0 1-10 0V4Z"/><path d="M7 5H4v2a3 3 0 0 0 3 3M17 5h3v2a3 3 0 0 1-3 3"/></svg></span>Ranking</a>
+          <a href="#"><span class="tab-chip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg></span>Perfil</a>
         </nav>
       </div>
       <div class="home-indicator"></div>
@@ -254,7 +248,7 @@
         <p class="paywall-sub">Sin tarjeta · cancela cuando quieras</p>
         <div class="planes">
           <div class="plan recomendado">
-            <span class="badge">2 meses gratis</span>
+            <span class="badge">2 MESES GRATIS</span>
             <div class="fila"><span class="nombre">Anual</span><span class="precio">US$80<small>/usuario/año</small></span></div>
             <p class="detalle">Equivale a US$6.70/usuario al mes</p>
           </div>
@@ -265,6 +259,35 @@
         </div>
         <div class="cta">Empezar mi prueba gratis</div>
         <p class="trial-nota">Incluye dashboard completo del Gerente de HSE</p>
+      </div>
+      <div class="home-indicator"></div>
+    </div>
+  </div>
+
+  <!-- FRAME 5 — hero de landing (fiel al adjunto del usuario, en amarillo) -->
+  <div class="frame">
+    <p class="rotulo">Así se vería la página que vende tu app</p>
+    <div class="telefono">
+      <div class="statusbar">
+        <span>9:41</span>
+        <span class="der">
+          <svg width="16" height="11" viewBox="0 0 17 11" fill="currentColor" aria-hidden="true">
+            <rect x="0" y="7" width="3" height="4" rx="0.8"/><rect x="4.5" y="5" width="3" height="6" rx="0.8"/>
+            <rect x="9" y="3" width="3" height="8" rx="0.8"/><rect x="13.5" y="0.5" width="3" height="10.5" rx="0.8"/>
+          </svg>
+          <svg width="24" height="12" viewBox="0 0 25 12" aria-hidden="true">
+            <rect x="0.5" y="0.5" width="21" height="11" rx="3" fill="none" stroke="currentColor" opacity="0.4"/>
+            <rect x="2" y="2" width="15" height="8" rx="1.6" fill="currentColor"/>
+            <rect x="22.5" y="3.8" width="2" height="4.4" rx="1" fill="currentColor" opacity="0.4"/>
+          </svg>
+        </span>
+      </div>
+      <div class="pantalla" style="padding-top: 18px;">
+        <span style="display:inline-flex; align-self:flex-start; background:var(--rojo); color:#fff; border:2.5px solid var(--ink); border-radius:999px; padding:5px 12px; font-size:10.5px; font-weight:800;">PARA GERENTES DE HSE</span>
+        <h3 class="titulo-m0" style="margin-top:12px; font-size:24px;">Capacita a tu cuadrilla en <span style="color:var(--azul)">3 minutos</span> al día</h3>
+        <p style="margin-top:10px; font-size:12.5px; font-weight:600; color:var(--ink-2); line-height:1.45;">Las 9 Reglas que Salvan Vidas, en retos diarios. Sin aulas, sin PDFs de 50 páginas, sin señal en el pozo.</p>
+        <div class="cta" style="margin-top:16px;">Quiero mi prueba gratis</div>
+        <p class="trial-nota">14 días gratis para 1 cuadrilla · sin tarjeta</p>
       </div>
       <div class="home-indicator"></div>
     </div>
@@ -294,9 +317,9 @@
           <p class="nombre-trab">Luis Fernández</p>
           <p class="cuadrilla">Cuadrilla Pozo 7 · Vigente hoy</p>
           <div class="competencias">
-            <div class="item"><span class="punto2"></span>Aislamiento de Energía (LOTO)</div>
-            <div class="item"><span class="punto2"></span>Espacios confinados</div>
-            <div class="item"><span class="punto2"></span>Racha de seguridad: 12 días</div>
+            <div class="item"><span class="punto2"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Aislamiento de Energía (LOTO)</div>
+            <div class="item"><span class="punto2"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Espacios confinados</div>
+            <div class="item"><span class="punto2"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Racha: 12 días</div>
           </div>
         </div>
         <div class="cta">Mostrar al supervisor</div>
