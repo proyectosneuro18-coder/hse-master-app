@@ -80,7 +80,7 @@ Plataforma móvil B2B de microaprendizaje gamificado (estilo Duolingo) para capa
 
 ## Problemas conocidos ⚠️
 - FICHA-MODELO (Duolingo): ángulos de venta pagada (§6, Meta Ads Library) quedaron NO ENCONTRADO — no aplica, nuestro canal es venta directa B2B en LinkedIn (campo 15 del documento validado), no ads. Documentado, no bloqueante.
-- veredicto:landing — el screenshot docs/revisiones/landing-375.png ya existe; el subagente revisor-visual está corriendo en background (lanzado como agente independiente con contexto fresco) y todavía no entregó docs/revisiones/landing-veredicto.md. La landing NO se declara LISTA hasta leer ese veredicto (≥36/40 usabilidad y ≥16/20 craft) y corregir lo que marque. Investigando/en curso, no pospuesto.
+- veredicto:landing — la primera revisión independiente dio NO LISTA (usabilidad 24/40, craft 11/20). Se corrigieron sus 5 defectos top y se relanzó una SEGUNDA revisión independiente (agente en background, contexto fresco), que todavía no entregó su resultado — docs/revisiones/landing-veredicto.md en disco sigue siendo el de la primera ronda (NO LISTA) hasta que el segundo agente lo sobrescriba. La landing NO se declara LISTA hasta leer ese segundo veredicto y, si vuelve a fallar el gate (≥36/40 usabilidad, ≥16/20 craft, ≥16/20 copy), repetir el ciclo. Investigando/en curso, no pospuesto.
 
 ## Pendientes del usuario (acciones que el usuario debe hacer)
 - [ ] Ninguna por ahora — todo lo de esta sesión lo resuelve el agente.
