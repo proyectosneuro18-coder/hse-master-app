@@ -1,7 +1,7 @@
 # ESTADO — HSE Master App
 Última actualización: 2026-10-15 | Sesión actual: 3
 
-⏸️ CHECKPOINT — Sesión 2 CERRADA definitivamente: dirección "Casco de Oro" (amarillo+multicolor estilo Duolingo, con mapa de módulos como sección Progreso) aprobada por el usuario / Siguiente acción exacta: arrancar Sesión 3 (página de ventas) — leer 19-PAGINA-DE-VENTAS.md + 52-COPY-VISUALES-CONVERSION.md + 55-DISENO-DE-LANDING.md + plantillas-codigo/landing/README.md, derivar el copy de FICHA-AVATAR.md y tematizar el kit con FICHA-ARTE.md.
+⏸️ CHECKPOINT — Sesión 3 en curso: landing.html construida (10 secciones canónicas, copy en docs/copy/landing.md trazado a FICHA-AVATAR.md, mecanismo bautizado "El Pase de los 3 Minutos"), verificada a 375px y enviada a revisión independiente (gate de la Regla 7) / Siguiente acción exacta: leer el veredicto del revisor cuando llegue, corregir lo que marque, y solo entonces declarar la landing lista.
 
 ## Qué es esta app (3 líneas máximo)
 Plataforma móvil B2B de microaprendizaje gamificado (estilo Duolingo) para capacitar, evaluar y certificar diariamente al personal de campo y contratistas en seguridad industrial (HSE/IOGP) en la industria petrolera. El trabajador usa la app en el celular 3 min/día; el Gerente de HSE paga la suscripción y ve un dashboard de adopción y riesgo por cuadrilla.
@@ -42,9 +42,9 @@ Plataforma móvil B2B de microaprendizaje gamificado (estilo Duolingo) para capa
 - Primera victoria (<5 min): completar el primer micro-módulo de 3 min (LOTO), responder la trivia, ganar la primera racha, ver a su cuadrilla subir en el ranking.
 
 ## Secuencia maestra de construcción (NO saltar)
-- Estado de la secuencia: Avatar en borrador → falta Sesión 1 completa (arquitectura/auth/BD) antes de Sesión 2 (diseño).
+- Estado de la secuencia: Sesión 1 y 2 cerradas. Sesión 3 (landing) en curso, esperando veredicto del revisor independiente.
 - Ruta aprobada: `/` → `/onboarding` → `/paywall` → `/login` → `/app`
-- Landing: pendiente
+- Landing: construida (landing.html, raíz del proyecto) · 10 secciones canónicas · Big Idea + mecanismo "El Pase de los 3 Minutos" · copy en docs/copy/landing.md trazado a FICHA-AVATAR.md · carrusel con mini-demos reales (nivel 2 de fidelidad, app interna aún no construida) · footer legal con enlaces marcados "(pendiente)" a propósito (47 no corrido aún) · EN REVISIÓN (docs/revisiones/landing-veredicto.md)
 - Onboarding: pendiente
 - Paywall: pendiente
 - Login/Auth: pendiente — método a decidir (ver Decisiones técnicas)
@@ -52,7 +52,7 @@ Plataforma móvil B2B de microaprendizaje gamificado (estilo Duolingo) para capa
 - Servicios externos: pendiente — GitHub/Supabase/Vercel/Resend/Hotmart/dominio
 
 ## Puertas de etapa (aprobación antes de avanzar)
-- Landing: no iniciada
+- Landing: construida, no aprobada — evidencia: landing.html + docs/revisiones/landing-375.png + docs/revisiones/landing-veredicto.md (en curso) + preview local verificado (static-preview, puerto 4173)
 - Onboarding: no iniciada
 - Paywall: no iniciada
 - Login/Auth: no iniciada
