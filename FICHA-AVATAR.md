@@ -1,6 +1,6 @@
 # FICHA DE AVATAR — HSE Master App
 
-- Estado: BORRADOR (26 frases VoC con fuente: "RESUMEN FINAL — IDEA VALIDADA PARA CONSTRUIR", pendiente de confirmación del usuario)
+- Estado: APROBADA (26 frases VoC con fuente: "RESUMEN FINAL — IDEA VALIDADA PARA CONSTRUIR" — aprobada por el usuario el 2026-10-15)
 
 ## El avatar (cliente ideal — UNA persona concreta)
 - Nombre/arquetipo: Carlos Mendoza (comprador B2B) · Edad: 46 · Situación: Director de HSE / Gerente de Prevención de Riesgos en contratista de servicios petroleros (drilling/workover) o en operadora mediana · País(es): Hispanoamérica (industria hidrocarburífera)
@@ -62,4 +62,4 @@
 ## Cierre
 - INVENTARIO DE PRUEBA DÍA-1: la investigación de mercado del usuario (competidores, dolores, deseos, keywords) ya es el activo de prueba; no hay beta ni demo grabada todavía.
 - ¿Hubo entrevistas del 44?: NO — la investigación es de mercado/competencia, no entrevistas directas al avatar; es una limitación conocida, no bloqueante para avanzar.
-- Fecha de cierre: 2026-10-15 · Aprobada por el usuario: NO (pendiente de confirmación)
+- Fecha de cierre: 2026-10-15 · Aprobada por el usuario: SÍ

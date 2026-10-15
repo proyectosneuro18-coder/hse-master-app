@@ -1,7 +1,7 @@
 # ESTADO — HSE Master App
 Última actualización: 2026-10-15 | Sesión actual: 1
 
-⏸️ CHECKPOINT — Última acción completada: FICHA-AVATAR.md y FICHA-MODELO.md (Duolingo, revenue verificado) creadas / Siguiente acción exacta: esperar confirmación del usuario sobre el avatar, luego cerrar Sesión 1 (auth/BD/unit economics).
+⏸️ CHECKPOINT — Sesión 1 CERRADA (avatar aprobado, modelo aprobado, auth/BD/unit economics decididos) / Siguiente acción exacta: arrancar Sesión 2 (identidad visual) — preguntar al usuario por referencia visual (PASO 0 del 54).
 
 ## Qué es esta app (3 líneas máximo)
 Plataforma móvil B2B de microaprendizaje gamificado (estilo Duolingo) para capacitar, evaluar y certificar diariamente al personal de campo y contratistas en seguridad industrial (HSE/IOGP) en la industria petrolera. El trabajador usa la app en el celular 3 min/día; el Gerente de HSE paga la suscripción y ve un dashboard de adopción y riesgo por cuadrilla.
@@ -17,7 +17,7 @@ Plataforma móvil B2B de microaprendizaje gamificado (estilo Duolingo) para capa
 - Precio de referencia del mercado: US$6-10/usuario/mes (US$60-90/año) — benchmark: inspecciones desde US$24/usuario/mes, EHS enterprise US$50-200/usuario/mes.
 
 ## Avatar y venta (Sesión 1 — NO cambiar sin validar)
-- FICHA-AVATAR.md: creada en BORRADOR (fecha 2026-10-15) — pendiente de aprobación del usuario.
+- FICHA-AVATAR.md: APROBADA por el usuario (2026-10-15).
 - Resumen: Carlos Mendoza, 46, Gerente de HSE en contratista/operadora petrolera mediana · dolor #1: "los muchachos firman la charla y a los 10 minutos están en la línea de fuego" (firman por trámite, no retienen) · deseo #1: "ver en mi pantalla en 10 segundos quién está capacitado hoy y quién es un peligro" · nivel de consciencia: Consciente del Problema y de la Solución (ya probó PowerPoint/e-learning/talleres y los odia).
 - Usuario final (quien usa la app a diario): técnico/operador/contratista de campo 25-45 años, resistente a la tecnología, celular gama media, sin señal en el pozo.
 
@@ -53,18 +53,18 @@ Plataforma móvil B2B de microaprendizaje gamificado (estilo Duolingo) para capa
 ## Decisiones técnicas (NO re-discutir sin pedirlo el usuario)
 - Framework: Next.js (coherente con las plantillas de landing del SO en `plantillas-codigo/landing/*.tsx` y con el soporte PWA que necesita el modo offline-first).
 - Offline-first: service worker + cola de sincronización local (IndexedDB) — el trabajador completa el reto sin señal y sincroniza al detectar red. Se diseña en detalle en Sesión 1 técnica / Sesión 6.
-- Auth: dos jerarquías distintas — (a) Gerente de HSE / admin: email + contraseña (o magic link), es quien paga y ve el dashboard; (b) trabajador de campo: código de cuadrilla + PIN corto, SIN email (hay alta rotación de contratistas, pedirles email es fricción que mata la adopción). A confirmar contra `26-AUTH-MODERNO.md` en la sesión técnica.
-- Modelo de datos: usuarios (admin vs trabajador) · empresas/cuadrillas · módulos/lecciones · intentos/progreso · rachas · pases QR. RLS por empresa (un Gerente de HSE NUNCA ve datos de otra empresa). Detalle en `25-BASE-DE-DATOS.md`.
-- Modelo de IA: ninguno por ahora (el MVP no requiere IA generativa — contenido de los módulos es curado, no generado). Revisar si Sesión 8+ quiere IA para personalizar dificultad.
+- Auth (decidido, según jerarquía de `26-AUTH-MODERNO.md`): (a) Gerente de HSE / admin: magic link + código de 6 dígitos al email (jerarquía #3 — sin contraseña, es quien paga y ve el dashboard, su dato sí amerita ese nivel). (b) Trabajador de campo: código de cuadrilla (identifica a la empresa/equipo, no es secreto) + PIN numérico personal de 4 dígitos (identifica al individuo). Es un nivel de seguridad menor a passkey/OAuth, decidido A PROPÓSITO: el dato que protege (progreso de capacitación, no dinero ni datos personales sensibles) no justifica pedirle email a un contratista con alta rotación — pedirlo mataría la adopción (dolor #1 del avatar). Cada PIN se valida contra un usuario ya pre-cargado por su empresa (el admin sube la lista de su cuadrilla), nunca auto-registro libre.
+- Modelo de datos (patrón multi-tenant de `25-BASE-DE-DATOS.md`): `organizations` (empresa) · `memberships` (user_id + org_id + role: owner/admin/worker) · `crews` (cuadrilla, pertenece a una org) · `modules`/`lessons` (contenido curado, global, no por org) · `attempts`/`progress` (por worker) · `streaks` · `qr_passes`. RLS: toda tabla con datos de una empresa lleva `org_id` + política `using (org_id in (select org_id from memberships where user_id = auth.uid()))` — un Gerente de HSE jamás ve datos de otra empresa. Los workers autentican vía un usuario Supabase sintético (no email real) emitido por el servidor al validar código+PIN, nunca con auto-registro.
+- Gate de Unit Economics (`40-UNIT-ECONOMICS.md`): PASA. El MVP no usa IA generativa (contenido curado) → el COGS variable por usuario es solo infra (Supabase + hosting + email), muy por debajo del 20% que el gate exige para IA. A US$8/usuario/mes el margen bruto esperado es >80% (el estándar "sano" de SaaS), incluso antes de aplicar CAC. Se recalcula con datos reales en Sesión 6/8 cuando haya costos de infra medidos.
+- Modelo de IA: ninguno en el MVP (contenido de los módulos es curado, no generado). Revisar si una sesión futura quiere IA para personalizar dificultad — no bloquea el lanzamiento.
 
 ## Sesiones completadas ✅
-(ninguna aún)
+- Sesión 1 — Validación recibida · Avatar aprobado · App modelo (Duolingo) aprobada · Monetización/pricing/auth/BD/unit economics decididos — cerrada 2026-10-15.
 
 ## Sesión en progreso 🔧
-- Sesión 1 — Validación recibida (no re-validada) · Avatar en borrador · Monetización y pricing decididos · Framework y arquitectura decididos · Falta: aprobación del usuario sobre el avatar + completar auth/BD/unit economics antes de cerrar Sesión 1.
+(ninguna — lista para arrancar Sesión 2)
 
 ## Próximas sesiones 📋
-- Sesión 1 (cierre): Auth definitivo (26) + modelo de datos con RLS (25) + gate de Unit Economics (40) + FICHA-MODELO.md (Duolingo como app modelo).
 - Sesión 2: Identidad visual — dirección de arte, paleta, tipografía (16/29/54).
 - Sesión 3: Página de ventas.
 

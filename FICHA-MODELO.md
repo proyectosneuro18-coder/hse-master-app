@@ -44,5 +44,5 @@
 - Constitución del producto (mecanismo) · baseline de onboarding y pricing (ya coherente con el campo 14/15 del documento validado) · landing (Sesión 3) · ángulos de venta B2B (Sesión 8).
 
 ## Cierre
-- Fecha de cierre: 2026-10-15 · Aprobada por el usuario: NO (pendiente — se muestra junto con la ficha de avatar)
+- Fecha de cierre: 2026-10-15 · Aprobada por el usuario: SÍ
 - Regla de caché: fuentes y fechas arriba; búsquedas hechas el 2026-10-15.
