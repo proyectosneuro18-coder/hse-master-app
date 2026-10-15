@@ -33,7 +33,6 @@
     outline: 3px solid var(--azul); outline-offset: 3px; border-radius: 4px;
   }
   .boton:hover { filter: brightness(1.04); }
-  .top a.entrar:hover { color: var(--ink); text-decoration: underline; }
   /* ── Movimiento: revelado al hacer scroll (respeta reduced-motion) ── */
   .reveal { opacity: 0; transform: translateY(18px); transition: opacity 500ms ease, transform 500ms ease; }
   .reveal.in { opacity: 1; transform: translateY(0); }
@@ -45,8 +44,8 @@
     text-transform: uppercase; letter-spacing: 0.01em; border: 3px solid var(--ink);
     transition: transform 120ms ease, border-bottom-width 120ms ease, margin-top 120ms ease;
   }
-  .boton-verde { background: var(--verde-sombra); color: #fff; border-bottom: 6px solid #357c02; }
-  .boton-amarillo { background: var(--amarillo-sombra); color: var(--ink); border-bottom: 6px solid #b17e00; }
+  .boton-verde { background: var(--verde-sombra); color: var(--ink); border-bottom: 6px solid var(--ink); }
+  .boton-amarillo { background: var(--amarillo-sombra); color: var(--ink); border-bottom: 6px solid var(--ink); }
   .boton:active { border-bottom-width: 3px; transform: translateY(3px); }
   .badge { display: inline-flex; align-items: center; gap: 6px; background: var(--rojo-sombra); color: #fff;
            border: 2.5px solid var(--ink); border-radius: 999px; padding: 6px 14px; font-size: 12px; font-weight: 800; }
@@ -57,7 +56,7 @@
   header.top .wrap { display: flex; align-items: center; justify-content: space-between; padding-top: 14px; padding-bottom: 14px; }
   .logo { font-family: var(--font-display); font-size: 18px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
   .logo .dot { width: 30px; height: 30px; border-radius: 9px; background: var(--amarillo); border: 2.5px solid var(--ink); }
-  .top a.entrar { font-size: 13px; font-weight: 700; color: var(--ink-2); text-decoration: none; }
+  .top .entrar { font-size: 13px; font-weight: 700; color: var(--ink-2); cursor: default; }
 
   /* ===== 1. HERO ===== */
   .hero { padding-top: 56px; padding-bottom: 56px; }
@@ -75,7 +74,8 @@
   .phone-mini { width: 260px; margin: 0 auto; aspect-ratio: 9/18; border: 9px solid var(--ink); border-radius: 38px;
                 background: var(--bg); overflow: hidden; box-shadow: 0 20px 44px rgb(0 0 0 / 0.14); }
   .phone-mini .scr { padding: 18px 16px; }
-  .phone-mini .racha { background: var(--amarillo); border: 3px solid var(--ink); border-radius: 18px; padding: 14px; }
+  .phone-mini .racha { background: var(--amarillo); border: 3px solid var(--ink); border-radius: 20px; padding: 14px; }
+  .phone-mini .mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
   .phone-mini .racha .l { font-size: 11px; font-weight: 800; text-transform: uppercase; display: flex; align-items: center; gap: 5px; }
   .ic-flame { display: inline-flex; flex-shrink: 0; }
   .phone-mini .racha .n { font-family: var(--font-display); font-size: 34px; font-weight: 800; }
@@ -89,10 +89,10 @@
   @media (min-width: 700px) { .problema h2 { font-size: 34px; } }
   .preguntas { margin-top: 36px; display: grid; gap: 14px; grid-template-columns: 1fr; }
   @media (min-width: 700px) { .preguntas { grid-template-columns: 1fr 1fr; } }
-  .pregunta-card { display: flex; gap: 14px; align-items: flex-start; background: var(--bg); border: 3px solid var(--ink); border-radius: 18px; padding: 16px;
+  .pregunta-card { display: flex; gap: 14px; align-items: flex-start; background: var(--bg); border: 3px solid var(--ink); border-radius: 20px; padding: 16px;
                    transition: transform 150ms ease, box-shadow 150ms ease; }
   .pregunta-card:hover { transform: translateY(-3px); box-shadow: 0 8px 0 -4px rgb(26 26 26 / 0.12), 0 10px 16px rgb(26 26 26 / 0.08); }
-  .pregunta-card .ic { width: 42px; height: 42px; border-radius: 12px; background: var(--rojo); border: 2.5px solid var(--ink);
+  .pregunta-card .ic { width: 42px; height: 42px; border-radius: 14px; background: var(--rojo); border: 2.5px solid var(--ink);
                         display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .pregunta-card p { font-size: 14.5px; font-weight: 700; }
 
@@ -118,7 +118,7 @@
   .paso p { margin-top: 6px; font-size: 13.5px; color: var(--ink-2); font-weight: 600; }
   .antes-despues { margin-top: 40px; display: grid; gap: 16px; grid-template-columns: 1fr; }
   @media (min-width: 700px) { .antes-despues { grid-template-columns: 1fr 1fr; } }
-  .ad-card { border-radius: 18px; padding: 18px 20px; border: 3px solid var(--ink); }
+  .ad-card { border-radius: 20px; padding: 18px 20px; border: 3px solid var(--ink); }
   .ad-card.antes { background: #f3eee0; }
   .ad-card.despues { background: var(--verde); color: var(--ink); }
   .ad-card .tag { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; }
@@ -144,7 +144,7 @@
   .dots button { width: 10px; height: 10px; padding: 0; border-radius: 999px; background: #e4dcc4; border: none; cursor: pointer; }
   .dots button.on { background: var(--ink); width: 22px; border-radius: 999px; }
   /* mini componentes reusados del mecanismo real (mismo lenguaje de Sesión 2) */
-  .mini-chip { background: var(--surface); border: 2.5px solid var(--ink); border-radius: 12px; padding: 8px; text-align: center; }
+  .mini-chip { background: var(--surface); border: 2.5px solid var(--ink); border-radius: 14px; padding: 8px; text-align: center; }
   .mini-chip .n { font-family: var(--font-display); font-weight: 800; font-size: 15px; }
   .mini-chip .l { font-size: 8px; font-weight: 700; color: var(--ink-2); }
   .mini-nodo { width: 44px; height: 44px; border-radius: 999px; border: 2.5px solid var(--ink); display: flex; align-items: center; justify-content: center; }
@@ -179,7 +179,7 @@
 
   /* ===== 7. GARANTÍA ===== */
   .garantia .wrap { max-width: 720px; text-align: center; }
-  .garantia .escudo { width: 64px; height: 64px; margin: 0 auto; border-radius: 16px; background: var(--azul);
+  .garantia .escudo { width: 64px; height: 64px; margin: 0 auto; border-radius: 14px; background: var(--azul);
                        border: 3px solid var(--ink); display: flex; align-items: center; justify-content: center; }
   .garantia h2 { margin-top: 18px; font-size: 24px; }
   .garantia p { margin-top: 12px; font-size: 15px; color: var(--ink-2); font-weight: 600; line-height: 1.7; }
@@ -189,7 +189,7 @@
   .faq { background: var(--surface); border-top: 3px solid var(--ink); border-bottom: 3px solid var(--ink); }
   .faq h2 { text-align: center; font-size: 28px; }
   .faq-list { max-width: 720px; margin: 36px auto 0; display: flex; flex-direction: column; gap: 12px; }
-  .faq-item { background: var(--bg); border: 3px solid var(--ink); border-radius: 16px; padding: 18px 20px; }
+  .faq-item { background: var(--bg); border: 3px solid var(--ink); border-radius: 20px; padding: 18px 20px; }
   .faq-item { transition: background 150ms ease; }
   .faq-item summary { font-weight: 800; font-size: 14.5px; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; }
   .faq-item summary:hover { color: var(--azul-sombra); }
@@ -205,7 +205,7 @@
   @media (min-width: 700px) { .cta-final h2 { font-size: 34px; } }
   .cta-final p.fp { margin-top: 14px; font-size: 15.5px; color: var(--ink-2); font-weight: 600; line-height: 1.7; }
   .cta-final .cta-row { margin-top: 24px; display: flex; justify-content: center; }
-  .ps { margin-top: 28px; text-align: left; background: var(--surface); border: 3px dashed var(--ink); border-radius: 16px; padding: 16px 18px; font-size: 13px; color: var(--ink-2); font-weight: 600; line-height: 1.6; }
+  .ps { margin-top: 28px; text-align: left; background: var(--surface); border: 3px dashed var(--ink); border-radius: 20px; padding: 16px 18px; font-size: 13px; color: var(--ink-2); font-weight: 600; line-height: 1.6; }
   .ps b { color: var(--ink); }
 
   /* ===== 10. FOOTER ===== */
@@ -229,7 +229,7 @@
 <header class="top">
   <div class="wrap">
     <a class="logo" href="#"><span class="dot"></span>HSE Master App</a>
-    <a class="entrar" href="#">Entrar</a>
+    <span class="entrar" title="Disponible cuando actives tu prueba">Entrar</span>
   </div>
 </header>
 
@@ -257,6 +257,11 @@
             <p class="l"><svg class="ic-flame" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>Racha de seguridad</p>
             <p class="n">12 días</p>
           </div>
+          <div class="mini-grid">
+            <div class="mini-chip"><p class="n">9/12</p><p class="l">MÓDULOS</p></div>
+            <div class="mini-chip"><p class="n">2°</p><p class="l">RANKING</p></div>
+          </div>
+          <div class="boton boton-verde" style="width:100%; height:42px; font-size:11px; margin-top:14px;">Empezar mi reto</div>
         </div>
       </div>
       <span class="float-chip a">✓ LOTO completado</span>
