@@ -1,7 +1,7 @@
 # ESTADO — HSE Master App
-Última actualización: 2026-10-15 | Sesión actual: 2 (reabierta)
+Última actualización: 2026-10-15 | Sesión actual: 3
 
-⏸️ CHECKPOINT — Sesión 2 reabierta: usuario vio el hero de landing en pantalla real y pidió amarillo + bloques grandes/multicolor inspirados en Duolingo. Se construyó y verificó la dirección "Casco de Oro" / Siguiente acción exacta: esperar confirmación final del usuario sobre este tour; si aprueba, cerrar FICHA-ARTE.md definitivamente y pasar a Sesión 3.
+⏸️ CHECKPOINT — Sesión 2 CERRADA definitivamente: dirección "Casco de Oro" (amarillo+multicolor estilo Duolingo, con mapa de módulos como sección Progreso) aprobada por el usuario / Siguiente acción exacta: arrancar Sesión 3 (página de ventas) — leer 19-PAGINA-DE-VENTAS.md + 52-COPY-VISUALES-CONVERSION.md + 55-DISENO-DE-LANDING.md + plantillas-codigo/landing/README.md, derivar el copy de FICHA-AVATAR.md y tematizar el kit con FICHA-ARTE.md.
 
 ## Qué es esta app (3 líneas máximo)
 Plataforma móvil B2B de microaprendizaje gamificado (estilo Duolingo) para capacitar, evaluar y certificar diariamente al personal de campo y contratistas en seguridad industrial (HSE/IOGP) en la industria petrolera. El trabajador usa la app en el celular 3 min/día; el Gerente de HSE paga la suscripción y ve un dashboard de adopción y riesgo por cuadrilla.
@@ -30,7 +30,7 @@ Plataforma móvil B2B de microaprendizaje gamificado (estilo Duolingo) para capa
 
 ## Dirección de Arte (Sesión 2 — NO cambiar sin justificación)
 > La ficha COMPLETA vive en `FICHA-ARTE.md` en la raíz.
-- FICHA-ARTE.md: existe, PENDIENTE de confirmación final (ronda 3: "Casco de Oro")
+- FICHA-ARTE.md: existe y APROBADA por el usuario (2026-10-15)
 - ¿Hubo referencia visual del usuario?: SÍ (parcial) — captura de un hero de landing propio en ámbar, con pedido explícito de pasar a amarillo + bloques grandes multicolor estilo Duolingo
 - Resumen: dirección "Casco de Oro" · fondo #FFFAF0 · acento #FFC800 + verde #58CC02 + azul #1CB0F6 + rojo #FF4B4B · Display "Baloo 2" · Body "DM Sans" · radio 20px cards / 16px botones · bordes gruesos 3px · botones "presionables"
 - Personalidad: enérgica · competitiva · directa (compilada en la ficha)
@@ -48,7 +48,7 @@ Plataforma móvil B2B de microaprendizaje gamificado (estilo Duolingo) para capa
 - Onboarding: pendiente
 - Paywall: pendiente
 - Login/Auth: pendiente — método a decidir (ver Decisiones técnicas)
-- App interna: pendiente — secciones candidatas: Ruta de aprendizaje (mundos IOGP) · Racha/Ranking de cuadrilla · Pasaporte QR · (Dashboard HSE es vista de ADMIN, no del trabajador)
+- App interna: pendiente — secciones candidatas: Pantalla principal = reto/módulo del día (no el mapa) · Mapa de ruta de aprendizaje (mundos IOGP, estilo Duolingo) como sección SECUNDARIA aparte, no la home · Racha/Ranking de cuadrilla · Pasaporte QR · (Dashboard HSE es vista de ADMIN, no del trabajador)
 - Servicios externos: pendiente — GitHub/Supabase/Vercel/Resend/Hotmart/dominio
 
 ## Puertas de etapa (aprobación antes de avanzar)
@@ -69,9 +69,10 @@ Plataforma móvil B2B de microaprendizaje gamificado (estilo Duolingo) para capa
 
 ## Sesiones completadas ✅
 - Sesión 1 — Validación recibida · Avatar aprobado · App modelo (Duolingo) aprobada · Monetización/pricing/auth/BD/unit economics decididos — cerrada 2026-10-15.
+- Sesión 2 — Identidad visual: dirección final "Casco de Oro" (amarillo + multicolor estilo Duolingo, bloques grandes con borde grueso, botones presionables, mapa de módulos como sección Progreso) aprobada tras 3 rondas de iteración · FICHA-ARTE.md aprobada — cerrada 2026-10-15.
 
 ## Sesión en progreso 🔧
-- Sesión 2 — Identidad visual: 3 rondas. "Turno Nocturno" y "Violeta Operativo" fueron aprobadas y luego revertidas por el usuario al pedir más color y un lenguaje más Duolingo. Dirección actual en revisión: "Casco de Oro" (amarillo + multicolor Duolingo, bloques grandes, botones presionables). Pendiente: confirmación final del usuario.
+(ninguna — lista para arrancar Sesión 3)
 
 ## Próximas sesiones 📋
 - Sesión 3: Página de ventas.
