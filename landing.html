@@ -35,8 +35,8 @@
       var(--bg);
     color: var(--ink); font-family: var(--font-body); line-height: 1.5;
   }
-  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; position: relative; }
-  section { padding: 72px 0; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; position: relative; }
+  section { padding: 64px 0; }
   h1, h2, h3 { font-family: var(--font-display); font-weight: 800; letter-spacing: -0.01em; }
   a:focus-visible, button:focus-visible, .boton:focus-visible, summary:focus-visible, .carrusel:focus-visible {
     outline: 3px solid var(--azul); outline-offset: 3px; border-radius: 4px;
@@ -53,7 +53,7 @@
   @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1 !important; transform: none !important; transition: none !important; } }
   .boton {
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-    height: 56px; padding: 0 28px; border-radius: 16px; font-family: var(--font-display);
+    height: 56px; padding: 0 24px; border-radius: 16px; font-family: var(--font-display);
     font-size: 15px; font-weight: 800; text-decoration: none; cursor: pointer;
     text-transform: uppercase; letter-spacing: 0.01em; border: 3px solid var(--ink);
     transition: transform 120ms ease, border-bottom-width 120ms ease, margin-top 120ms ease;
@@ -61,19 +61,19 @@
   .boton-verde { background: var(--verde-sombra); color: var(--ink); border-bottom: 6px solid var(--ink); }
   .boton-amarillo { background: var(--amarillo-sombra); color: var(--ink); border-bottom: 6px solid var(--ink); }
   .boton:active { border-bottom-width: 3px; transform: translateY(3px); }
-  .badge { display: inline-flex; align-items: center; gap: 6px; background: var(--rojo-sombra); color: #fff;
-           border: 2.5px solid var(--ink); border-radius: 999px; padding: 6px 14px; font-size: 12px; font-weight: 800; }
+  .badge { display: inline-flex; align-items: center; gap: 8px; background: var(--rojo-sombra); color: #fff;
+           border: 2.5px solid var(--ink); border-radius: 999px; padding: 8px 12px; font-size: 12px; font-weight: 800; }
   .bloque { border-radius: 20px; border: 3px solid var(--ink); }
 
   /* ===== HEADER ===== */
   header.top { position: sticky; top: 0; z-index: 50; background: var(--bg); border-bottom: 3px solid var(--ink); }
-  header.top .wrap { display: flex; align-items: center; justify-content: space-between; padding-top: 14px; padding-bottom: 14px; }
+  header.top .wrap { display: flex; align-items: center; justify-content: space-between; padding-top: 16px; padding-bottom: 16px; }
   .logo { font-family: var(--font-display); font-size: 18px; font-weight: 800; display: flex; align-items: center; gap: 8px;
            color: var(--ink); text-decoration: none; }
-  .logo .dot { width: 30px; height: 30px; border-radius: 9px; background: var(--amarillo); border: 2.5px solid var(--ink); }
+  .logo .dot { width: 30px; height: 30px; border-radius: 14px; background: var(--amarillo); border: 2.5px solid var(--ink); }
 
   /* ===== 1. HERO ===== */
-  .hero { padding-top: 32px; padding-bottom: 40px; animation: heroFade 450ms ease both; }
+  .hero { padding-top: 32px; padding-bottom: 32px; animation: heroFade 450ms ease both; }
   @keyframes heroFade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
   @media (prefers-reduced-motion: reduce) { .hero { animation: none; } }
   .hero-grid { display: grid; grid-template-columns: 1fr; gap: 24px; align-items: center; }
@@ -81,30 +81,33 @@
   .hero h1 { font-size: 34px; line-height: 1.12; }
   @media (min-width: 700px) { .hero h1 { font-size: 46px; } }
   .hero h1 em { font-style: normal; color: var(--azul-sombra); }
+  h2 em { font-style: normal; color: var(--azul-sombra); }
   .hero .sub { margin-top: 16px; font-size: 16px; color: var(--ink-2); font-weight: 600; max-width: 52ch; }
-  .hero .cta-row { margin-top: 26px; display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
-  .prueba-industria { margin-top: 16px; display: flex; align-items: center; gap: 10px; font-size: 12.5px; font-weight: 700; color: var(--ink-2); }
-  .prueba-industria .chip { width: 26px; height: 26px; border-radius: 8px; background: var(--surface); border: 2px solid var(--ink);
+  .hero .cta-row { margin-top: 24px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .hero .cta-row .boton { width: 100%; }
+  @media (min-width: 480px) { .hero .cta-row .boton { width: auto; } }
+  .prueba-industria { margin-top: 16px; display: flex; align-items: center; gap: 12px; font-size: 12.5px; font-weight: 700; color: var(--ink-2); }
+  .prueba-industria .chip { width: 26px; height: 26px; border-radius: 14px; background: var(--surface); border: 2px solid var(--ink);
                              display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .hero-visual { position: relative; }
   .phone-mini { width: 220px; margin: 0 auto; aspect-ratio: 9/18; border: 8px solid var(--ink); border-radius: 32px;
                 background: var(--bg); overflow: hidden; box-shadow: 0 20px 44px rgb(0 0 0 / 0.14); }
-  .phone-mini .scr { padding: 14px 13px; box-shadow: inset 0 3px 10px rgb(0 0 0 / 0.08); }
-  .phone-mini .racha { background: var(--amarillo); border: 3px solid var(--ink); border-radius: 20px; padding: 11px; }
-  .phone-mini .mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+  .phone-mini .scr { padding: 12px; box-shadow: inset 0 3px 10px rgb(0 0 0 / 0.08); }
+  .phone-mini .racha { background: var(--amarillo); border: 3px solid var(--ink); border-radius: 20px; padding: 12px; }
+  .phone-mini .mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
   .mockup-boton {
-    width: 100%; margin-top: 10px; height: 36px; border-radius: 16px; border: 3px solid var(--ink);
+    width: 100%; margin-top: 8px; height: 36px; border-radius: 16px; border: 3px solid var(--ink);
     background: var(--verde-sombra); color: var(--ink); font-family: var(--font-display); font-weight: 800;
     font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.01em;
     display: flex; align-items: center; justify-content: center;
     pointer-events: none; cursor: default; opacity: 0.92;
   }
-  .phone-mini .racha .l { font-size: 11px; font-weight: 800; text-transform: uppercase; display: flex; align-items: center; gap: 5px; }
-  .ic-flame { display: inline-flex; flex-shrink: 0; }
+  .phone-mini .racha .l { font-size: 11px; font-weight: 800; text-transform: uppercase; display: flex; align-items: center; gap: 4px; }
+  .ic-casco { display: inline-flex; flex-shrink: 0; }
   .phone-mini .racha .n { font-family: var(--font-display); font-size: 28px; font-weight: 800; }
   .float-chip { position: absolute; background: var(--verde); color: var(--ink); border: 3px solid var(--ink); border-radius: 14px;
                 padding: 8px 12px; font-size: 12px; font-weight: 800; box-shadow: 0 10px 20px rgb(0 0 0 / 0.12);
-                display: inline-flex; align-items: center; gap: 6px; }
+                display: inline-flex; align-items: center; gap: 8px; }
   .float-chip.a { top: -18px; left: -14px; } .float-chip.b { bottom: 8%; right: -4px; background: var(--azul); }
   @media (max-width: 400px) { .float-chip.a { left: -4px; } }
 
@@ -112,9 +115,9 @@
   .problema { background: var(--surface); border-top: 3px solid var(--ink); border-bottom: 3px solid var(--ink); }
   .problema h2 { font-size: 28px; text-align: center; }
   @media (min-width: 700px) { .problema h2 { font-size: 34px; } }
-  .preguntas { margin-top: 36px; display: grid; gap: 14px; grid-template-columns: 1fr; }
+  .preguntas { margin-top: 32px; display: grid; gap: 16px; grid-template-columns: 1fr; }
   @media (min-width: 700px) { .preguntas { grid-template-columns: 1fr 1fr; } }
-  .pregunta-card { display: flex; gap: 14px; align-items: flex-start; background: var(--bg); border: 3px solid var(--ink); border-radius: 20px; padding: 16px;
+  .pregunta-card { display: flex; gap: 16px; align-items: flex-start; background: var(--bg); border: 3px solid var(--ink); border-radius: 20px; padding: 16px;
                    transition: transform 150ms ease, box-shadow 150ms ease; }
   .pregunta-card:hover { transform: translateY(-3px); box-shadow: 0 8px 0 -4px rgb(26 26 26 / 0.12), 0 10px 16px rgb(26 26 26 / 0.08); }
   .pregunta-card .ic { width: 42px; height: 42px; border-radius: 14px; background: var(--rojo); border: 2.5px solid var(--ink);
@@ -124,7 +127,7 @@
   /* ===== 3. AGITACIÓN ===== */
   .agitacion .wrap { max-width: 820px; text-align: center; }
   .agitacion h2 { font-size: 26px; }
-  .agitacion p { margin-top: 18px; font-size: 16px; font-weight: 600; color: var(--ink-2); line-height: 1.7; }
+  .agitacion p { margin-top: 16px; font-size: 16px; font-weight: 600; color: var(--ink-2); line-height: 1.7; }
   .agitacion p b { color: var(--ink); }
 
   /* ===== 4. SOLUCIÓN ===== */
@@ -133,31 +136,32 @@
   .big-idea h2 { font-size: 26px; }
   @media (min-width: 700px) { .big-idea h2 { font-size: 32px; } }
   .big-idea .mec { color: var(--azul-sombra); }
-  .pasos { margin-top: 44px; display: grid; gap: 20px; grid-template-columns: 1fr; }
+  .pasos { margin-top: 48px; display: grid; gap: 24px; grid-template-columns: 1fr; }
   @media (min-width: 800px) { .pasos { grid-template-columns: repeat(3, 1fr); } }
-  .paso { background: var(--bg); border: 3px solid var(--ink); border-radius: 20px; padding: 22px; position: relative; }
-  .paso .num { position: absolute; top: -16px; left: 18px; width: 36px; height: 36px; border-radius: 999px;
+  .paso { background: var(--bg); border: 3px solid var(--ink); border-radius: 20px; padding: 24px; position: relative; }
+  .paso .num { position: absolute; top: -16px; left: 16px; width: 36px; height: 36px; border-radius: 999px;
                background: var(--amarillo); border: 3px solid var(--ink); display: flex; align-items: center; justify-content: center;
                font-family: var(--font-display); font-weight: 800; font-size: 15px; }
   .paso h4 { margin-top: 12px; font-size: 16px; }
-  .paso p { margin-top: 6px; font-size: 13.5px; color: var(--ink-2); font-weight: 600; }
-  .antes-despues { margin-top: 40px; display: grid; gap: 16px; grid-template-columns: 1fr; }
+  .paso p { margin-top: 8px; font-size: 13.5px; color: var(--ink-2); font-weight: 600; }
+  .antes-despues { margin-top: 32px; display: grid; gap: 16px; grid-template-columns: 1fr; }
   @media (min-width: 700px) { .antes-despues { grid-template-columns: 1fr 1fr; } }
-  .ad-card { border-radius: 20px; padding: 18px 20px; border: 3px solid var(--ink); }
+  .ad-card { border-radius: 20px; padding: 16px 24px; border: 3px solid var(--ink); }
   .ad-card.antes { background: #f3eee0; }
   .ad-card.despues { background: var(--verde); color: var(--ink); }
   .ad-card .tag { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; }
   .ad-card p.txt { margin-top: 8px; font-size: 15px; font-weight: 700; }
+  .nota-iogp { margin-top: 24px; font-size: 13px; font-weight: 600; color: var(--ink-2); text-align: center; max-width: 560px; margin-left: auto; margin-right: auto; }
 
   /* ===== 5. LA APP POR DENTRO (carrusel) ===== */
-  .carrusel-wrap { margin-top: 40px; }
-  .carrusel { display: flex; gap: 18px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 8px 8px 20px; margin: 0 -8px; }
+  .carrusel-wrap { margin-top: 32px; }
+  .carrusel { display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 8px 8px 24px; margin: 0 -8px; }
   .carrusel::-webkit-scrollbar { height: 8px; }
   .carrusel::-webkit-scrollbar-thumb { background: var(--ink); border-radius: 99px; }
   .slide { scroll-snap-align: center; flex: 0 0 240px; }
   .slide .frame { width: 240px; aspect-ratio: 9/18; border: 9px solid var(--ink); border-radius: 34px; background: var(--bg);
                   overflow: hidden; box-shadow: 0 14px 30px rgb(0 0 0 / 0.12); }
-  .slide .frame .in { padding: 16px 14px; height: 100%; }
+  .slide .frame .in { padding: 16px; height: 100%; }
   .slide .label { margin-top: 12px; font-size: 13px; font-weight: 800; text-align: center; }
   .carrusel-controles { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 4px; }
   .flecha { width: 36px; height: 36px; border-radius: 999px; border: 2.5px solid var(--ink); background: var(--surface);
@@ -173,8 +177,11 @@
   .mini-chip { background: var(--surface); border: 2.5px solid var(--ink); border-radius: 14px; padding: 8px; text-align: center; }
   .mini-chip .n { font-family: var(--font-display); font-weight: 800; font-size: 15px; }
   .mini-chip .l { font-size: 8px; font-weight: 700; color: var(--ink-2); }
+  .barra-mini { height: 4px; background: #e4dcc4; border-radius: 99px; margin-top: 6px; overflow: hidden; }
+  .barra-mini-fill { height: 100%; width: 0%; background: var(--verde-sombra); border-radius: 99px; transition: width 900ms ease; }
+  @media (prefers-reduced-motion: reduce) { .barra-mini-fill { transition: none; } }
   .mini-nodo { width: 44px; height: 44px; border-radius: 999px; border: 2.5px solid var(--ink); display: flex; align-items: center; justify-content: center; }
-  .mini-qr { width: 100px; height: 100px; margin: 10px auto 0; border-radius: 8px; border: 3px solid var(--ink);
+  .mini-qr { width: 100px; height: 100px; margin: 8px auto 0; border-radius: 8px; border: 3px solid var(--ink);
              background: repeating-linear-gradient(0deg, var(--ink) 0 5px, transparent 5px 10px),
                          repeating-linear-gradient(90deg, var(--ink) 0 5px, transparent 5px 10px);
              background-blend-mode: multiply; background-color: var(--amarillo); }
@@ -182,18 +189,27 @@
   /* ===== 6. OFERTA ===== */
   .oferta { background: var(--surface); border-top: 3px solid var(--ink); border-bottom: 3px solid var(--ink); }
   .oferta h2 { text-align: center; font-size: 28px; }
-  .oferta .sub { text-align: center; margin-top: 10px; color: var(--ink-2); font-weight: 600; }
-  .stack { margin: 36px auto 0; max-width: 560px; background: var(--bg); border: 3px solid var(--ink); border-radius: 20px; padding: 22px; }
-  .stack .item { display: flex; gap: 12px; align-items: flex-start; padding: 10px 0; border-bottom: 2px dashed #e4dcc4; }
+  .oferta .sub { text-align: center; margin-top: 8px; color: var(--ink-2); font-weight: 600; }
+  .stack { margin: 32px auto 0; max-width: 560px; background: var(--bg); border: 3px solid var(--ink); border-radius: 20px; padding: 24px; }
+  .stack .item { display: flex; gap: 12px; align-items: flex-start; padding: 8px 0; border-bottom: 2px dashed #e4dcc4; }
   .stack .item:last-child { border-bottom: none; }
   .stack .check { width: 24px; height: 24px; border-radius: 999px; background: var(--verde); border: 2px solid var(--ink);
                   display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .stack .item h5 { font-size: 14px; font-weight: 800; }
   .stack .item p { font-size: 12.5px; color: var(--ink-2); font-weight: 600; margin-top: 2px; }
-  .planes { margin: 36px auto 0; max-width: 680px; display: grid; gap: 16px; grid-template-columns: 1fr; }
+  .planes { margin: 32px auto 0; max-width: 680px; display: grid; gap: 16px; grid-template-columns: 1fr; }
   @media (min-width: 640px) { .planes { grid-template-columns: 1fr 1fr; } }
-  .plan { background: var(--bg); border: 3px solid var(--ink); border-radius: 20px; padding: 22px; position: relative; }
-  .plan.rec { background: var(--amarillo); }
+  .plan { background: var(--bg); border: 3px solid var(--ink); border-radius: 20px; padding: 24px; position: relative; }
+  .plan.rec { background: var(--amarillo); position: relative; }
+  .plan.rec::after {
+    content: ''; position: absolute; top: 3px; left: 16px; right: 16px; height: 2px; border-radius: 2px;
+    background: linear-gradient(90deg, var(--rojo), var(--verde-sombra), var(--azul-sombra));
+  }
+  .stack { position: relative; overflow: hidden; }
+  .stack::after {
+    content: ''; position: absolute; top: 0; left: 24px; right: 24px; height: 2px;
+    background: linear-gradient(90deg, var(--verde-sombra), var(--amarillo-sombra));
+  }
   .plan .tag-rec { position: absolute; top: -14px; left: 20px; background: var(--rojo-sombra); color: #fff; border: 2.5px solid var(--ink);
                     border-radius: 999px; padding: 4px 12px; font-size: 10.5px; font-weight: 800; }
   .plan .nombre { font-weight: 800; font-size: 14px; }
@@ -201,33 +217,41 @@
   .plan .precio small { font-size: 13px; font-weight: 700; font-family: var(--font-body); }
   .plan .nota { font-size: 12px; font-weight: 700; color: var(--ink-2); margin-top: 4px; }
   .plan.rec .nota { color: var(--ink); }
-  .plan .boton { width: 100%; margin-top: 16px; height: 48px; font-size: 13px; }
+  .plan .boton { width: 100%; margin-top: 16px; height: 56px; font-size: 13px; }
   .link-secundario {
     display: flex; align-items: center; justify-content: center; width: 100%; margin-top: 16px; height: 48px;
     font-family: var(--font-display); font-weight: 800; font-size: 13px; color: var(--ink-2);
     text-decoration: underline; text-underline-offset: 3px;
   }
   .link-secundario:hover { color: var(--ink); }
-  .trial-strip { max-width: 680px; margin: 20px auto 0; text-align: center; font-size: 13px; font-weight: 700; color: var(--ink-2); }
+  .cta-fallback { margin-top: 8px; text-align: center; font-size: 12px; font-weight: 600; color: var(--ink-2); }
+  .garantia-mini { margin-top: 8px; text-align: center; font-size: 11px; font-weight: 700; color: var(--ink-2); }
+  .trial-strip { max-width: 680px; margin: 24px auto 0; text-align: center; font-size: 13px; font-weight: 700; color: var(--ink-2); }
 
   /* ===== 7. GARANTÍA ===== */
   .garantia .wrap { max-width: 720px; text-align: center; }
   .garantia .escudo { width: 64px; height: 64px; margin: 0 auto; border-radius: 14px; background: var(--azul);
                        border: 3px solid var(--ink); display: flex; align-items: center; justify-content: center; }
-  .garantia h2 { margin-top: 18px; font-size: 24px; }
+  .garantia h2 { margin-top: 16px; font-size: 28px; }
   .garantia p { margin-top: 12px; font-size: 15px; color: var(--ink-2); font-weight: 600; line-height: 1.7; }
-  .garantia .nota-piso { margin-top: 14px; font-size: 12px; color: var(--ink-2); font-style: italic; }
+  .garantia .nota-piso { margin-top: 16px; font-size: 12px; color: var(--ink-2); font-style: italic; }
 
   /* ===== 8. FAQ ===== */
   .faq { background: var(--surface); border-top: 3px solid var(--ink); border-bottom: 3px solid var(--ink); }
   .faq h2 { text-align: center; font-size: 28px; }
-  .faq-list { max-width: 720px; margin: 36px auto 0; display: flex; flex-direction: column; gap: 12px; }
-  .faq-item { background: var(--bg); border: 3px solid var(--ink); border-radius: 20px; padding: 18px 20px; }
+  .faq-list { max-width: 720px; margin: 32px auto 0; display: flex; flex-direction: column; gap: 12px; }
+  .faq-grupo { max-width: 720px; margin: 24px auto 0; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-2); }
+  .faq-grupo-2 { margin-top: 32px; }
+  .faq-grupo + .faq-list { margin-top: 12px; }
+  .faq-item { background: var(--bg); border: 3px solid var(--ink); border-radius: 20px; padding: 16px 24px; }
   .faq-item { transition: background 150ms ease; }
   .faq-item summary { font-weight: 800; font-size: 14.5px; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; }
   .faq-item summary:hover { text-decoration: underline; text-underline-offset: 3px; }
   .faq-item summary::-webkit-details-marker { display: none; }
-  .faq-item p { margin-top: 10px; font-size: 13.5px; color: var(--ink-2); font-weight: 600; line-height: 1.6; }
+  .faq-item p { margin-top: 8px; font-size: 13.5px; color: var(--ink-2); font-weight: 600; line-height: 1.6; }
+  .faq-item[open] p { animation: faqAbrir 220ms ease both; }
+  @keyframes faqAbrir { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+  @media (prefers-reduced-motion: reduce) { .faq-item[open] p { animation: none; } }
   .chev { transition: transform 0.2s; }
   .faq-item[open] .chev { transform: rotate(180deg); }
 
@@ -236,26 +260,29 @@
   .cta-final .wrap { max-width: 680px; }
   .cta-final h2 { font-size: 28px; }
   @media (min-width: 700px) { .cta-final h2 { font-size: 34px; } }
-  .cta-final p.fp { margin-top: 14px; font-size: 15.5px; color: var(--ink-2); font-weight: 600; line-height: 1.7; }
+  .cta-final p.fp { margin-top: 16px; font-size: 15.5px; color: var(--ink-2); font-weight: 600; line-height: 1.7; }
   .cta-final .cta-row { margin-top: 24px; display: flex; justify-content: center; }
-  .ps { margin-top: 28px; text-align: left; background: var(--surface); border: 3px dashed var(--ink); border-radius: 20px; padding: 16px 18px; font-size: 13px; color: var(--ink-2); font-weight: 600; line-height: 1.6; }
+  .ps { margin-top: 24px; text-align: left; background: var(--surface); border: 3px dashed var(--ink); border-radius: 20px; padding: 16px; font-size: 13px; color: var(--ink-2); font-weight: 600; line-height: 1.6; }
   .ps b { color: var(--ink); }
 
   /* ===== 10. FOOTER ===== */
-  footer.legal { background: var(--ink); color: #cfcfcf; padding: 44px 0 32px; }
+  footer.legal { background: var(--ink); color: #cfcfcf; padding: 48px 0 32px; }
   footer.legal .cols { display: flex; flex-wrap: wrap; gap: 32px; justify-content: space-between; }
   footer.legal .brand { font-family: var(--font-display); font-weight: 800; color: #fff; font-size: 16px; }
-  footer.legal .links { display: flex; flex-wrap: wrap; gap: 18px; font-size: 12.5px; }
+  footer.legal .links { display: flex; flex-wrap: wrap; gap: 16px; font-size: 12.5px; }
   footer.legal .links a, footer.legal .links span { color: #cfcfcf; text-decoration: none; }
   footer.legal .link-soporte { color: var(--amarillo) !important; text-decoration: underline !important; font-weight: 700; }
   footer.legal .pendiente { font-size: 10.5px; color: #8a8a8a; margin-left: 4px; }
-  footer.legal .copy { margin-top: 28px; font-size: 11.5px; color: #8a8a8a; border-top: 1px solid #333; padding-top: 18px; }
+  footer.legal .copy { margin-top: 24px; font-size: 11.5px; color: #8a8a8a; border-top: 1px solid #333; padding-top: 16px; }
 
   /* sticky CTA mobile */
   .sticky-cta { position: fixed; left: 0; right: 0; bottom: 0; z-index: 60; background: var(--bg); border-top: 3px solid var(--ink);
-                padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); display: none; }
-  .sticky-cta .boton { width: 100%; height: 48px; font-size: 13.5px; }
-  @media (max-width: 760px) { .sticky-cta.show { display: block; } }
+                padding: 8px 16px calc(8px + env(safe-area-inset-bottom)); display: none; gap: 8px; align-items: center; }
+  .sticky-cta .boton { flex: 1; height: 48px; font-size: 13.5px; }
+  .sticky-cerrar { width: 48px; height: 48px; flex-shrink: 0; border-radius: 16px; border: 3px solid var(--ink);
+                   background: var(--surface); color: var(--ink); display: flex; align-items: center; justify-content: center; cursor: pointer; }
+  .sticky-cerrar:hover { background: var(--amarillo); }
+  @media (max-width: 760px) { .sticky-cta.show { display: flex; } }
 
   /* Botón flotante: volver arriba */
   .subir-arriba {
@@ -266,7 +293,7 @@
   .subir-arriba.show { display: flex; }
   .subir-arriba:hover { background: var(--amarillo); }
   .subir-arriba:active { transform: scale(0.92); }
-  @media (min-width: 761px) { .subir-arriba { bottom: 28px; } }
+  @media (min-width: 761px) { .subir-arriba { bottom: 24px; } }
 </style>
 </head>
 <body>
@@ -282,27 +309,27 @@
   <div class="wrap hero-grid">
     <div>
       <span class="badge">PARA GERENTES DE HSE</span>
-      <h1 style="margin-top:14px;">Capacita a tu cuadrilla en <em>3 minutos al día</em> — y pruébalo con un código QR</h1>
+      <h1 style="margin-top:16px;">Capacita a tu cuadrilla en <em>3 minutos al día</em> — y pruébalo con un código QR</h1>
       <p class="sub">El Pase de los 3 Minutos convierte las 9 Reglas que Salvan Vidas de la IOGP en un hábito diario. Sin aulas, sin PDFs de 50 páginas, sin señal en el pozo.</p>
       <div class="cta-row">
-        <a href="#oferta" class="boton boton-verde">Probar gratis 14 días</a>
+        <a href="#oferta" class="boton boton-verde">Quiero mi prueba gratis</a>
       </div>
       <div class="prueba-industria">
         <span class="chip">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
         </span>
-        Basado en las 9 Reglas que Salvan Vidas — el estándar publicado por la IOGP (International Association of Oil &amp; Gas Producers) y adoptado por las principales petroleras del mundo.
+        Basado en el estándar IOGP, adoptado por las principales petroleras del mundo.
       </div>
     </div>
     <div class="hero-visual">
       <div class="phone-mini">
         <div class="scr">
           <div class="racha">
-            <p class="l"><svg class="ic-flame" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>Racha de seguridad</p>
+            <p class="l"><svg class="ic-casco" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 17.5h17"/><path d="M5 17.5Q5 7 12 7Q19 7 19 17.5"/><path d="M12 7V4"/></svg>Racha de seguridad</p>
             <p class="n"><span id="rachaNum">0</span> días</p>
           </div>
           <div class="mini-grid">
-            <div class="mini-chip"><p class="n">9/12</p><p class="l">MÓDULOS</p></div>
+            <div class="mini-chip"><p class="n">9/12</p><p class="l">MÓDULOS</p><div class="barra-mini"><div class="barra-mini-fill" id="barraModulos"></div></div></div>
             <div class="mini-chip"><p class="n">2°</p><p class="l">RANKING</p></div>
           </div>
           <div class="mockup-boton" aria-hidden="true">Empezar mi reto</div>
@@ -316,26 +343,26 @@
 
 <!-- 2. PROBLEMA -->
 <section class="problema">
-  <div class="wrap reveal">
-    <h2>¿Te suena familiar?</h2>
+  <div class="wrap">
+    <h2 class="reveal">¿Te suena familiar?</h2>
     <div class="preguntas">
-      <div class="pregunta-card">
+      <div class="pregunta-card reveal">
         <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg></span>
         <p>¿Tus muchachos firman la charla de seguridad en la mañana y a los 10 minutos ya están metiendo la mano en la línea de fuego?</p>
       </div>
-      <div class="pregunta-card">
+      <div class="pregunta-card reveal">
         <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/></svg></span>
         <p>¿Tienes contratistas entrando con certificaciones que son carpetas de papel que nadie alcanza a verificar de verdad?</p>
       </div>
-      <div class="pregunta-card">
+      <div class="pregunta-card reveal">
         <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2-3 4"/><path d="M12 17h.01"/></svg></span>
         <p>¿No tienes forma de saber si tu gente entendió realmente las reglas o solo adivinó en el examen teórico?</p>
       </div>
-      <div class="pregunta-card">
+      <div class="pregunta-card reveal">
         <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span>
         <p>¿Cuando llega el auditor de sorpresa, te pasas días reuniendo papeles para demostrar que la cuadrilla estaba capacitada?</p>
       </div>
-      <div class="pregunta-card">
+      <div class="pregunta-card reveal">
         <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a5 5 0 0 0-5 5c0 3 2 4 2 7h6c0-3 2-4 2-7a5 5 0 0 0-5-5Z"/><path d="M9 18h6M10 21h4"/></svg></span>
         <p>¿Sientes que, si mañana pasa algo en el pozo por un error tonto, la responsabilidad te cae a ti?</p>
       </div>
@@ -348,29 +375,29 @@
   <div class="wrap reveal">
     <h2>El problema no es que no des charlas. Es que nadie prueba que entendieron.</h2>
     <p>Cada mes que sigue igual no es solo papeleo acumulado: es la posibilidad real de una <b>fatalidad que cierra la operación</b>, destruye tu carrera y te lleva a responder legalmente.</p>
-    <p style="margin-top:16px;">Si nada cambia, en 6 meses sigues haciendo inducciones repetitivas por la rotación de contratistas, sin saber <b>qué no saben</b> tus trabajadores — hasta que un near miss te lo diga de la peor forma.</p>
+    <p style="margin-top:16px;">Si nada cambia, en 6 meses sigues haciendo inducciones repetitivas por la rotación de contratistas, sin saber <b>qué no saben</b> tus trabajadores — hasta que un casi-accidente te lo diga de la peor forma.</p>
     <p style="margin-top:16px;">Ya probaste PowerPoint, e-learnings y talleres presenciales: fallan porque solo miden <b>"asistencia"</b>, no comprensión — la gente le da "siguiente, siguiente" sin leer un párrafo.</p>
   </div>
 </section>
 
 <!-- 4. SOLUCIÓN -->
 <section class="solucion">
-  <div class="wrap reveal">
-    <div class="big-idea">
+  <div class="wrap">
+    <div class="big-idea reveal">
       <h2>No es tu gente la que falla la seguridad — es la firma de trámite la que no prueba nada. <span class="mec">El Pase de los 3 Minutos</span> lo reemplaza por una prueba real.</h2>
     </div>
     <div class="pasos">
-      <div class="paso">
+      <div class="paso reveal">
         <span class="num">1</span>
         <h4>El reto del día</h4>
         <p>Cada trabajador recibe un reto de 3 minutos con una foto real del pozo, antes de su turno.</p>
       </div>
-      <div class="paso">
+      <div class="paso reveal">
         <span class="num">2</span>
         <h4>Sin señal, sin excusa</h4>
         <p>Responde aunque no haya conexión. La app sincroniza sola cuando detecta red.</p>
       </div>
-      <div class="paso">
+      <div class="paso reveal">
         <span class="num">3</span>
         <h4>El Pase se actualiza</h4>
         <p>Si acierta, su código QR queda vigente para ese día — listo para cualquier supervisor.</p>
@@ -386,6 +413,7 @@
         <p class="txt">Un código QR que cualquier supervisor escanea y confirma en segundos.</p>
       </div>
     </div>
+    <p class="nota-iogp">El Pase de los 3 Minutos convierte en hábito diario las 9 Reglas que Salvan Vidas — el estándar publicado por la IOGP (International Association of Oil &amp; Gas Producers) y adoptado por las principales petroleras del mundo.</p>
   </div>
 </section>
 
@@ -393,17 +421,17 @@
 <section class="app-dentro">
   <div class="wrap reveal">
     <h2 style="text-align:center; font-size:28px;">Así se ve el Pase de los 3 Minutos por dentro</h2>
-    <p style="text-align:center; margin-top:10px; color:var(--ink-2); font-weight:600;">Mini-demos reales del mecanismo — construidos con el estilo final de la app, no capturas de otra herramienta.</p>
+    <p style="text-align:center; margin-top:8px; color:var(--ink-2); font-weight:600;">Mini-demos reales del mecanismo — construidos con el estilo final de la app, no capturas de otra herramienta.</p>
     <div class="carrusel-wrap">
-      <div class="carrusel" id="carrusel">
+      <div class="carrusel" id="carrusel" tabindex="0" role="group" aria-label="Pantallas de la app, usa las flechas del teclado para moverte">
         <div class="slide">
           <div class="frame"><div class="in">
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:30px;">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:32px;">
               <div class="mini-chip"><p class="n">9/12</p><p class="l">MÓDULOS</p></div>
               <div class="mini-chip"><p class="n">2°</p><p class="l">RANKING</p></div>
             </div>
-            <div class="racha" style="margin-top:10px; padding:12px;">
-              <p class="l" style="font-size:9px;"><svg class="ic-flame" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>RACHA</p>
+            <div class="racha" style="margin-top:8px; padding:12px;">
+              <p class="l" style="font-size:9px;"><svg class="ic-casco" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 17.5h17"/><path d="M5 17.5Q5 7 12 7Q19 7 19 17.5"/><path d="M12 7V4"/></svg>RACHA</p>
               <p class="n" style="font-size:24px;">12 días</p>
             </div>
           </div></div>
@@ -411,17 +439,17 @@
         </div>
         <div class="slide">
           <div class="frame"><div class="in">
-            <p style="font-size:10px; font-weight:800; color:var(--ink-2); margin-top:28px;">MUNDO 1 DE 3</p>
-            <div style="display:flex; flex-direction:column; gap:14px; margin-top:10px;">
-              <div style="display:flex; align-items:center; gap:10px;">
+            <p style="font-size:10px; font-weight:800; color:var(--ink-2); margin-top:24px;">MUNDO 1 DE 3</p>
+            <div style="display:flex; flex-direction:column; gap:16px; margin-top:8px;">
+              <div style="display:flex; align-items:center; gap:8px;">
                 <div class="mini-nodo" style="background:var(--verde);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
                 <span style="font-size:10.5px; font-weight:700;">Permiso de trabajo</span>
               </div>
-              <div style="display:flex; align-items:center; gap:10px;">
+              <div style="display:flex; align-items:center; gap:8px;">
                 <div class="mini-nodo" style="background:var(--amarillo); width:52px; height:52px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><path d="M12 2v10"/></svg></div>
                 <span style="font-size:10.5px; font-weight:800;">Aislamiento de energía</span>
               </div>
-              <div style="display:flex; align-items:center; gap:10px; opacity:0.45;">
+              <div style="display:flex; align-items:center; gap:8px; opacity:0.45;">
                 <div class="mini-nodo" style="background:var(--surface);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c9bf9e" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div>
                 <span style="font-size:10.5px; font-weight:700;">Trabajo en altura</span>
               </div>
@@ -431,19 +459,19 @@
         </div>
         <div class="slide">
           <div class="frame"><div class="in" style="text-align:center;">
-            <div class="mini-qr" style="margin-top:26px;"></div>
-            <p style="margin-top:10px; font-weight:800; font-size:13px;">Luis Fernández</p>
+            <div class="mini-qr" style="margin-top:24px;"></div>
+            <p style="margin-top:8px; font-weight:800; font-size:13px;">Luis Fernández</p>
             <p style="font-size:9.5px; color:var(--ink-2); font-weight:600;">Cuadrilla Pozo 7 · Vigente hoy</p>
           </div></div>
           <p class="label">Tu Pase Digital, listo para el auditor</p>
         </div>
         <div class="slide">
           <div class="frame"><div class="in">
-            <p style="font-size:14px; font-weight:800; margin-top:30px;">¿Cuántos trabajadores tiene tu cuadrilla?</p>
+            <p style="font-size:14px; font-weight:800; margin-top:32px;">¿Cuántos trabajadores tiene tu cuadrilla?</p>
             <div style="display:flex; flex-direction:column; gap:8px; margin-top:16px;">
-              <div style="border:2.5px solid var(--ink); border-radius:10px; padding:10px; font-size:11px; font-weight:700;">Menos de 10</div>
-              <div style="border:2.5px solid var(--ink); background:var(--amarillo); border-radius:10px; padding:10px; font-size:11px; font-weight:800;">Entre 10 y 20</div>
-              <div style="border:2.5px solid var(--ink); border-radius:10px; padding:10px; font-size:11px; font-weight:700;">Más de 20</div>
+              <div style="border:2.5px solid var(--ink); border-radius:14px; padding:8px; font-size:11px; font-weight:700;">Menos de 10</div>
+              <div style="border:2.5px solid var(--ink); background:var(--amarillo); border-radius:14px; padding:8px; font-size:11px; font-weight:800;">Entre 10 y 20</div>
+              <div style="border:2.5px solid var(--ink); border-radius:14px; padding:8px; font-size:11px; font-weight:700;">Más de 20</div>
             </div>
           </div></div>
           <p class="label">Así empieza tu cuadrilla</p>
@@ -453,11 +481,11 @@
         <button type="button" class="flecha" id="carruselPrev" aria-label="Ver pantalla anterior">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
         </button>
-        <div class="dots" role="tablist" aria-label="Pantallas de la app">
-          <button type="button" class="on" role="tab" aria-selected="true" aria-label="Ver: tu racha de seguridad"></button>
-          <button type="button" role="tab" aria-selected="false" aria-label="Ver: las 9 Reglas convertidas en ruta"></button>
-          <button type="button" role="tab" aria-selected="false" aria-label="Ver: tu Pase Digital"></button>
-          <button type="button" role="tab" aria-selected="false" aria-label="Ver: así empieza tu cuadrilla"></button>
+        <div class="dots" aria-label="Pantallas de la app">
+          <button type="button" class="on" aria-current="true" aria-label="Ver: tu racha de seguridad"></button>
+          <button type="button" aria-current="false" aria-label="Ver: las 9 Reglas convertidas en ruta"></button>
+          <button type="button" aria-current="false" aria-label="Ver: tu Pase Digital"></button>
+          <button type="button" aria-current="false" aria-label="Ver: así empieza tu cuadrilla"></button>
         </div>
         <button type="button" class="flecha" id="carruselNext" aria-label="Ver pantalla siguiente">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
@@ -470,7 +498,7 @@
 <!-- 6. OFERTA -->
 <section class="oferta" id="oferta">
   <div class="wrap reveal">
-    <h2>14 días gratis de El Pase de los 3 Minutos, sin tarjeta, para 1 cuadrilla</h2>
+    <h2><em>14 días gratis</em> de El Pase de los 3 Minutos, sin tarjeta, para 1 cuadrilla</h2>
     <p class="sub">Hasta 20 trabajadores, con el panel completo del Gerente de HSE desde el primer día.</p>
 
     <div class="stack">
@@ -478,7 +506,7 @@
         <span class="check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
         <div>
           <h5>Panel completo del Gerente de HSE desde el día 1</h5>
-          <p>No reemplaza tu software EHS: es la capa de adopción diaria que lo alimenta.</p>
+          <p>No reemplaza tu software EHS: es la charla de 3 minutos que tu cuadrilla sí hace todos los días, y que después alimenta tu sistema de siempre.</p>
         </div>
       </div>
       <div class="item">
@@ -503,13 +531,17 @@
         <p class="nombre">Anual</p>
         <p class="precio">US$6.67<small>/usuario/mes</small></p>
         <p class="nota">Se cobra US$80/usuario/año</p>
-        <a href="#oferta" class="boton boton-verde">Empezar prueba gratis</a>
+        <a href="mailto:ventas@hsemasterapp.com?subject=Quiero%20mi%20prueba%20gratis%20(plan%20anual)&body=Hola%2C%20quiero%20activar%20la%20prueba%20gratis%20de%2014%20d%C3%ADas%20del%20plan%20anual%20para%20mi%20cuadrilla." class="boton boton-verde cta-mailto">Quiero mi prueba gratis</a>
+        <p class="cta-fallback">¿No se abrió tu correo? Escríbenos a <b>ventas@hsemasterapp.com</b></p>
+        <p class="garantia-mini">Protegido por la Garantía del Primer Pase</p>
       </div>
       <div class="plan">
         <p class="nombre">Mensual</p>
         <p class="precio">US$8<small>/usuario/mes</small></p>
         <p class="nota">Cancela cuando quieras</p>
-        <a href="#oferta" class="link-secundario">Elegir el plan mensual</a>
+        <a href="mailto:ventas@hsemasterapp.com?subject=Quiero%20mi%20prueba%20gratis%20(plan%20mensual)&body=Hola%2C%20quiero%20activar%20la%20prueba%20gratis%20de%2014%20d%C3%ADas%20del%20plan%20mensual%20para%20mi%20cuadrilla." class="link-secundario cta-mailto">Elegir el plan mensual</a>
+        <p class="cta-fallback">¿No se abrió tu correo? Escríbenos a <b>ventas@hsemasterapp.com</b></p>
+        <p class="garantia-mini">Protegido por la Garantía del Primer Pase</p>
       </div>
     </div>
     <p class="trial-strip">Los 14 días de prueba son iguales en ambos planes — decides después de ver la adopción real de tu cuadrilla.</p>
@@ -532,6 +564,8 @@
 <section class="faq">
   <div class="wrap reveal">
     <h2>Preguntas antes de empezar</h2>
+
+    <p class="faq-grupo">Sobre el uso diario en campo</p>
     <div class="faq-list">
       <details class="faq-item" open>
         <summary>¿Mi gente de campo realmente va a usar esto?
@@ -543,13 +577,7 @@
         <summary>¿Funciona sin señal en el pozo o la plataforma?
           <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
         </summary>
-        <p>Sí. La app es 100% offline-first: el reto se completa sin conexión y sincroniza solo cuando el teléfono detecta red.</p>
-      </details>
-      <details class="faq-item">
-        <summary>¿Esto reemplaza nuestro software EHS actual?
-          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-        </summary>
-        <p>No. Es la capa de adopción móvil diaria que alimenta tu sistema actual — no una plataforma más para llenar formularios.</p>
+        <p>Sí. La app funciona sin conexión a internet: el reto se completa sin señal y sincroniza solo cuando el teléfono detecta red.</p>
       </details>
       <details class="faq-item">
         <summary>¿Se puede usar donde no se permiten celulares?
@@ -558,16 +586,26 @@
         <p>Sí — se usa en la charla pre-turno, el comedor o la oficina de campo, o desde dispositivos industriales ya autorizados.</p>
       </details>
       <details class="faq-item">
-        <summary>¿Qué pasa si no tengo presupuesto este trimestre?
-          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-        </summary>
-        <p>El trial es gratis 14 días y sin tarjeta — decides recién cuando veas la adopción real de tu cuadrilla, no antes.</p>
-      </details>
-      <details class="faq-item">
         <summary>¿Los supervisores mayores se van a complicar con la tecnología?
           <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
         </summary>
         <p>La interfaz es de un solo toque, sin tecnicismos — pensada para que la use el trabajador más terco de 50 años.</p>
+      </details>
+    </div>
+
+    <p class="faq-grupo faq-grupo-2">Sobre tu decisión de compra</p>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>¿Esto reemplaza nuestro software EHS actual?
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <p>No. Es la charla de 3 minutos que tu cuadrilla hace de verdad todos los días en el celular, y que después le pasa los datos a tu sistema actual — no una plataforma más para llenar formularios.</p>
+      </details>
+      <details class="faq-item">
+        <summary>¿Qué pasa si no tengo presupuesto este trimestre?
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <p>El trial es gratis 14 días y sin tarjeta — decides recién cuando veas la adopción real de tu cuadrilla, no antes.</p>
       </details>
     </div>
   </div>
@@ -576,10 +614,10 @@
 <!-- 9. CTA FINAL EMOCIONAL -->
 <section class="cta-final">
   <div class="wrap reveal">
-    <h2>Imagina abrir tu panel mañana a las 5 AM y ver, en 10 segundos, que toda tu cuadrilla completó su reto de hoy.</h2>
+    <h2>Imagina abrir tu panel mañana a las 5 AM y ver, <em>en 10 segundos</em>, que toda tu cuadrilla completó su reto de hoy.</h2>
     <p class="fp">Ese es el día del líder que modernizó la cultura de seguridad de su empresa — no el que frena el trabajo. 14 días gratis, sin tarjeta, con la Garantía del Primer Pase.</p>
     <div class="cta-row">
-      <a href="#oferta" class="boton boton-verde">Probar gratis 14 días</a>
+      <a href="#oferta" class="boton boton-verde">Quiero mi prueba gratis</a>
     </div>
     <div class="ps">
       <b>PD:</b> El Pase de los 3 Minutos convierte las 9 Reglas que Salvan Vidas en un hábito diario de 3 minutos, con un código QR que prueba quién está realmente listo para entrar al pozo. Hoy: 14 días gratis, sin tarjeta, para 1 cuadrilla de hasta 20 trabajadores, con la Garantía del Primer Pase incluida.
@@ -605,6 +643,9 @@
 
 <div class="sticky-cta" id="stickyCta">
   <a href="#oferta" class="boton boton-verde">Quiero mi prueba gratis</a>
+  <button type="button" class="sticky-cerrar" id="stickyCerrar" aria-label="Cerrar este aviso">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+  </button>
 </div>
 
 <button type="button" class="subir-arriba" id="subirArriba" aria-label="Volver arriba">
@@ -630,15 +671,26 @@
     }
   }
 
+  // Barra que se dibuja: módulos completados (9/12 = 75%)
+  const barraModulos = document.getElementById('barraModulos');
+  if (barraModulos) {
+    requestAnimationFrame(() => { barraModulos.style.width = '75%'; });
+  }
+
   const heroBtn = document.querySelector('.hero .boton');
   const sticky = document.getElementById('stickyCta');
   const subirArriba = document.getElementById('subirArriba');
+  let stickyDescartado = false;
   const io = new IntersectionObserver(([e]) => {
-    sticky.classList.toggle('show', !e.isIntersecting);
+    sticky.classList.toggle('show', !e.isIntersecting && !stickyDescartado);
     subirArriba.classList.toggle('show', !e.isIntersecting);
   }, { threshold: 0 });
   io.observe(heroBtn);
   subirArriba.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  document.getElementById('stickyCerrar').addEventListener('click', () => {
+    stickyDescartado = true;
+    sticky.classList.remove('show');
+  });
 
   // FAQ: acordeón exclusivo — abrir uno cierra los demás (reduce carga cognitiva)
   document.querySelectorAll('.faq-item').forEach((item) => {
@@ -652,7 +704,7 @@
   const carrusel = document.getElementById('carrusel');
   const dots = document.querySelectorAll('.dots button');
   const slides = carrusel.querySelectorAll('.slide');
-  const anchoSlide = () => slides[0].getBoundingClientRect().width + 18; // + gap
+  const anchoSlide = () => slides[0].getBoundingClientRect().width + 16; // + gap
 
   function irASlide(i) {
     carrusel.scrollTo({ left: i * anchoSlide(), behavior: 'smooth' });
@@ -668,6 +720,20 @@
     const actual = Math.round(carrusel.scrollLeft / anchoSlide());
     irASlide(Math.min(slides.length - 1, actual + 1));
   });
+  carrusel.addEventListener('keydown', (e) => {
+    const actual = Math.round(carrusel.scrollLeft / anchoSlide());
+    if (e.key === 'ArrowRight') { e.preventDefault(); irASlide(Math.min(slides.length - 1, actual + 1)); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); irASlide(Math.max(0, actual - 1)); }
+  });
+
+  // Feedback inmediato al abrir el correo (el mailto tarda un instante en abrir el cliente)
+  document.querySelectorAll('.cta-mailto').forEach((boton) => {
+    const textoOriginal = boton.textContent;
+    boton.addEventListener('click', () => {
+      boton.textContent = 'Abriendo tu correo…';
+      setTimeout(() => { boton.textContent = textoOriginal; }, 2000);
+    });
+  });
   const flechaPrev = document.getElementById('carruselPrev');
   const flechaNext = document.getElementById('carruselNext');
   function actualizarFlechas(idx) {
@@ -676,7 +742,7 @@
   }
   carrusel.addEventListener('scroll', () => {
     const idx = Math.round(carrusel.scrollLeft / anchoSlide());
-    dots.forEach((d, i) => { d.classList.toggle('on', i === idx); d.setAttribute('aria-selected', i === idx); });
+    dots.forEach((d, i) => { d.classList.toggle('on', i === idx); d.setAttribute('aria-current', i === idx); });
     actualizarFlechas(idx);
   });
   actualizarFlechas(0);
