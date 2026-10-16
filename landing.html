@@ -17,7 +17,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500..800&family=DM+Sans:wght@400..800&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
   :root {
     --bg: #fffaf0; --surface: #ffffff; --ink: #1a1a1a; --ink-2: #6b6b6b;
     --amarillo: #ffe600; --amarillo-sombra: #e0bf00;
@@ -69,7 +69,7 @@
   /* ===== HEADER ===== */
   header.top { position: sticky; top: 0; z-index: 50; background: var(--bg); }
   header.top .wrap { display: flex; align-items: center; justify-content: space-between; padding-top: 16px; padding-bottom: 16px; border-bottom: 3px solid var(--ink); }
-  .hazard-bar { height: 6px; background: repeating-linear-gradient(135deg, var(--ink) 0 14px, var(--amarillo-sombra) 14px 28px); }
+  .hazard-bar { height: 10px; background: repeating-linear-gradient(135deg, var(--ink) 0 14px, var(--amarillo-sombra) 14px 28px); }
   .logo { font-family: var(--font-display); font-size: 18px; font-weight: 800; display: flex; align-items: center; gap: 8px;
            color: var(--ink); text-decoration: none; }
   .logo .dot { width: 30px; height: 30px; border-radius: 14px; background: var(--amarillo); border: 2px solid var(--ink); }
@@ -94,7 +94,8 @@
   .phone-stage { position: relative; width: 220px; margin: 0 auto; }
   .phone-mini { position: relative; width: 220px; aspect-ratio: 9/18; border: 8px solid var(--ink); border-radius: 32px;
                 background: var(--bg); overflow: hidden; box-shadow: 0 20px 44px rgb(0 0 0 / 0.14); }
-  .phone-mini .scr { padding: 12px; box-shadow: inset 0 3px 10px rgb(0 0 0 / 0.08); }
+  .phone-mini .scr { padding: 12px; height: 100%; box-shadow: inset 0 3px 10px rgb(0 0 0 / 0.08);
+                      display: flex; flex-direction: column; justify-content: center; }
   .phone-mini .racha { background: var(--amarillo); border: 3px solid var(--ink); border-radius: 20px; padding: 12px; }
   .phone-mini .mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
   .mockup-boton {
@@ -126,8 +127,9 @@
                    box-shadow: 0 4px 0 -1px rgb(26 26 26 / 0.05), 0 6px 14px rgb(26 26 26 / 0.06);
                    transition: transform 150ms ease, box-shadow 150ms ease; }
   .pregunta-card:hover { transform: translateY(-3px); box-shadow: 0 8px 0 -4px rgb(26 26 26 / 0.12), 0 10px 16px rgb(26 26 26 / 0.08); }
-  .pregunta-card .ic { width: 42px; height: 42px; border-radius: 14px; background: var(--rojo); border: 2px solid var(--ink);
+  .pregunta-card .ic { width: 42px; height: 42px; border-radius: 14px; background: var(--ink); border: 2px solid var(--ink);
                         display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .pregunta-card .ic.urgente { background: var(--rojo); }
   .pregunta-card p { font-size: 14px; font-weight: 700; }
 
   /* ===== 3. AGITACIÓN ===== */
@@ -137,8 +139,9 @@
   @media (min-width: 700px) { .agita-grid { grid-template-columns: repeat(3, 1fr); } }
   .agita-card { background: var(--surface); border: 3px solid var(--ink); border-radius: 20px; padding: 16px;
                 box-shadow: 0 4px 0 -1px rgb(26 26 26 / 0.05), 0 6px 14px rgb(26 26 26 / 0.06); }
-  .agita-card .ic { width: 42px; height: 42px; border-radius: 14px; background: var(--rojo); border: 2px solid var(--ink);
+  .agita-card .ic { width: 42px; height: 42px; border-radius: 14px; background: var(--ink); border: 2px solid var(--ink);
                      display: flex; align-items: center; justify-content: center; }
+  .agita-card .ic.urgente { background: var(--rojo); }
   .agita-card h3 { margin-top: 12px; font-size: 15px; font-weight: 800; }
   .agita-card p { margin-top: 6px; font-size: 14px; font-weight: 600; color: var(--ink-2); line-height: 1.5; }
   .agita-card p b { color: var(--ink); }
@@ -179,7 +182,7 @@
   .phone-mini::after, .slide .frame::after { content: 'Vista previa'; position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
                           background: var(--ink); color: #fff; font-size: 11px; font-weight: 800; text-transform: uppercase;
                           letter-spacing: 0.04em; padding: 5px 10px; border-radius: 999px; white-space: nowrap; }
-  .slide .frame .in { padding: 16px; height: 100%; }
+  .slide .frame .in { padding: 16px; height: 100%; display: flex; flex-direction: column; justify-content: center; }
   .slide .label { margin-top: 12px; font-size: 13px; font-weight: 800; text-align: center; }
   .carrusel-controles { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 4px; }
   .carrusel-hint { margin-top: 12px; text-align: center; font-size: 13px; font-weight: 700; color: var(--ink-2); }
@@ -376,7 +379,7 @@
     <h2 class="reveal">¿Te suena familiar?</h2>
     <div class="preguntas">
       <div class="pregunta-card reveal">
-        <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg></span>
+        <span class="ic urgente"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg></span>
         <p>¿Tus muchachos firman la charla en la mañana y a los 10 minutos ya están en la línea de fuego?</p>
       </div>
       <div class="pregunta-card reveal">
@@ -392,7 +395,7 @@
         <p>¿Cuando llega el auditor de sorpresa, te pasas días reuniendo papeles para probar que estaban capacitados?</p>
       </div>
       <div class="pregunta-card reveal">
-        <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a5 5 0 0 0-5 5c0 3 2 4 2 7h6c0-3 2-4 2-7a5 5 0 0 0-5-5Z"/><path d="M9 18h6M10 21h4"/></svg></span>
+        <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg></span>
         <p>¿Sientes que, si mañana pasa algo en el pozo por un error tonto, la responsabilidad te cae a ti?</p>
       </div>
     </div>
@@ -405,7 +408,7 @@
     <h2>El problema no es que no des charlas. Es que <em>nadie prueba</em> que entendieron.</h2>
     <div class="agita-grid">
       <div class="agita-card reveal">
-        <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
+        <span class="ic urgente"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
         <h3>Cada mes igual no es solo papeleo</h3>
         <p>Es exposición real a una <b>fatalidad que cierra la operación</b> y te hace responder legalmente.</p>
       </div>
@@ -422,6 +425,8 @@
     </div>
   </div>
 </section>
+
+<div class="hazard-bar" aria-hidden="true"></div>
 
 <!-- 4. SOLUCIÓN -->
 <section class="solucion">
