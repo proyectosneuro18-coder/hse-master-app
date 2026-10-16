@@ -99,7 +99,7 @@
   .mockup-boton {
     width: 100%; margin-top: 8px; height: 36px; border-radius: 16px; border: 3px solid var(--ink);
     background: var(--verde-sombra); color: var(--ink); font-family: var(--font-display); font-weight: 800;
-    font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.01em;
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.01em;
     display: flex; align-items: center; justify-content: center;
     pointer-events: none; cursor: default; opacity: 0.55;
   }
@@ -137,7 +137,7 @@
   .agita-card { background: var(--surface); border: 3px solid var(--ink); border-radius: 20px; padding: 16px; }
   .agita-card .ic { width: 42px; height: 42px; border-radius: 14px; background: var(--rojo); border: 2px solid var(--ink);
                      display: flex; align-items: center; justify-content: center; }
-  .agita-card h4 { margin-top: 12px; font-size: 15px; font-weight: 800; }
+  .agita-card h3 { margin-top: 12px; font-size: 15px; font-weight: 800; }
   .agita-card p { margin-top: 6px; font-size: 13.5px; font-weight: 600; color: var(--ink-2); line-height: 1.5; }
   .agita-card p b { color: var(--ink); }
 
@@ -154,7 +154,7 @@
   .paso .num { position: absolute; top: -16px; left: 16px; width: 36px; height: 36px; border-radius: 999px;
                background: var(--amarillo); border: 3px solid var(--ink); display: flex; align-items: center; justify-content: center;
                font-family: var(--font-display); font-weight: 800; font-size: 15px; }
-  .paso h4 { margin-top: 12px; font-size: 16px; }
+  .paso h3 { margin-top: 12px; font-size: 16px; }
   .paso p { margin-top: 8px; font-size: 13.5px; color: var(--ink-2); font-weight: 600; }
   .antes-despues { margin-top: 32px; display: grid; gap: 16px; grid-template-columns: 1fr; }
   @media (min-width: 700px) { .antes-despues { grid-template-columns: 1fr 1fr; } }
@@ -207,7 +207,7 @@
   .stack .item:last-child { border-bottom: none; }
   .stack .check { width: 24px; height: 24px; border-radius: 999px; background: var(--verde); border: 2px solid var(--ink);
                   display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .stack .item h5 { font-size: 14px; font-weight: 800; }
+  .stack .item h3 { font-size: 14px; font-weight: 800; }
   .stack .item p { font-size: 12.5px; color: var(--ink-2); font-weight: 600; margin-top: 2px; }
   .planes { margin: 32px auto 0; max-width: 680px; display: grid; gap: 16px; grid-template-columns: 1fr; }
   @media (min-width: 640px) { .planes { grid-template-columns: 1fr 1fr; } }
@@ -229,6 +229,7 @@
   .plan .precio small { font-size: 13px; font-weight: 700; font-family: var(--font-body); }
   .plan .nota { font-size: 12px; font-weight: 700; color: var(--ink-2); margin-top: 4px; }
   .plan.rec .nota { color: var(--ink); }
+  .plan.rec .garantia-mini { color: var(--ink); }
   .plan .boton { width: 100%; margin-top: 16px; height: 56px; font-size: 13px; }
   .link-secundario {
     display: flex; align-items: center; justify-content: center; width: 100%; margin-top: 16px; height: 48px;
@@ -322,6 +323,7 @@
   </div>
 </header>
 
+<main>
 <!-- 1. HERO -->
 <section class="hero">
   <div class="wrap hero-grid">
@@ -397,17 +399,17 @@
     <div class="agita-grid">
       <div class="agita-card reveal">
         <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
-        <h4>Cada mes igual no es solo papeleo</h4>
+        <h3>Cada mes igual no es solo papeleo</h3>
         <p>Es exposición real a una <b>fatalidad que cierra la operación</b> y te hace responder legalmente.</p>
       </div>
       <div class="agita-card reveal">
         <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2 21 6 17 10"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22 3 18 7 14"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></span>
-        <h4>En 6 meses, el mismo problema</h4>
+        <h3>En 6 meses, el mismo problema</h3>
         <p>Sigues sin saber <b>qué no saben</b> tus trabajadores — hasta que un casi-accidente te lo diga.</p>
       </div>
       <div class="agita-card reveal">
         <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6M9 9l6 6"/></svg></span>
-        <h4>Ya probaste y no funcionó</h4>
+        <h3>Ya probaste y no funcionó</h3>
         <p>PowerPoint, e-learnings, talleres: miden <b>"asistencia"</b>, no comprensión.</p>
       </div>
     </div>
@@ -424,17 +426,17 @@
     <div class="pasos">
       <div class="paso reveal">
         <span class="num">1</span>
-        <h4>El reto del día</h4>
+        <h3>El reto del día</h3>
         <p>Cada trabajador recibe un reto de 3 minutos con una foto real del pozo, antes de su turno.</p>
       </div>
       <div class="paso reveal">
         <span class="num">2</span>
-        <h4>Sin señal, sin excusa</h4>
+        <h3>Sin señal, sin excusa</h3>
         <p>Responde aunque no haya conexión. La app sincroniza sola cuando detecta red.</p>
       </div>
       <div class="paso reveal">
         <span class="num">3</span>
-        <h4>El Pase se actualiza</h4>
+        <h3>El Pase se actualiza</h3>
         <p>Si acierta, su código QR queda vigente para ese día — listo para cualquier supervisor.</p>
       </div>
     </div>
@@ -540,21 +542,21 @@
       <div class="item">
         <span class="check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
         <div>
-          <h5>Panel completo del Gerente de HSE desde el día 1</h5>
+          <h3>Panel completo del Gerente de HSE desde el día 1</h3>
           <p>No reemplaza tu software EHS: es la charla de 3 minutos que tu cuadrilla sí hace todos los días, y que después alimenta tu sistema de siempre.</p>
         </div>
       </div>
       <div class="item">
         <span class="check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
         <div>
-          <h5>Plantilla de inducción para contratistas nuevos</h5>
+          <h3>Plantilla de inducción para contratistas nuevos</h3>
           <p>Para no perder la mitad del mes repitiendo la misma inducción por la rotación de personal.</p>
         </div>
       </div>
       <div class="item">
         <span class="check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
         <div>
-          <h5>Configuración guiada de tu primera cuadrilla</h5>
+          <h3>Configuración guiada de tu primera cuadrilla</h3>
           <p>En minutos, sin rogarle a tu departamento de TI durante seis meses.</p>
         </div>
       </div>
@@ -661,6 +663,7 @@
     </div>
   </div>
 </section>
+</main>
 
 <!-- 10. FOOTER LEGAL -->
 <footer class="legal">
