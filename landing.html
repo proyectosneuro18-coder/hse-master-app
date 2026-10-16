@@ -91,7 +91,7 @@
   .hero .cta-row { margin-top: 24px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
   .hero .cta-row .boton { width: 100%; }
   @media (min-width: 480px) { .hero .cta-row .boton { width: auto; } }
-  .prueba-industria { margin-top: 16px; display: flex; align-items: center; gap: 12px; font-size: 12.5px; font-weight: 700; color: var(--ink-2); }
+  .prueba-industria { margin-top: 16px; display: flex; align-items: center; gap: 12px; font-size: 12px; font-weight: 700; color: var(--ink-2); }
   .prueba-industria .chip { width: 26px; height: 26px; border-radius: 14px; background: var(--surface); border: 2px solid var(--ink);
                              display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .phone-stage { position: relative; width: 220px; margin: 0 auto; }
@@ -220,7 +220,7 @@
   .stack .check { width: 24px; height: 24px; border-radius: 999px; background: var(--verde); border: 2px solid var(--ink);
                   display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .stack .item h3 { font-size: 14px; font-weight: 800; }
-  .stack .item p { font-size: 12.5px; color: var(--ink-2); font-weight: 600; margin-top: 2px; }
+  .stack .item p { font-size: 12px; color: var(--ink-2); font-weight: 600; margin-top: 2px; }
   .planes { margin: 32px auto 0; max-width: 680px; display: grid; gap: 16px; grid-template-columns: 1fr; }
   @media (min-width: 640px) { .planes { grid-template-columns: 1fr 1fr; } }
   .plan { background: var(--bg); border: 3px solid var(--ink); border-radius: 20px; padding: 24px; position: relative; }
@@ -245,9 +245,14 @@
   .link-secundario { background: var(--surface); color: var(--ink-2); border-color: var(--ink-2); border-bottom: 4px solid var(--ink-2); font-size: 13px; }
   .link-secundario:hover { background: var(--bg); }
   .trial-strip { max-width: 680px; margin: 24px auto 0; text-align: center; font-size: 13px; font-weight: 700; color: var(--ink-2); }
-  .mailto-status { margin-top: 10px; display: none; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: var(--verde-sombra); }
+  .mailto-status { margin-top: 10px; display: none; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: var(--ink); text-align: left; }
   .mailto-status.show { display: flex; }
   .mailto-status svg { flex-shrink: 0; }
+  .link-correo { color: var(--azul-sombra); font-weight: 800; }
+  .copiar-correo { background: none; border: none; padding: 0; margin: 0; font: inherit; font-weight: 800;
+                   color: var(--azul-sombra); text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
+  .copiar-correo:hover { color: var(--ink); }
+  .copiar-correo.copiado { color: var(--ink); text-decoration: none; }
 
   /* ===== 7. GARANTÍA ===== */
   .garantia .wrap { max-width: 720px; text-align: center; }
@@ -290,23 +295,22 @@
   footer.legal { background: var(--ink); color: #cfcfcf; padding: 48px 0 32px; }
   footer.legal .cols { display: flex; flex-wrap: wrap; gap: 32px; justify-content: space-between; }
   footer.legal .brand { font-family: var(--font-display); font-weight: 800; color: #fff; font-size: 16px; }
-  footer.legal .links { display: flex; flex-wrap: wrap; gap: 16px; font-size: 12.5px; }
+  footer.legal .links { display: flex; flex-wrap: wrap; gap: 16px; font-size: 12px; }
   footer.legal .links a, footer.legal .links span { color: #cfcfcf; text-decoration: none; }
   footer.legal .link-soporte { color: var(--amarillo) !important; text-decoration: underline !important; font-weight: 700; }
   footer.legal .pendiente { font-size: 12px; color: #8a8a8a; margin-left: 4px; }
-  footer.legal .copy { margin-top: 24px; font-size: 11.5px; color: #8a8a8a; border-top: 1px solid #333; padding-top: 16px; }
+  footer.legal .copy { margin-top: 24px; font-size: 11px; color: #8a8a8a; border-top: 1px solid #333; padding-top: 16px; }
 
   /* sticky CTA mobile */
   .sticky-cta { position: fixed; left: 0; right: 0; bottom: 0; z-index: 60; background: var(--bg); border-top: 3px solid var(--ink);
                 padding: 8px 16px calc(8px + env(safe-area-inset-bottom)); display: flex; flex-direction: column; gap: 6px;
                 opacity: 0; transform: translateY(100%); visibility: hidden;
                 transition: opacity 250ms ease, transform 250ms ease, visibility 0s 250ms; }
-  .sticky-nav { display: none; gap: 16px; justify-content: center; font-size: 11.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.02em; }
+  .sticky-nav { display: flex; gap: 16px; justify-content: center; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.02em; }
   .sticky-nav a { color: var(--ink-2); text-decoration: none; }
   .sticky-nav a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
-  .sticky-cta.past-oferta .sticky-nav { display: flex; }
   .sticky-cta-row { display: flex; gap: 8px; align-items: center; }
-  .sticky-cta .boton { flex: 1; height: 48px; font-size: 13.5px; }
+  .sticky-cta .boton { flex: 1; height: 48px; font-size: 13px; }
   .sticky-cerrar { width: 48px; height: 48px; flex-shrink: 0; border-radius: 16px; border: 3px solid var(--ink);
                    background: var(--surface); color: var(--ink); display: flex; align-items: center; justify-content: center; cursor: pointer; }
   .sticky-cerrar:hover { background: var(--amarillo); }
@@ -608,11 +612,9 @@
         <p class="mailto-status" aria-live="polite"></p>
       </div>
     </div>
-    <p class="trial-strip">¿No se abrió tu correo? Escríbenos a <b>ventas@hsemasterapp.com</b>.<br>Los 14 días de prueba son iguales en ambos planes — decides después de ver la adopción real de tu cuadrilla. Respaldados por el Compromiso del Primer Pase.</p>
+    <p class="trial-strip">¿No se abrió tu correo? Escríbenos a <a href="mailto:ventas@hsemasterapp.com" class="link-correo">ventas@hsemasterapp.com</a> o <button type="button" class="copiar-correo" data-correo="ventas@hsemasterapp.com">cópialo</button>.<br>Los 14 días de prueba son iguales en ambos planes — decides después de ver la adopción real de tu cuadrilla. Respaldados por el Compromiso del Primer Pase.</p>
   </div>
 </section>
-
-<div id="ofertaSentinel"></div>
 
 <!-- 7. GARANTÍA -->
 <section class="garantia" id="garantia">
@@ -760,14 +762,6 @@
     subirArriba.classList.toggle('show', !e.isIntersecting);
   }, { threshold: 0 });
   io.observe(heroBtn);
-
-  // Accesos de sección en el sticky-CTA: aparecen solo tras pasar la Oferta
-  const ofertaSentinel = document.getElementById('ofertaSentinel');
-  const ofertaIo = new IntersectionObserver(([e]) => {
-    sticky.classList.toggle('past-oferta', e.boundingClientRect.top < 0);
-  }, { threshold: 0 });
-  ofertaIo.observe(ofertaSentinel);
-
   subirArriba.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
   document.getElementById('stickyCerrar').addEventListener('click', () => {
     stickyDescartado = true;
@@ -814,8 +808,27 @@
     const estado = boton.nextElementSibling;
     if (!estado || !estado.classList.contains('mailto-status')) return;
     boton.addEventListener('click', () => {
-      estado.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Tu correo debería haberse abierto. Si no, escríbenos a ventas@hsemasterapp.com.';
+      estado.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Tu correo debería haberse abierto. Si no, escríbenos a <a href="mailto:ventas@hsemasterapp.com" class="link-correo">ventas@hsemasterapp.com</a> o cópialo aquí abajo.';
       estado.classList.add('show');
+    });
+  });
+
+  // Copiar el correo: a diferencia del mailto, esto SÍ se puede confirmar de verdad
+  document.querySelectorAll('.copiar-correo').forEach((boton) => {
+    const textoOriginal = boton.textContent;
+    boton.addEventListener('click', async () => {
+      const correo = boton.dataset.correo;
+      try {
+        await navigator.clipboard.writeText(correo);
+      } catch {
+        const area = document.createElement('textarea');
+        area.value = correo; area.style.position = 'fixed'; area.style.opacity = '0';
+        document.body.appendChild(area); area.select();
+        document.execCommand('copy'); document.body.removeChild(area);
+      }
+      boton.textContent = '¡Copiado!';
+      boton.classList.add('copiado');
+      setTimeout(() => { boton.textContent = textoOriginal; boton.classList.remove('copiado'); }, 2000);
     });
   });
   const flechaPrev = document.getElementById('carruselPrev');
