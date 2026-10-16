@@ -17,7 +17,8 @@
 
 ## Brand kit final (dirección elegida: "Casco de Oro")
 - Fondo: #FFFAF0 (blanco cálido) · Superficie: #FFFFFF · Texto 1º/2º: #1A1A1A / #6B6B6B
-- Acento primario: #FFC800 (amarillo — CTA secundarias, bloque héroe de la racha, plan recomendado del paywall, fondo del QR)
+- Acento primario: #FFE600 (amarillo — CTA secundarias, bloque héroe de la racha, plan recomendado del paywall, fondo del QR)
+  - ⚠️ AJUSTE (Sesión 3, ronda 23 de revisión de landing): el original #FFC800 era el hex EXACTO del "Bee Yellow" de Duolingo — el mismo motivo por el que ya se había rotado verde/azul/rojo en la ronda 18, pero esta vez sobre el acento MÁS repetido de toda la pantalla (logo, botones, racha, badge de oferta, QR). Se rotó +7° hacia un amarillo ligeramente menos naranja, manteniendo el carácter cálido de "Casco de Oro" (no se saltó a un amarillo-limón frío), verificando que no se acerque al hue del rojo (~16°) ni se confunda con verde, y reverificando contraste WCAG en cada uso real (ink sobre amarillo, amarillo sobre fondo oscuro del footer) — todas las combinaciones quedaron con el mismo margen o mejor que antes. Sigue siendo la MISMA dirección "Casco de Oro", no una redecisión.
 - Acentos de apoyo (multicolor, cada uno con su propio uso fijo, nunca intercambiables):
   - Verde #1BCC02 (sombra #1B9F03): logro/acción principal — el botón CTA de avanzar, los checks de competencias vigentes.
   - Azul #3E7EF7 (sombra #0A4299): navegación/información — tab activo, palabras clave destacadas en headlines.

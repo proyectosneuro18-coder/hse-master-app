@@ -20,7 +20,7 @@
   html { scroll-behavior: smooth; }
   :root {
     --bg: #fffaf0; --surface: #ffffff; --ink: #1a1a1a; --ink-2: #6b6b6b;
-    --amarillo: #ffc800; --amarillo-sombra: #e0a500;
+    --amarillo: #ffe600; --amarillo-sombra: #e0bf00;
     --verde: #1bcc02; --verde-sombra: #1b9f03;
     --azul: #3e7ef7; --azul-sombra: #0a4299;
     --rojo: #ff4e0e; --rojo-sombra: #c75126;
@@ -90,8 +90,8 @@
   .prueba-industria { margin-top: 16px; display: flex; align-items: center; gap: 12px; font-size: 12.5px; font-weight: 700; color: var(--ink-2); }
   .prueba-industria .chip { width: 26px; height: 26px; border-radius: 14px; background: var(--surface); border: 2px solid var(--ink);
                              display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .hero-visual { position: relative; }
-  .phone-mini { width: 220px; margin: 0 auto; aspect-ratio: 9/18; border: 8px solid var(--ink); border-radius: 32px;
+  .phone-stage { position: relative; width: 220px; margin: 0 auto; }
+  .phone-mini { width: 220px; aspect-ratio: 9/18; border: 8px solid var(--ink); border-radius: 32px;
                 background: var(--bg); overflow: hidden; box-shadow: 0 20px 44px rgb(0 0 0 / 0.14); }
   .phone-mini .scr { padding: 12px; box-shadow: inset 0 3px 10px rgb(0 0 0 / 0.08); }
   .phone-mini .racha { background: var(--amarillo); border: 3px solid var(--ink); border-radius: 20px; padding: 12px; }
@@ -334,21 +334,23 @@
       </div>
     </div>
     <div class="hero-visual">
-      <div class="phone-mini">
-        <div class="scr">
-          <div class="racha">
-            <p class="l"><svg class="ic-casco" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 17.5h17"/><path d="M5 17.5Q5 7 12 7Q19 7 19 17.5"/><path d="M12 7V4"/></svg>Racha de seguridad</p>
-            <p class="n"><span id="rachaNum">0</span> días</p>
+      <div class="phone-stage">
+        <div class="phone-mini">
+          <div class="scr">
+            <div class="racha">
+              <p class="l"><svg class="ic-casco" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 17.5h17"/><path d="M5 17.5Q5 7 12 7Q19 7 19 17.5"/><path d="M12 7V4"/></svg>Racha de seguridad</p>
+              <p class="n"><span id="rachaNum">0</span> días</p>
+            </div>
+            <div class="mini-grid">
+              <div class="mini-chip"><p class="n">9/12</p><p class="l">MÓDULOS</p><div class="barra-mini"><div class="barra-mini-fill" id="barraModulos"></div></div></div>
+              <div class="mini-chip"><p class="n">2°</p><p class="l">RANKING</p></div>
+            </div>
+            <div class="mockup-boton" aria-hidden="true">Empezar mi reto</div>
           </div>
-          <div class="mini-grid">
-            <div class="mini-chip"><p class="n">9/12</p><p class="l">MÓDULOS</p><div class="barra-mini"><div class="barra-mini-fill" id="barraModulos"></div></div></div>
-            <div class="mini-chip"><p class="n">2°</p><p class="l">RANKING</p></div>
-          </div>
-          <div class="mockup-boton" aria-hidden="true">Empezar mi reto</div>
         </div>
+        <span class="float-chip a"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>LOTO completado</span>
+        <span class="float-chip b"><span class="qr-mini" aria-hidden="true"></span>Pase QR vigente hoy</span>
       </div>
-      <span class="float-chip a"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>LOTO completado</span>
-      <span class="float-chip b"><span class="qr-mini" aria-hidden="true"></span>Pase QR vigente hoy</span>
     </div>
   </div>
 </section>
