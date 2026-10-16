@@ -1,5 +1,5 @@
 # VEREDICTO revisor-visual — landing
-Fecha: 2026-10-15 00:00
+Fecha: 2026-10-16 00:00
 Screenshot: docs/revisiones/landing-375.png
 Usabilidad: 30/40
 Craft: 14/20
@@ -7,8 +7,8 @@ Copy (si vende): 19/20
 Fidelidad (si hubo referencia): N-A
 Veredicto: NO LISTA
 Top defectos:
-1. [Sección Oferta, h2 "14 días gratis de El Pase de los 3 Minutos…"] y [CTA final, h2 "Imagina abrir tu panel mañana a las 5 AM…"] — ambos titulares de las dos secciones de mayor peso de conversión están en texto plano, sin ninguna palabra clave resaltada en color de acento (a diferencia del Hero y la Solución, que sí usan `<em>`/`<span class="mec">`) → envolver "El Pase de los 3 Minutos"/"14 días gratis" y "5 AM"/"10 segundos" en el mismo tratamiento de énfasis azul que ya usan Hero y Solución.
-2. [Botones mailto "Quiero mi prueba gratis" / "Elegir el plan mensual", sección Oferta y CTA final] — el CTA principal de conversión abre el cliente de correo del sistema sin ninguna señal en el instante del clic; si el cliente de correo tarda o no está configurado, el usuario no sabe si pasó algo (la línea de respaldo existe pero está fuera del momento del clic) → agregar micro-feedback inmediato (ej. texto del botón cambia a "Abriendo tu correo…" por 1-2s tras el clic).
-3. [Hero, chip con check verde antes del texto "Basado en las 9 Reglas…"] — `.prueba-industria .chip` usa `border-radius: 8px` mientras el resto de chips del kit (`.float-chip`, `.mini-chip`) usan 14px → unificar a 14px.
-4. [Barra fija inferior "Quiero mi prueba gratis" que aparece al hacer scroll] — no tiene forma de cerrarse/descartarse; queda fija el resto del recorrido sin control del usuario → agregar botón "x" para descartarla.
-5. [Footer legal, 3 enlaces] — "Política de Privacidad / Términos / Reembolso" muestran "(pendiente)" visible a cualquier visitante real de una app de cumplimiento de seguridad, lo cual es un punto de fricción de credibilidad aunque esté aceptado como limitación de esta fase → completar antes de tráfico pagado real (Sesión Legal).
+1. [Paleta global — landing.html líneas 23-26] El amarillo rotó solo +7° (#FFC800→#FFE600) mientras verde/azul/rojo rotaron +16/+20/+16° en la ronda 18 — el acento MÁS repetido de la pantalla sigue siendo el que menos se movió de los 4, y a simple vista sigue leyéndose "amarillo abeja" de Duolingo → rotar el amarillo ≥15° (en línea con los otros 3) o sumar un segundo acento propio.
+2. [Hero + sección Oferta — líneas 320-356, 514-564] 4 acentos saturados (amarillo/verde/azul/rojo) conviviendo en la primera vista contradicen la restricción 60-30-10 del propio sistema; para un comprador B2B serio la primera impresión puede leerse "app de juego infantil" antes que "herramienta de cumplimiento" → limitar a 2 acentos visibles sobre el pliegue.
+3. [Sección Oferta, debajo del .stack — líneas 519-541] Sigue sin existir testimonio o dato de piloto real junto al stack de valor, solo la garantía nombrada → resta a EJE2 de copy (especificidad y prueba); agregar prueba de tercero en cuanto exista evidencia.
+4. [Footer legal — líneas 644-657] Privacidad/Términos/Reembolso marcadas "(próximamente)" en las 3 — honesto pero sigue siendo un vacío de due diligence para un comprador corporativo → resolver en sesión 47 (fuera de alcance de esta sesión).
+5. [Botón "presionable" + mecanismo global — líneas 55-64] Cosa juzgada y documentada, pero junto con el defecto 1 sigue atando la identidad entera al fingerprint de Duolingo (gesto + paleta + font redondeada) — se nota sin buscarlo; reevaluar si pesa menos una vez corregido el defecto 1.
