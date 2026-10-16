@@ -24,6 +24,7 @@
     --verde: #1bcc02; --verde-sombra: #1b9f03;
     --azul: #3e7ef7; --azul-sombra: #0a4299;
     --rojo: #ff4e0e; --rojo-sombra: #c75126;
+    --neutro-antes: #f3eee0; --neutro-track: #e4dcc4;
     --font-display: 'Baloo 2', sans-serif; --font-body: 'DM Sans', sans-serif;
   }
   html, body { overflow-x: hidden; }
@@ -136,6 +137,7 @@
   .big-idea h2 { font-size: 26px; }
   @media (min-width: 700px) { .big-idea h2 { font-size: 32px; } }
   .big-idea .mec { color: var(--azul-sombra); }
+  .big-idea .sub { margin-top: 16px; font-size: 16px; color: var(--ink-2); font-weight: 600; max-width: 56ch; margin-left: auto; margin-right: auto; }
   .pasos { margin-top: 48px; display: grid; gap: 24px; grid-template-columns: 1fr; }
   @media (min-width: 800px) { .pasos { grid-template-columns: repeat(3, 1fr); } }
   .paso { background: var(--bg); border: 3px solid var(--ink); border-radius: 20px; padding: 24px; position: relative; }
@@ -147,7 +149,7 @@
   .antes-despues { margin-top: 32px; display: grid; gap: 16px; grid-template-columns: 1fr; }
   @media (min-width: 700px) { .antes-despues { grid-template-columns: 1fr 1fr; } }
   .ad-card { border-radius: 20px; padding: 16px 24px; border: 3px solid var(--ink); }
-  .ad-card.antes { background: #f3eee0; }
+  .ad-card.antes { background: var(--neutro-antes); }
   .ad-card.despues { background: var(--verde); color: var(--ink); }
   .ad-card .tag { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; }
   .ad-card p.txt { margin-top: 8px; font-size: 15px; font-weight: 700; }
@@ -171,13 +173,13 @@
   .flecha:active:not(:disabled) { transform: scale(0.92); }
   .flecha:disabled { opacity: 0.35; cursor: not-allowed; }
   .dots { display: flex; justify-content: center; gap: 8px; }
-  .dots button { width: 10px; height: 10px; padding: 0; border-radius: 999px; background: #e4dcc4; border: none; cursor: pointer; }
+  .dots button { width: 10px; height: 10px; padding: 0; border-radius: 999px; background: var(--neutro-track); border: none; cursor: pointer; }
   .dots button.on { background: var(--ink); width: 22px; border-radius: 999px; }
   /* mini componentes reusados del mecanismo real (mismo lenguaje de Sesión 2) */
   .mini-chip { background: var(--surface); border: 2.5px solid var(--ink); border-radius: 14px; padding: 8px; text-align: center; }
   .mini-chip .n { font-family: var(--font-display); font-weight: 800; font-size: 15px; }
   .mini-chip .l { font-size: 9px; font-weight: 700; color: var(--ink-2); }
-  .barra-mini { height: 4px; background: #e4dcc4; border-radius: 99px; margin-top: 6px; overflow: hidden; }
+  .barra-mini { height: 4px; background: var(--neutro-track); border-radius: 99px; margin-top: 6px; overflow: hidden; }
   .barra-mini-fill { height: 100%; width: 0%; background: var(--verde-sombra); border-radius: 99px; transition: width 900ms ease; }
   @media (prefers-reduced-motion: reduce) { .barra-mini-fill { transition: none; } }
   .mini-nodo { width: 44px; height: 44px; border-radius: 999px; border: 2.5px solid var(--ink); display: flex; align-items: center; justify-content: center; }
@@ -191,7 +193,7 @@
   .oferta h2 { text-align: center; font-size: 28px; }
   .oferta .sub { text-align: center; margin-top: 8px; color: var(--ink-2); font-weight: 600; }
   .stack { margin: 32px auto 0; max-width: 560px; background: var(--bg); border: 3px solid var(--ink); border-radius: 20px; padding: 24px; }
-  .stack .item { display: flex; gap: 12px; align-items: flex-start; padding: 8px 0; border-bottom: 2px dashed #e4dcc4; }
+  .stack .item { display: flex; gap: 12px; align-items: flex-start; padding: 8px 0; border-bottom: 2px dashed var(--neutro-track); }
   .stack .item:last-child { border-bottom: none; }
   .stack .check { width: 24px; height: 24px; border-radius: 999px; background: var(--verde); border: 2.5px solid var(--ink);
                   display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
@@ -277,23 +279,29 @@
 
   /* sticky CTA mobile */
   .sticky-cta { position: fixed; left: 0; right: 0; bottom: 0; z-index: 60; background: var(--bg); border-top: 3px solid var(--ink);
-                padding: 8px 16px calc(8px + env(safe-area-inset-bottom)); display: none; gap: 8px; align-items: center; }
+                padding: 8px 16px calc(8px + env(safe-area-inset-bottom)); display: flex; gap: 8px; align-items: center;
+                opacity: 0; transform: translateY(100%); visibility: hidden;
+                transition: opacity 250ms ease, transform 250ms ease, visibility 0s 250ms; }
   .sticky-cta .boton { flex: 1; height: 48px; font-size: 13.5px; }
   .sticky-cerrar { width: 48px; height: 48px; flex-shrink: 0; border-radius: 16px; border: 3px solid var(--ink);
                    background: var(--surface); color: var(--ink); display: flex; align-items: center; justify-content: center; cursor: pointer; }
   .sticky-cerrar:hover { background: var(--amarillo); }
-  @media (max-width: 760px) { .sticky-cta.show { display: flex; } }
+  @media (max-width: 760px) { .sticky-cta.show { opacity: 1; transform: translateY(0); visibility: visible; transition-delay: 0s; } }
+  @media (prefers-reduced-motion: reduce) { .sticky-cta { transition: none; } }
 
   /* Botón flotante: volver arriba */
   .subir-arriba {
     position: fixed; right: 16px; bottom: 90px; z-index: 55; width: 44px; height: 44px; border-radius: 999px;
-    border: 3px solid var(--ink); background: var(--surface); color: var(--ink); display: none; align-items: center;
-    justify-content: center; cursor: pointer; box-shadow: 0 8px 18px rgb(0 0 0 / 0.14); transition: transform 120ms ease;
+    border: 3px solid var(--ink); background: var(--surface); color: var(--ink); display: flex; align-items: center;
+    justify-content: center; cursor: pointer; box-shadow: 0 8px 18px rgb(0 0 0 / 0.14);
+    opacity: 0; transform: translateY(12px) scale(0.9); visibility: hidden;
+    transition: opacity 200ms ease, transform 200ms ease, visibility 0s 200ms;
   }
-  .subir-arriba.show { display: flex; }
+  .subir-arriba.show { opacity: 1; transform: translateY(0) scale(1); visibility: visible; transition-delay: 0s; }
   .subir-arriba:hover { background: var(--amarillo); }
   .subir-arriba:active { transform: scale(0.92); }
   @media (min-width: 761px) { .subir-arriba { bottom: 24px; } }
+  @media (prefers-reduced-motion: reduce) { .subir-arriba { transition: none; } }
 </style>
 </head>
 <body>
@@ -309,8 +317,8 @@
   <div class="wrap hero-grid">
     <div>
       <span class="badge">PARA GERENTES DE HSE</span>
-      <h1 style="margin-top:16px;">Capacita a tu cuadrilla en <em>3 minutos al día</em> — y pruébalo con un código QR</h1>
-      <p class="sub">El Pase de los 3 Minutos convierte las 9 Reglas que Salvan Vidas de la IOGP en un hábito diario. Sin aulas, sin PDFs de 50 páginas, sin señal en el pozo.</p>
+      <h1 style="margin-top:16px;">Capacita a tu cuadrilla en <em>3 minutos al día</em></h1>
+      <p class="sub">Pruébalo con un código QR: el Pase de los 3 Minutos convierte las 9 Reglas que Salvan Vidas de la IOGP en un hábito diario. Sin aulas, sin PDFs de 50 páginas, sin señal en el pozo.</p>
       <div class="cta-row">
         <a href="#oferta" class="boton boton-verde">Quiero mi prueba gratis</a>
       </div>
@@ -384,7 +392,8 @@
 <section class="solucion">
   <div class="wrap">
     <div class="big-idea reveal">
-      <h2>No es tu gente la que falla la seguridad — es la firma de trámite la que no prueba nada. <span class="mec">El Pase de los 3 Minutos</span> lo reemplaza por una prueba real.</h2>
+      <h2>La firma de trámite no prueba nada. <span class="mec">El Pase de los 3 Minutos</span> sí.</h2>
+      <p class="sub">No es tu gente la que falla la seguridad — es cómo hoy la mides. El Pase lo reemplaza por una prueba real, todos los días.</p>
     </div>
     <div class="pasos">
       <div class="paso reveal">
@@ -413,7 +422,7 @@
         <p class="txt">Un código QR que cualquier supervisor escanea y confirma en segundos.</p>
       </div>
     </div>
-    <p class="nota-iogp">El Pase de los 3 Minutos convierte en hábito diario las 9 Reglas que Salvan Vidas — el estándar publicado por la IOGP (International Association of Oil &amp; Gas Producers) y adoptado por las principales petroleras del mundo.</p>
+    <p class="nota-iogp">El Pase de los 3 Minutos convierte en hábito diario las 9 Reglas que Salvan Vidas, el estándar publicado por la IOGP (International Association of Oil &amp; Gas Producers).</p>
   </div>
 </section>
 
@@ -614,8 +623,8 @@
 <!-- 9. CTA FINAL EMOCIONAL -->
 <section class="cta-final">
   <div class="wrap reveal">
-    <h2>Imagina abrir tu panel mañana a las 5 AM y ver, <em>en 10 segundos</em>, que toda tu cuadrilla completó su reto de hoy.</h2>
-    <p class="fp">Ese es el día del líder que modernizó la cultura de seguridad de su empresa — no el que frena el trabajo. 14 días gratis, sin tarjeta, con la Garantía del Primer Pase.</p>
+    <h2>Imagina tu panel, <em>listo en 10 segundos</em>.</h2>
+    <p class="fp">Mañana a las 5 AM verás que toda tu cuadrilla completó su reto de hoy. Ese es el día del líder que modernizó la cultura de seguridad de su empresa — no el que frena el trabajo. 14 días gratis, sin tarjeta, con la Garantía del Primer Pase.</p>
     <div class="cta-row">
       <a href="#oferta" class="boton boton-verde">Quiero mi prueba gratis</a>
     </div>
