@@ -130,10 +130,16 @@
   .pregunta-card p { font-size: 14.5px; font-weight: 700; }
 
   /* ===== 3. AGITACIÓN ===== */
-  .agitacion .wrap { max-width: 820px; text-align: center; }
-  .agitacion h2 { font-size: 26px; }
-  .agitacion p { margin-top: 16px; font-size: 16px; font-weight: 600; color: var(--ink-2); line-height: 1.7; }
-  .agitacion p b { color: var(--ink); }
+  .agitacion .wrap { max-width: 820px; }
+  .agitacion h2 { font-size: 26px; text-align: center; }
+  .agita-grid { margin-top: 32px; display: grid; gap: 16px; grid-template-columns: 1fr; }
+  @media (min-width: 700px) { .agita-grid { grid-template-columns: repeat(3, 1fr); } }
+  .agita-card { background: var(--surface); border: 3px solid var(--ink); border-radius: 20px; padding: 16px; }
+  .agita-card .ic { width: 42px; height: 42px; border-radius: 14px; background: var(--rojo); border: 2px solid var(--ink);
+                     display: flex; align-items: center; justify-content: center; }
+  .agita-card h4 { margin-top: 12px; font-size: 15px; font-weight: 800; }
+  .agita-card p { margin-top: 6px; font-size: 13.5px; font-weight: 600; color: var(--ink-2); line-height: 1.5; }
+  .agita-card p b { color: var(--ink); }
 
   /* ===== 4. SOLUCIÓN ===== */
   .solucion { background: var(--surface); border-top: 3px solid var(--ink); border-bottom: 3px solid var(--ink); }
@@ -322,7 +328,7 @@
     <div>
       <span class="badge">PARA GERENTES DE HSE</span>
       <h1 style="margin-top:16px;">Capacita a tu cuadrilla en <em>3 minutos al día</em></h1>
-      <p class="sub">Pruébalo con un código QR: el Pase de los 3 Minutos convierte las 9 Reglas que Salvan Vidas de la IOGP en un hábito diario. Sin aulas, sin PDFs de 50 páginas, sin señal en el pozo.</p>
+      <p class="sub">El Pase de los 3 Minutos: hábito diario sin aulas ni señal.</p>
       <div class="cta-row">
         <a href="#oferta" class="boton boton-verde">Quiero mi prueba gratis</a>
       </div>
@@ -362,7 +368,7 @@
     <div class="preguntas">
       <div class="pregunta-card reveal">
         <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg></span>
-        <p>¿Tus muchachos firman la charla de seguridad en la mañana y a los 10 minutos ya están metiendo la mano en la línea de fuego?</p>
+        <p>¿Tus muchachos firman la charla en la mañana y a los 10 minutos ya están en la línea de fuego?</p>
       </div>
       <div class="pregunta-card reveal">
         <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/></svg></span>
@@ -374,7 +380,7 @@
       </div>
       <div class="pregunta-card reveal">
         <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span>
-        <p>¿Cuando llega el auditor de sorpresa, te pasas días reuniendo papeles para demostrar que la cuadrilla estaba capacitada?</p>
+        <p>¿Cuando llega el auditor de sorpresa, te pasas días reuniendo papeles para probar que estaban capacitados?</p>
       </div>
       <div class="pregunta-card reveal">
         <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a5 5 0 0 0-5 5c0 3 2 4 2 7h6c0-3 2-4 2-7a5 5 0 0 0-5-5Z"/><path d="M9 18h6M10 21h4"/></svg></span>
@@ -388,9 +394,23 @@
 <section class="agitacion">
   <div class="wrap reveal">
     <h2>El problema no es que no des charlas. Es que <em>nadie prueba</em> que entendieron.</h2>
-    <p>Cada mes que sigue igual no es solo papeleo acumulado: es la posibilidad real de una <b>fatalidad que cierra la operación</b>, destruye tu carrera y te lleva a responder legalmente.</p>
-    <p style="margin-top:16px;">Si nada cambia, en 6 meses sigues haciendo inducciones repetitivas por la rotación de contratistas, sin saber <b>qué no saben</b> tus trabajadores — hasta que un casi-accidente te lo diga de la peor forma.</p>
-    <p style="margin-top:16px;">Ya probaste PowerPoint, e-learnings y talleres presenciales: fallan porque solo miden <b>"asistencia"</b>, no comprensión — la gente le da "siguiente, siguiente" sin leer un párrafo.</p>
+    <div class="agita-grid">
+      <div class="agita-card reveal">
+        <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
+        <h4>Cada mes igual no es solo papeleo</h4>
+        <p>Es exposición real a una <b>fatalidad que cierra la operación</b> y te hace responder legalmente.</p>
+      </div>
+      <div class="agita-card reveal">
+        <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2 21 6 17 10"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22 3 18 7 14"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></span>
+        <h4>En 6 meses, el mismo problema</h4>
+        <p>Sigues sin saber <b>qué no saben</b> tus trabajadores — hasta que un casi-accidente te lo diga.</p>
+      </div>
+      <div class="agita-card reveal">
+        <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6M9 9l6 6"/></svg></span>
+        <h4>Ya probaste y no funcionó</h4>
+        <p>PowerPoint, e-learnings, talleres: miden <b>"asistencia"</b>, no comprensión.</p>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -570,7 +590,8 @@
       <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg>
     </div>
     <h2>La Garantía del <em>Primer Pase</em></h2>
-    <p>Si tu cuadrilla no completa su primer Pase de 3 Minutos en el primer día de la prueba, te ayudamos personalmente a configurarlo — sin costo, sin compromiso. Como la prueba es gratis y sin tarjeta, no hay ningún riesgo de dinero que correr.</p>
+    <p>Si tu cuadrilla no completa su primer Pase el primer día de la prueba, te ayudamos personalmente a configurarlo — sin costo.</p>
+    <p style="margin-top:8px;">Sin riesgo: la prueba es gratis y sin tarjeta.</p>
     <p class="nota-piso">Al activar tu plan de pago, el respaldo de reembolso de la pasarela de pago se detalla antes de confirmar.</p>
   </div>
 </section>
@@ -630,12 +651,13 @@
 <section class="cta-final">
   <div class="wrap reveal">
     <h2>Imagina tu panel, <em>listo en 10 segundos</em>.</h2>
-    <p class="fp">Mañana a las 5 AM verás que toda tu cuadrilla completó su reto de hoy. Ese es el día del líder que modernizó la cultura de seguridad de su empresa — no el que frena el trabajo. 14 días gratis, sin tarjeta, con la Garantía del Primer Pase.</p>
+    <p class="fp">Mañana a las 5 AM verás que toda tu cuadrilla completó su reto de hoy. Ese es el día del líder que modernizó la seguridad — no el que frena el trabajo.</p>
     <div class="cta-row">
       <a href="#oferta" class="boton boton-verde">Quiero mi prueba gratis</a>
     </div>
     <div class="ps">
-      <b>PD:</b> El Pase de los 3 Minutos convierte las 9 Reglas que Salvan Vidas en un hábito diario de 3 minutos, con un código QR que prueba quién está realmente listo para entrar al pozo. Hoy: 14 días gratis, sin tarjeta, para 1 cuadrilla de hasta 20 trabajadores, con la Garantía del Primer Pase incluida.
+      <p><b>PD:</b> El Pase de los 3 Minutos — reto de 3 minutos, código QR que prueba quién está listo para el pozo.</p>
+      <p style="margin-top:8px;">Hoy: 14 días gratis, sin tarjeta, para 1 cuadrilla de hasta 20 — con la Garantía del Primer Pase.</p>
     </div>
   </div>
 </section>
