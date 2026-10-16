@@ -21,9 +21,9 @@
   :root {
     --bg: #fffaf0; --surface: #ffffff; --ink: #1a1a1a; --ink-2: #6b6b6b;
     --amarillo: #ffc800; --amarillo-sombra: #e0a500;
-    --verde: #58cc02; --verde-sombra: #4a9f03;
-    --azul: #1cb0f6; --azul-sombra: #0a7299;
-    --rojo: #ff4b4b; --rojo-sombra: #d93838;
+    --verde: #1bcc02; --verde-sombra: #1b9f03;
+    --azul: #3e7ef7; --azul-sombra: #0a4299;
+    --rojo: #ff4e0e; --rojo-sombra: #c75126;
     --font-display: 'Baloo 2', sans-serif; --font-body: 'DM Sans', sans-serif;
   }
   html, body { overflow-x: hidden; }
@@ -100,7 +100,7 @@
     background: var(--verde-sombra); color: var(--ink); font-family: var(--font-display); font-weight: 800;
     font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.01em;
     display: flex; align-items: center; justify-content: center;
-    pointer-events: none; cursor: default; opacity: 0.92;
+    pointer-events: none; cursor: default; opacity: 0.55;
   }
   .phone-mini .racha .l { font-size: 11px; font-weight: 800; text-transform: uppercase; display: flex; align-items: center; gap: 4px; }
   .ic-casco { display: inline-flex; flex-shrink: 0; }
@@ -176,7 +176,7 @@
   /* mini componentes reusados del mecanismo real (mismo lenguaje de Sesión 2) */
   .mini-chip { background: var(--surface); border: 2.5px solid var(--ink); border-radius: 14px; padding: 8px; text-align: center; }
   .mini-chip .n { font-family: var(--font-display); font-weight: 800; font-size: 15px; }
-  .mini-chip .l { font-size: 8px; font-weight: 700; color: var(--ink-2); }
+  .mini-chip .l { font-size: 9px; font-weight: 700; color: var(--ink-2); }
   .barra-mini { height: 4px; background: #e4dcc4; border-radius: 99px; margin-top: 6px; overflow: hidden; }
   .barra-mini-fill { height: 100%; width: 0%; background: var(--verde-sombra); border-radius: 99px; transition: width 900ms ease; }
   @media (prefers-reduced-motion: reduce) { .barra-mini-fill { transition: none; } }
@@ -533,7 +533,7 @@
         <p class="nota">Se cobra US$80/usuario/año</p>
         <a href="mailto:ventas@hsemasterapp.com?subject=Quiero%20mi%20prueba%20gratis%20(plan%20anual)&body=Hola%2C%20quiero%20activar%20la%20prueba%20gratis%20de%2014%20d%C3%ADas%20del%20plan%20anual%20para%20mi%20cuadrilla." class="boton boton-verde cta-mailto">Quiero mi prueba gratis</a>
         <p class="cta-fallback">¿No se abrió tu correo? Escríbenos a <b>ventas@hsemasterapp.com</b></p>
-        <p class="garantia-mini">Protegido por la Garantía del Primer Pase</p>
+        <p class="garantia-mini">Protegido por la Garantía del Primer Pase + reembolso de 7 días al pagar</p>
       </div>
       <div class="plan">
         <p class="nombre">Mensual</p>
@@ -541,7 +541,7 @@
         <p class="nota">Cancela cuando quieras</p>
         <a href="mailto:ventas@hsemasterapp.com?subject=Quiero%20mi%20prueba%20gratis%20(plan%20mensual)&body=Hola%2C%20quiero%20activar%20la%20prueba%20gratis%20de%2014%20d%C3%ADas%20del%20plan%20mensual%20para%20mi%20cuadrilla." class="link-secundario cta-mailto">Elegir el plan mensual</a>
         <p class="cta-fallback">¿No se abrió tu correo? Escríbenos a <b>ventas@hsemasterapp.com</b></p>
-        <p class="garantia-mini">Protegido por la Garantía del Primer Pase</p>
+        <p class="garantia-mini">Protegido por la Garantía del Primer Pase + reembolso de 7 días al pagar</p>
       </div>
     </div>
     <p class="trial-strip">Los 14 días de prueba son iguales en ambos planes — decides después de ver la adopción real de tu cuadrilla.</p>

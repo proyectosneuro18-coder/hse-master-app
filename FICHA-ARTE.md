@@ -19,9 +19,10 @@
 - Fondo: #FFFAF0 (blanco cálido) · Superficie: #FFFFFF · Texto 1º/2º: #1A1A1A / #6B6B6B
 - Acento primario: #FFC800 (amarillo — CTA secundarias, bloque héroe de la racha, plan recomendado del paywall, fondo del QR)
 - Acentos de apoyo (multicolor, cada uno con su propio uso fijo, nunca intercambiables):
-  - Verde #58CC02 (sombra #46A302): logro/acción principal — el botón CTA de avanzar, los checks de competencias vigentes.
-  - Azul #1CB0F6 (sombra #0D96D4): navegación/información — tab activo, palabras clave destacadas en headlines.
-  - Rojo #FF4B4B: alerta/urgencia — badges ("2 meses gratis", "Para Gerentes de HSE").
+  - Verde #1BCC02 (sombra #1B9F03): logro/acción principal — el botón CTA de avanzar, los checks de competencias vigentes.
+  - Azul #3E7EF7 (sombra #0A4299): navegación/información — tab activo, palabras clave destacadas en headlines.
+  - Rojo #FF4E0E (sombra #C75126): alerta/urgencia — badges ("2 meses gratis", "Para Gerentes de HSE").
+  - ⚠️ AJUSTE (Sesión 3, ronda 18 de revisión de landing): el revisor-visual independiente marcó que los 3 acentos originales (#58CC02/#1CB0F6/#FF4B4B) eran los HEX EXACTOS de marca de Duolingo, no un tono "inspirado" — un riesgo de identidad real, y además lo que la Regla de Oro 1 prohíbe explícitamente al citar una app como referencia ("se replica... sin clonar... marca"). Se rotó el matiz de los 3 (+18°/+20°/+16° aprox., verde→más puro, azul→más índigo/cobalto, rojo→más anaranjado tipo señalética de peligro industrial) preservando su función semántica y re-verificando contraste WCAG contra cada fondo/texto real donde se usan (botones, badges, chips, íconos) con la fórmula de luminancia relativa. NO es una redecisión de paleta (amarillo cálido + multicolor + blanco cálido se mantienen intactos, cosa juzgada) — es la corrección de un desvío puntual que la ficha original no había detectado.
 - Borde: 2.5-3px sólido en #1A1A1A en TODOS los bloques y botones — es la firma del estilo (look "comic/juego de mesa"), nunca hairline sutil.
 - Botón "presionable": sin sombra difusa — `border-bottom: 4px solid [tono más oscuro del mismo color]`, imitando el mecanismo 3D de Duolingo.
 - Display: Baloo 2 (pesos 500-800) · Body: DM Sans (pesos 400-800) · Escala: display ~23-26px / title ~20-23px / body ~12.5-14px / label ~9-11px, mayúsculas en labels de chips y botones.
