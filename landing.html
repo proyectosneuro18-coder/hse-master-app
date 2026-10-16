@@ -30,9 +30,9 @@
   html, body { overflow-x: hidden; }
   body {
     background:
-      radial-gradient(540px 320px at 8% 0%, color-mix(in oklab, var(--amarillo) 16%, transparent), transparent 60%),
-      radial-gradient(480px 300px at 96% 14%, color-mix(in oklab, var(--azul) 12%, transparent), transparent 60%),
-      radial-gradient(460px 280px at 4% 72%, color-mix(in oklab, var(--verde) 10%, transparent), transparent 60%),
+      radial-gradient(540px 320px at 8% 0%, color-mix(in oklab, var(--amarillo) 26%, transparent), transparent 60%),
+      radial-gradient(480px 300px at 96% 14%, color-mix(in oklab, var(--azul) 20%, transparent), transparent 60%),
+      radial-gradient(460px 280px at 4% 72%, color-mix(in oklab, var(--verde) 18%, transparent), transparent 60%),
       var(--bg);
     color: var(--ink); font-family: var(--font-body); line-height: 1.5;
   }
@@ -67,8 +67,9 @@
   .bloque { border-radius: 20px; border: 3px solid var(--ink); }
 
   /* ===== HEADER ===== */
-  header.top { position: sticky; top: 0; z-index: 50; background: var(--bg); border-bottom: 3px solid var(--ink); }
-  header.top .wrap { display: flex; align-items: center; justify-content: space-between; padding-top: 16px; padding-bottom: 16px; }
+  header.top { position: sticky; top: 0; z-index: 50; background: var(--bg); }
+  header.top .wrap { display: flex; align-items: center; justify-content: space-between; padding-top: 16px; padding-bottom: 16px; border-bottom: 3px solid var(--ink); }
+  header.top .hazard-bar { height: 6px; background: repeating-linear-gradient(135deg, var(--ink) 0 14px, var(--amarillo-sombra) 14px 28px); }
   .logo { font-family: var(--font-display); font-size: 18px; font-weight: 800; display: flex; align-items: center; gap: 8px;
            color: var(--ink); text-decoration: none; }
   .logo .dot { width: 30px; height: 30px; border-radius: 14px; background: var(--amarillo); border: 2px solid var(--ink); }
@@ -114,7 +115,6 @@
              background: repeating-linear-gradient(0deg, var(--ink) 0 2px, transparent 2px 4px),
                          repeating-linear-gradient(90deg, var(--ink) 0 2px, transparent 2px 4px);
              background-blend-mode: multiply; background-color: var(--amarillo); }
-  @media (max-width: 400px) { .float-chip.a { left: -4px; } }
 
   /* ===== 2. PROBLEMA ===== */
   .problema { background: var(--surface); border-top: 3px solid var(--ink); border-bottom: 3px solid var(--ink); }
@@ -123,6 +123,7 @@
   .preguntas { margin-top: 32px; display: grid; gap: 16px; grid-template-columns: 1fr; }
   @media (min-width: 700px) { .preguntas { grid-template-columns: 1fr 1fr; } }
   .pregunta-card { display: flex; gap: 16px; align-items: flex-start; background: var(--bg); border: 3px solid var(--ink); border-radius: 20px; padding: 16px;
+                   box-shadow: 0 4px 0 -1px rgb(26 26 26 / 0.05), 0 6px 14px rgb(26 26 26 / 0.06);
                    transition: transform 150ms ease, box-shadow 150ms ease; }
   .pregunta-card:hover { transform: translateY(-3px); box-shadow: 0 8px 0 -4px rgb(26 26 26 / 0.12), 0 10px 16px rgb(26 26 26 / 0.08); }
   .pregunta-card .ic { width: 42px; height: 42px; border-radius: 14px; background: var(--rojo); border: 2px solid var(--ink);
@@ -134,7 +135,8 @@
   .agitacion h2 { font-size: 26px; text-align: center; }
   .agita-grid { margin-top: 32px; display: grid; gap: 16px; grid-template-columns: 1fr; }
   @media (min-width: 700px) { .agita-grid { grid-template-columns: repeat(3, 1fr); } }
-  .agita-card { background: var(--surface); border: 3px solid var(--ink); border-radius: 20px; padding: 16px; }
+  .agita-card { background: var(--surface); border: 3px solid var(--ink); border-radius: 20px; padding: 16px;
+                box-shadow: 0 4px 0 -1px rgb(26 26 26 / 0.05), 0 6px 14px rgb(26 26 26 / 0.06); }
   .agita-card .ic { width: 42px; height: 42px; border-radius: 14px; background: var(--rojo); border: 2px solid var(--ink);
                      display: flex; align-items: center; justify-content: center; }
   .agita-card h3 { margin-top: 12px; font-size: 15px; font-weight: 800; }
@@ -150,7 +152,8 @@
   .big-idea .sub { margin-top: 16px; font-size: 16px; color: var(--ink-2); font-weight: 600; max-width: 56ch; margin-left: auto; margin-right: auto; }
   .pasos { margin-top: 48px; display: grid; gap: 24px; grid-template-columns: 1fr; }
   @media (min-width: 800px) { .pasos { grid-template-columns: repeat(3, 1fr); } }
-  .paso { background: var(--bg); border: 3px solid var(--ink); border-radius: 20px; padding: 24px; position: relative; }
+  .paso { background: var(--bg); border: 3px solid var(--ink); border-radius: 20px; padding: 24px; position: relative;
+          box-shadow: 0 4px 0 -1px rgb(26 26 26 / 0.05), 0 6px 14px rgb(26 26 26 / 0.06); }
   .paso .num { position: absolute; top: -16px; left: 16px; width: 36px; height: 36px; border-radius: 999px;
                background: var(--amarillo); border: 3px solid var(--ink); display: flex; align-items: center; justify-content: center;
                font-family: var(--font-display); font-weight: 800; font-size: 15px; }
@@ -229,7 +232,6 @@
   .plan .precio small { font-size: 13px; font-weight: 700; font-family: var(--font-body); }
   .plan .nota { font-size: 12px; font-weight: 700; color: var(--ink-2); margin-top: 4px; }
   .plan.rec .nota { color: var(--ink); }
-  .plan.rec .garantia-mini { color: var(--ink); }
   .plan .boton { width: 100%; margin-top: 16px; height: 56px; font-size: 13px; }
   .link-secundario {
     display: flex; align-items: center; justify-content: center; width: 100%; margin-top: 16px; height: 48px;
@@ -238,7 +240,6 @@
   }
   .link-secundario:hover { color: var(--ink); }
   .cta-fallback { margin-top: 8px; text-align: center; font-size: 12px; font-weight: 600; color: var(--ink-2); }
-  .garantia-mini { margin-top: 8px; text-align: center; font-size: 11px; font-weight: 700; color: var(--ink-2); }
   .trial-strip { max-width: 680px; margin: 24px auto 0; text-align: center; font-size: 13px; font-weight: 700; color: var(--ink-2); }
 
   /* ===== 7. GARANTÍA ===== */
@@ -256,7 +257,8 @@
   .faq-grupo { max-width: 720px; margin: 24px auto 0; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-2); }
   .faq-grupo-2 { margin-top: 32px; }
   .faq-grupo + .faq-list { margin-top: 12px; }
-  .faq-item { background: var(--bg); border: 3px solid var(--ink); border-radius: 20px; padding: 16px 24px; }
+  .faq-item { background: var(--bg); border: 3px solid var(--ink); border-radius: 20px; padding: 16px 24px;
+              box-shadow: 0 4px 0 -1px rgb(26 26 26 / 0.05), 0 6px 14px rgb(26 26 26 / 0.06); }
   .faq-item { transition: background 150ms ease; }
   .faq-item summary { font-weight: 800; font-size: 14.5px; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; }
   .faq-item summary:hover { text-decoration: underline; text-underline-offset: 3px; }
@@ -321,6 +323,7 @@
   <div class="wrap">
     <a class="logo" href="#"><span class="dot"></span>HSE Master App</a>
   </div>
+  <div class="hazard-bar" aria-hidden="true"></div>
 </header>
 
 <main>
@@ -338,7 +341,7 @@
         <span class="chip">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
         </span>
-        Basado en las 9 Reglas que Salvan Vidas, publicadas por la IOGP (International Association of Oil &amp; Gas Producers).
+        Basado en las 9 Reglas que Salvan Vidas, publicadas por la IOGP.
       </div>
     </div>
     <div class="hero-visual">
@@ -450,7 +453,7 @@
         <p class="txt">Un código QR que cualquier supervisor escanea y confirma en segundos.</p>
       </div>
     </div>
-    <p class="nota-iogp">El Pase de los 3 Minutos convierte en hábito diario las 9 Reglas que Salvan Vidas, el estándar publicado por la IOGP (International Association of Oil &amp; Gas Producers).</p>
+    <p class="nota-iogp">El Pase de los 3 Minutos convierte en hábito diario las 9 Reglas que Salvan Vidas, el estándar publicado por la IOGP (la asociación internacional de productores de petróleo y gas).</p>
   </div>
 </section>
 
@@ -570,7 +573,6 @@
         <p class="nota">Se cobra US$80/usuario/año</p>
         <a href="mailto:ventas@hsemasterapp.com?subject=Quiero%20mi%20prueba%20gratis%20(plan%20anual)&body=Hola%2C%20quiero%20activar%20la%20prueba%20gratis%20de%2014%20d%C3%ADas%20del%20plan%20anual%20para%20mi%20cuadrilla." class="boton boton-verde cta-mailto">Quiero el plan anual</a>
         <p class="cta-fallback">¿No se abrió tu correo? Escríbenos a <b>ventas@hsemasterapp.com</b></p>
-        <p class="garantia-mini">Protegido por la Garantía del Primer Pase</p>
       </div>
       <div class="plan">
         <p class="nombre">Mensual</p>
@@ -578,10 +580,9 @@
         <p class="nota">Cancela cuando quieras</p>
         <a href="mailto:ventas@hsemasterapp.com?subject=Quiero%20mi%20prueba%20gratis%20(plan%20mensual)&body=Hola%2C%20quiero%20activar%20la%20prueba%20gratis%20de%2014%20d%C3%ADas%20del%20plan%20mensual%20para%20mi%20cuadrilla." class="link-secundario cta-mailto">Quiero el plan mensual</a>
         <p class="cta-fallback">¿No se abrió tu correo? Escríbenos a <b>ventas@hsemasterapp.com</b></p>
-        <p class="garantia-mini">Protegido por la Garantía del Primer Pase</p>
       </div>
     </div>
-    <p class="trial-strip">Los 14 días de prueba son iguales en ambos planes — decides después de ver la adopción real de tu cuadrilla.</p>
+    <p class="trial-strip">Los 14 días de prueba son iguales en ambos planes — decides después de ver la adopción real de tu cuadrilla. Protegidos por la Garantía del Primer Pase.</p>
   </div>
 </section>
 
