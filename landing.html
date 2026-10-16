@@ -92,7 +92,7 @@
   .prueba-industria .chip { width: 26px; height: 26px; border-radius: 14px; background: var(--surface); border: 2px solid var(--ink);
                              display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .phone-stage { position: relative; width: 220px; margin: 0 auto; }
-  .phone-mini { width: 220px; aspect-ratio: 9/18; border: 8px solid var(--ink); border-radius: 32px;
+  .phone-mini { position: relative; width: 220px; aspect-ratio: 9/18; border: 8px solid var(--ink); border-radius: 32px;
                 background: var(--bg); overflow: hidden; box-shadow: 0 20px 44px rgb(0 0 0 / 0.14); }
   .phone-mini .scr { padding: 12px; box-shadow: inset 0 3px 10px rgb(0 0 0 / 0.08); }
   .phone-mini .racha { background: var(--amarillo); border: 3px solid var(--ink); border-radius: 20px; padding: 12px; }
@@ -102,8 +102,10 @@
     background: var(--verde-sombra); color: var(--ink); font-family: var(--font-display); font-weight: 800;
     font-size: 11px; text-transform: uppercase; letter-spacing: 0.01em;
     display: flex; align-items: center; justify-content: center;
-    pointer-events: none; cursor: default; opacity: 0.55;
+    pointer-events: none; cursor: default;
   }
+  .vista-previa-tag { position: absolute; top: 10px; right: 10px; background: var(--ink); color: #fff; font-size: 9px;
+                       font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; padding: 4px 8px; border-radius: 999px; }
   .phone-mini .racha .l { font-size: 11px; font-weight: 800; text-transform: uppercase; display: flex; align-items: center; gap: 4px; }
   .ic-casco { display: inline-flex; flex-shrink: 0; }
   .phone-mini .racha .n { font-family: var(--font-display); font-size: 28px; font-weight: 800; }
@@ -235,10 +237,12 @@
   .plan .boton { width: 100%; margin-top: 16px; height: 56px; font-size: 13px; }
   .link-secundario {
     display: flex; align-items: center; justify-content: center; width: 100%; margin-top: 16px; height: 48px;
-    font-family: var(--font-display); font-weight: 800; font-size: 13px; color: var(--ink-2);
-    text-decoration: underline; text-underline-offset: 3px;
+    font-family: var(--font-display); font-weight: 800; font-size: 13px; color: var(--ink);
+    border: 2px solid var(--ink); border-radius: 16px; background: var(--surface);
+    text-decoration: none; transition: background 150ms ease, transform 120ms ease;
   }
-  .link-secundario:hover { color: var(--ink); }
+  .link-secundario:hover { background: var(--bg); }
+  .link-secundario:active { transform: scale(0.98); }
   .cta-fallback { margin-top: 8px; text-align: center; font-size: 12px; font-weight: 600; color: var(--ink-2); }
   .trial-strip { max-width: 680px; margin: 24px auto 0; text-align: center; font-size: 13px; font-weight: 700; color: var(--ink-2); }
 
@@ -277,7 +281,7 @@
   @media (min-width: 700px) { .cta-final h2 { font-size: 34px; } }
   .cta-final p.fp { margin-top: 16px; font-size: 15.5px; color: var(--ink-2); font-weight: 600; line-height: 1.7; }
   .cta-final .cta-row { margin-top: 24px; display: flex; justify-content: center; }
-  .ps { margin-top: 24px; text-align: left; background: var(--surface); border: 3px dashed var(--ink); border-radius: 20px; padding: 16px; font-size: 13px; color: var(--ink-2); font-weight: 600; line-height: 1.6; }
+  .ps { margin-top: 24px; text-align: left; background: var(--surface); border: 2px dashed var(--ink-2); border-radius: 20px; padding: 16px; font-size: 13px; color: var(--ink-2); font-weight: 600; line-height: 1.6; }
   .ps b { color: var(--ink); }
 
   /* ===== 10. FOOTER ===== */
@@ -347,6 +351,7 @@
     <div class="hero-visual">
       <div class="phone-stage">
         <div class="phone-mini">
+          <span class="vista-previa-tag" aria-hidden="true">Vista previa</span>
           <div class="scr">
             <div class="racha">
               <p class="l"><svg class="ic-casco" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 17.5h17"/><path d="M5 17.5Q5 7 12 7Q19 7 19 17.5"/><path d="M12 7V4"/></svg>Racha de seguridad</p>
