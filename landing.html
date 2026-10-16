@@ -4,6 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>HSE Master App — El Pase de los 3 Minutos</title>
+<script>
+  // Síncrono y antes del CSS: si JS corre y hay IntersectionObserver, habilita la
+  // animación de entrada. Si no (JS bloqueado, bot, lector sin JS), el contenido
+  // queda visible desde el primer render — nunca depende del scroll para verse.
+  if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.documentElement.classList.add('js-reveal');
+  }
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500..800&family=DM+Sans:wght@400..800&display=swap" rel="stylesheet">
@@ -13,11 +21,12 @@
   :root {
     --bg: #fffaf0; --surface: #ffffff; --ink: #1a1a1a; --ink-2: #6b6b6b;
     --amarillo: #ffc800; --amarillo-sombra: #e0a500;
-    --verde: #58cc02; --verde-sombra: #3d9202;
-    --azul: #1cb0f6; --azul-sombra: #0d96d4;
+    --verde: #58cc02; --verde-sombra: #4a9f03;
+    --azul: #1cb0f6; --azul-sombra: #0a7299;
     --rojo: #ff4b4b; --rojo-sombra: #d93838;
     --font-display: 'Baloo 2', sans-serif; --font-body: 'DM Sans', sans-serif;
   }
+  html, body { overflow-x: hidden; }
   body {
     background:
       radial-gradient(540px 320px at 8% 0%, color-mix(in oklab, var(--amarillo) 16%, transparent), transparent 60%),
@@ -33,10 +42,15 @@
     outline: 3px solid var(--azul); outline-offset: 3px; border-radius: 4px;
   }
   .boton:hover { filter: brightness(1.04); }
-  /* ── Movimiento: revelado al hacer scroll (respeta reduced-motion) ── */
-  .reveal { opacity: 0; transform: translateY(18px); transition: opacity 500ms ease, transform 500ms ease; }
+  /* ── Movimiento: revelado al hacer scroll (respeta reduced-motion) ──
+     El contenido es VISIBLE POR DEFECTO (sin JS, con JS bloqueado, o en un
+     renderizador que no dispara scroll, se ve todo igual). Solo cuando el
+     script confirma que puede animar (clase "js-reveal" en <html>, agregada
+     de forma síncrona en el <head>) el CSS lo oculta para animarlo al entrar. */
+  .reveal { transition: opacity 500ms ease, transform 500ms ease; }
+  .js-reveal .reveal { opacity: 0; transform: translateY(18px); }
   .reveal.in { opacity: 1; transform: translateY(0); }
-  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1 !important; transform: none !important; transition: none !important; } }
   .boton {
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
     height: 56px; padding: 0 28px; border-radius: 16px; font-family: var(--font-display);
@@ -57,10 +71,11 @@
   .logo { font-family: var(--font-display); font-size: 18px; font-weight: 800; display: flex; align-items: center; gap: 8px;
            color: var(--ink); text-decoration: none; }
   .logo .dot { width: 30px; height: 30px; border-radius: 9px; background: var(--amarillo); border: 2.5px solid var(--ink); }
-  .top .entrar { font-size: 13px; font-weight: 700; color: var(--ink-2); cursor: default; }
 
   /* ===== 1. HERO ===== */
-  .hero { padding-top: 32px; padding-bottom: 40px; }
+  .hero { padding-top: 32px; padding-bottom: 40px; animation: heroFade 450ms ease both; }
+  @keyframes heroFade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  @media (prefers-reduced-motion: reduce) { .hero { animation: none; } }
   .hero-grid { display: grid; grid-template-columns: 1fr; gap: 24px; align-items: center; }
   @media (min-width: 900px) { .hero-grid { grid-template-columns: 1.1fr 0.9fr; } }
   .hero h1 { font-size: 34px; line-height: 1.12; }
@@ -90,7 +105,7 @@
   .float-chip { position: absolute; background: var(--verde); color: var(--ink); border: 3px solid var(--ink); border-radius: 14px;
                 padding: 8px 12px; font-size: 12px; font-weight: 800; box-shadow: 0 10px 20px rgb(0 0 0 / 0.12);
                 display: inline-flex; align-items: center; gap: 6px; }
-  .float-chip.a { top: -18px; left: -14px; } .float-chip.b { bottom: 8%; right: -8%; background: var(--azul); }
+  .float-chip.a { top: -18px; left: -14px; } .float-chip.b { bottom: 8%; right: -4px; background: var(--azul); }
   @media (max-width: 400px) { .float-chip.a { left: -4px; } }
 
   /* ===== 2. PROBLEMA ===== */
@@ -210,7 +225,7 @@
   .faq-item { background: var(--bg); border: 3px solid var(--ink); border-radius: 20px; padding: 18px 20px; }
   .faq-item { transition: background 150ms ease; }
   .faq-item summary { font-weight: 800; font-size: 14.5px; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; }
-  .faq-item summary:hover { color: var(--azul-sombra); }
+  .faq-item summary:hover { text-decoration: underline; text-underline-offset: 3px; }
   .faq-item summary::-webkit-details-marker { display: none; }
   .faq-item p { margin-top: 10px; font-size: 13.5px; color: var(--ink-2); font-weight: 600; line-height: 1.6; }
   .chev { transition: transform 0.2s; }
@@ -259,7 +274,6 @@
 <header class="top">
   <div class="wrap">
     <a class="logo" href="#"><span class="dot"></span>HSE Master App</a>
-    <span class="entrar">Entrar <span class="pendiente">(con tu prueba)</span></span>
   </div>
 </header>
 
@@ -456,14 +470,14 @@
 <!-- 6. OFERTA -->
 <section class="oferta" id="oferta">
   <div class="wrap reveal">
-    <h2>14 días gratis, sin tarjeta, para 1 cuadrilla</h2>
-    <p class="sub">Hasta 20 trabajadores, con el dashboard completo del Gerente de HSE desde el primer día.</p>
+    <h2>14 días gratis de El Pase de los 3 Minutos, sin tarjeta, para 1 cuadrilla</h2>
+    <p class="sub">Hasta 20 trabajadores, con el panel completo del Gerente de HSE desde el primer día.</p>
 
     <div class="stack">
       <div class="item">
         <span class="check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
         <div>
-          <h5>Dashboard completo del Gerente de HSE desde el día 1</h5>
+          <h5>Panel completo del Gerente de HSE desde el día 1</h5>
           <p>No reemplaza tu software EHS: es la capa de adopción diaria que lo alimenta.</p>
         </div>
       </div>
@@ -563,7 +577,7 @@
 <section class="cta-final">
   <div class="wrap reveal">
     <h2>Imagina abrir tu panel mañana a las 5 AM y ver, en 10 segundos, que toda tu cuadrilla completó su reto de hoy.</h2>
-    <p class="fp">Ese es el día de el líder que modernizó la cultura de seguridad de su empresa — no el que frena el trabajo. 14 días gratis, sin tarjeta, con la Garantía del Primer Pase.</p>
+    <p class="fp">Ese es el día del líder que modernizó la cultura de seguridad de su empresa — no el que frena el trabajo. 14 días gratis, sin tarjeta, con la Garantía del Primer Pase.</p>
     <div class="cta-row">
       <a href="#oferta" class="boton boton-verde">Probar gratis 14 días</a>
     </div>
