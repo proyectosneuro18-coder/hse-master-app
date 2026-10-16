@@ -114,11 +114,7 @@
   .float-chip { position: absolute; background: var(--surface); color: var(--ink); border: 2px solid var(--ink); border-radius: 14px;
                 padding: 8px 12px; font-size: 12px; font-weight: 800; box-shadow: 0 10px 20px rgb(0 0 0 / 0.12);
                 display: inline-flex; align-items: center; gap: 8px; }
-  .float-chip.a { top: -18px; left: -14px; } .float-chip.b { bottom: 8%; right: -4px; background: var(--surface); }
-  .qr-mini { width: 16px; height: 16px; border-radius: 3px; flex-shrink: 0;
-             background: repeating-linear-gradient(0deg, var(--ink) 0 2px, transparent 2px 4px),
-                         repeating-linear-gradient(90deg, var(--ink) 0 2px, transparent 2px 4px);
-             background-blend-mode: multiply; background-color: var(--amarillo); }
+  .float-chip.a { top: -18px; left: -14px; }
 
   /* ===== 2. PROBLEMA ===== */
   .problema { background: var(--surface); border-top: 3px solid var(--ink); border-bottom: 3px solid var(--ink); }
@@ -463,7 +459,7 @@
         <p class="txt">Un código QR que cualquier supervisor escanea y confirma en segundos.</p>
       </div>
     </div>
-    <p class="nota-iogp">El Pase de los 3 Minutos convierte en hábito diario las 9 Reglas que Salvan Vidas, el estándar publicado por la IOGP.</p>
+    <p class="nota-iogp">El Pase de los 3 Minutos convierte ese estándar, el que ya reconoce tu industria, en un hábito diario de 3 minutos.</p>
   </div>
 </section>
 
@@ -477,7 +473,7 @@
         <div class="slide">
           <div class="frame"><div class="in">
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-              <div class="mini-chip"><p class="n">9/12</p><p class="l">MÓDULOS</p></div>
+              <div class="mini-chip"><p class="n">9/12</p><p class="l">MÓDULOS</p><div class="barra-mini"><div class="barra-mini-fill" style="width:75%;"></div></div></div>
               <div class="mini-chip"><p class="n">2°</p><p class="l">POSICIÓN</p></div>
             </div>
             <div class="racha" style="margin-top:8px; padding:12px;">
@@ -652,7 +648,7 @@
         <summary>¿Qué pasa si no tengo presupuesto este trimestre?
           <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
         </summary>
-        <p>La prueba es gratis 14 días y sin tarjeta — decides recién cuando veas la adopción real de tu cuadrilla.</p>
+        <p>La prueba es gratis 14 días y sin tarjeta — primero ves si tu cuadrilla la usa de verdad, y recién después decides.</p>
       </details>
     </div>
   </div>
@@ -780,7 +776,7 @@
   document.querySelectorAll('.cta-mailto').forEach((boton) => {
     const textoOriginal = boton.textContent;
     boton.addEventListener('click', () => {
-      boton.textContent = 'Abriendo tu correo…';
+      boton.textContent = 'Buscando tu correo…';
       setTimeout(() => { boton.textContent = textoOriginal; }, 2000);
     });
   });

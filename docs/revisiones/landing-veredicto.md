@@ -1,14 +1,14 @@
 # VEREDICTO revisor-visual — landing
 Fecha: 2026-10-16 00:00
 Screenshot: docs/revisiones/landing-375.png
-Usabilidad: 31/40
-Craft: 15/20
+Usabilidad: 28/40
+Craft: 17/20
 Copy (si vende): 19/20
 Fidelidad (si hubo referencia): N-A
 Veredicto: NO LISTA
 Top defectos:
-1. [Seccion Solucion, tras antes/despues] El argumento del codigo QR se repite 3 veces seguidas en el mismo scroll: paso 3 ("su codigo QR queda vigente"), tarjeta "Despues" ("Un codigo QR que cualquier supervisor escanea...") y el chip final ("Pase Digital QR: tu prueba diaria de competencia, no un checklist") -> fusiona el chip dentro de la tarjeta "Despues" o eliminalo, no repitas el mismo dato 3 veces en una sola seccion.
-2. [Chip del Hero + parrafo final de Solucion] La sigla "IOGP" se explica dos veces casi textual en la misma pagina ("el estandar internacional de la industria petrolera" en el hero y "la asociacion internacional de productores de petroleo y gas" al cierre de Solucion) -> explica la sigla una sola vez (hero) y en la segunda mencion usa solo "IOGP" sin re-explicarla.
-3. [Oferta, pie de los 2 planes] El texto de respaldo "¿No se abrio tu correo? Escribenos a ventas@hsemasterapp.com" aparece identico y seguido debajo de CADA plan (Anual y Mensual) -> consolidar en una sola nota compartida bajo ambos planes en vez de duplicarla por tarjeta.
-4. [Checkmarks repetidos: badge del hero, float-chip, .stack .check, nodo del carrusel] El mismo icono de check se dibuja con stroke-width distinto en cada aparicion (2.6 / 3 / 3.2 / 3.4) -> estandarizar a un solo stroke-width (ej. 3) para que el simbolo se vea igual de grueso en toda la pantalla.
-5. [Carrusel "La app por dentro", .dots] El indicador activo cambia de ancho y color de forma instantanea (sin transition) mientras el resto de controles del carrusel (flechas, boton) si animan 120-200ms -> agregar transition: background 150ms ease, width 150ms ease a .dots button.
+1. [Hero "racha" vs carrusel slide 1] el mismo chip "9/12 MÓDULOS" tiene barra de progreso animada en el hero (línea 365, #barraModulos) pero el mockup casi idéntico del carrusel "Tu racha de seguridad, de un vistazo" (línea 480) no la tiene → agregar la misma barra-mini al chip del carrusel.
+2. [Solución, nota-iogp, línea 466] pese a declararse resuelta, la nota sigue repitiendo casi literal "las 9 Reglas que Salvan Vidas... la IOGP" ya dicho en el hero (línea 353) → reescribir sin repetir esa cláusula completa.
+3. [Oferta trial-strip línea 594 y FAQ línea 655] la frase "decides... la adopción real de tu cuadrilla" se repite palabra por palabra en 2 secciones → variar una de las dos redacciones.
+4. [Botones de plan, script líneas 780-785] "Abriendo tu correo…" se muestra siempre tras el click aunque el cliente de correo no haya abierto de verdad (desktop sin app de correo configurada) → cambiar a un texto que no afirme un éxito no confirmado.
+5. [CSS línea 117] regla `.float-chip.b` quedó huérfana (sin HTML) tras quitar el chip del QR del hero esta ronda → eliminar la regla muerta.
