@@ -182,6 +182,7 @@
   .slide .frame .in { padding: 16px; height: 100%; }
   .slide .label { margin-top: 12px; font-size: 13px; font-weight: 800; text-align: center; }
   .carrusel-controles { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 4px; }
+  .carrusel-hint { margin-top: 12px; text-align: center; font-size: 11px; font-weight: 700; color: var(--ink-2); }
   .flecha { width: 36px; height: 36px; border-radius: 999px; border: 2px solid var(--ink); background: var(--surface);
             color: var(--ink); display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0;
             transition: transform 120ms ease; }
@@ -468,7 +469,7 @@
 <section class="app-dentro">
   <div class="wrap reveal">
     <h2 style="text-align:center; font-size:28px;">Así se ve el Pase de los 3 Minutos por dentro</h2>
-    <p style="text-align:center; margin-top:8px; color:var(--ink-2); font-weight:600;">Mini-demos reales del mecanismo — construidos con el estilo final de la app, no capturas de otra herramienta.</p>
+    <p style="text-align:center; margin-top:8px; color:var(--ink-2); font-weight:600;">Vista previa de la app — construida con su estilo final, no capturas de otra herramienta. El contenido de las pantallas es ilustrativo.</p>
     <div class="carrusel-wrap">
       <div class="carrusel" id="carrusel" tabindex="0" role="group" aria-label="Pantallas de la app, usa las flechas del teclado para moverte">
         <div class="slide">
@@ -538,6 +539,7 @@
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
         </button>
       </div>
+      <p class="carrusel-hint">Desliza o toca las flechas para ver las 4 pantallas</p>
     </div>
   </div>
 </section>
