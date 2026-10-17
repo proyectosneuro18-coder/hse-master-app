@@ -179,7 +179,7 @@
   .ad-card.despues { background: var(--verde); color: var(--ink); }
   .ad-card .tag { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; }
   .ad-card p.txt { margin-top: 8px; font-size: 14px; font-weight: 700; }
-  .nota-iogp { margin-top: 24px; font-size: 13px; font-weight: 400; color: var(--ink-2); text-align: center; max-width: 560px; margin-left: auto; margin-right: auto; }
+  .nota-iogp { margin-top: 24px; font-size: 14px; font-weight: 400; color: var(--ink-2); text-align: center; max-width: 560px; margin-left: auto; margin-right: auto; }
 
   /* ===== 5. LA APP POR DENTRO (carrusel) ===== */
   .app-dentro { background: radial-gradient(480px 300px at 92% 8%, color-mix(in oklab, var(--amarillo) 20%, transparent), transparent 70%), var(--bg); }
@@ -265,8 +265,8 @@
   .plan .boton { width: 100%; margin-top: 16px; height: 56px; font-size: 13px; }
   .link-secundario { background: var(--surface); color: var(--ink-2); border: 3px solid var(--ink); border-bottom: 4px solid var(--ink-2); font-size: 13px; }
   .link-secundario:hover { background: var(--bg); }
-  .trial-strip { max-width: 680px; margin: 24px auto 0; text-align: center; font-size: 13px; font-weight: 700; color: var(--ink-2); }
-  .mailto-status { margin-top: 10px; display: none; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: var(--ink); text-align: left; }
+  .trial-strip { max-width: 680px; margin: 24px auto 0; text-align: center; font-size: 14px; font-weight: 700; color: var(--ink-2); }
+  .mailto-status { margin-top: 10px; display: none; align-items: center; gap: 6px; font-size: 14px; font-weight: 700; color: var(--ink); text-align: left; }
   .mailto-status.show { display: flex; }
   .mailto-status svg { flex-shrink: 0; }
   .link-correo { color: var(--azul-sombra); font-weight: 800; }
@@ -318,7 +318,7 @@
   @media (min-width: 700px) { .cta-final h2 { font-size: 32px; } }
   .cta-final p.fp { margin-top: 16px; font-size: 14px; color: var(--ink-2); font-weight: 400; line-height: 1.7; }
   .cta-final .cta-row { margin-top: 24px; display: flex; justify-content: center; }
-  .ps { margin-top: 24px; text-align: left; background: var(--surface); border: 2px dashed var(--ink-2); border-radius: 20px; padding: 16px; font-size: 13px; color: var(--ink-2); font-weight: 400; line-height: 1.6; }
+  .ps { margin-top: 24px; text-align: left; background: var(--surface); border: 2px dashed var(--ink-2); border-radius: 20px; padding: 16px; font-size: 14px; color: var(--ink-2); font-weight: 400; line-height: 1.6; }
   .ps b { color: var(--ink); }
 
   /* ===== 10. FOOTER ===== */
@@ -349,11 +349,11 @@
 
   /* Botón flotante: volver arriba */
   .subir-arriba {
-    position: fixed; right: 16px; bottom: 90px; z-index: 55; width: 44px; height: 44px; border-radius: 999px;
+    position: fixed; right: 16px; bottom: calc(var(--sticky-h, 98px) + 10px); z-index: 65; width: 44px; height: 44px; border-radius: 999px;
     border: 3px solid var(--ink); background: var(--surface); color: var(--ink); display: flex; align-items: center;
     justify-content: center; cursor: pointer; box-shadow: 0 8px 18px rgb(0 0 0 / 0.14);
     opacity: 0; transform: translateY(12px) scale(0.9); visibility: hidden;
-    transition: opacity 200ms ease, transform 200ms ease, visibility 0s 200ms;
+    transition: opacity 200ms ease, transform 200ms ease, visibility 0s 200ms, bottom 200ms ease;
   }
   .subir-arriba.show { opacity: 1; transform: translateY(0) scale(1); visibility: visible; transition-delay: 0s; }
   .subir-arriba:hover { background: var(--amarillo); }
@@ -640,7 +640,7 @@
         <p class="nota">Se cobra US$80/usuario/año</p>
         <a href="mailto:ventas@hsemasterapp.com?subject=Quiero%20mi%20prueba%20gratis%20(plan%20anual)&body=Hola%2C%20quiero%20activar%20la%20prueba%20gratis%20de%2014%20d%C3%ADas%20del%20plan%20anual%20para%20mi%20cuadrilla." class="boton boton-verde cta-mailto">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
-          Quiero el plan anual
+          Escríbenos por el plan anual
         </a>
         <p class="mailto-status" aria-live="polite"></p>
       </div>
@@ -650,7 +650,7 @@
         <p class="nota">Cancela cuando quieras</p>
         <a href="mailto:ventas@hsemasterapp.com?subject=Quiero%20mi%20prueba%20gratis%20(plan%20mensual)&body=Hola%2C%20quiero%20activar%20la%20prueba%20gratis%20de%2014%20d%C3%ADas%20del%20plan%20mensual%20para%20mi%20cuadrilla." class="boton link-secundario cta-mailto" style="width:100%; margin-top:16px;">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
-          Quiero el plan mensual
+          Escríbenos por el plan mensual
         </a>
         <p class="mailto-status" aria-live="polite"></p>
       </div>
@@ -814,6 +814,9 @@
     sticky.classList.toggle('show', stickyVisible);
     subirArriba.classList.toggle('show', heroBtnOutOfView);
     subirArriba.classList.toggle('sin-sticky', !stickyVisible);
+    if (stickyVisible) {
+      document.documentElement.style.setProperty('--sticky-h', `${sticky.offsetHeight}px`);
+    }
   }
   const io = new IntersectionObserver(([e]) => {
     heroBtnOutOfView = !e.isIntersecting;
@@ -826,6 +829,7 @@
     actualizarSticky();
   }, { threshold: 0 });
   footerIo.observe(footerLegal);
+  window.addEventListener('resize', actualizarSticky);
   subirArriba.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
   document.getElementById('stickyCerrar').addEventListener('click', () => {
     stickyDescartado = true;
