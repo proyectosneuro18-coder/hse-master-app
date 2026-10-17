@@ -43,22 +43,37 @@ Plataforma móvil B2B de microaprendizaje gamificado (estilo Duolingo) para capa
 - Primera victoria (<5 min): completar el primer micro-módulo de 3 min (LOTO), responder la trivia, ganar la primera racha, ver a su cuadrilla subir en el ranking.
 
 ## Secuencia maestra de construcción (NO saltar)
-- Estado de la secuencia: Sesión 1, 2 y 3 cerradas. Sesión 4 (Onboarding, paywall y login) es la siguiente — no iniciada todavía, pendiente de que el usuario confirme arranque.
+- Estado de la secuencia: Sesión 1, 2 y 3 cerradas. Sesión 4 (Onboarding, paywall y login) EN CURSO — las 3 pantallas están construidas y en su primera verificación.
 - Ruta aprobada: `/` → `/onboarding` → `/paywall` → `/login` → `/app`
 - Landing: construida (landing.html, raíz del proyecto) · 10 secciones canónicas · Big Idea + mecanismo "El Pase de los 3 Minutos" · copy en docs/copy/landing.md trazado a FICHA-AVATAR.md · carrusel con mini-demos reales (nivel 2 de fidelidad, app interna aún no construida) · footer legal con enlaces marcados "(próximamente)" a propósito (47 no corrido aún) · ACEPTADA CON OBSERVACIONES (ver `veredicto:landing` abajo)
-- Onboarding: pendiente
-- Paywall: pendiente
-- Login/Auth: pendiente — método a decidir (ver Decisiones técnicas)
+- Onboarding: construido (onboarding.html, raíz) · clasificado "utilidad/valor obvio" (02B — Carlos ya llega convencido desde la landing, no es un quiz de consumo largo) · 4 decisiones (tamaño de cuadrilla, reto más urgente con escape hatch de texto libre, horario de la charla pre-turno) + 1 reconocimiento dinámico (anti-culpa, 4 variantes según el reto) + loading de 4 líneas con labor illusion → EN REVISIÓN (docs/revisiones/onboarding-veredicto.md)
+- Paywall: construido (paywall.html, raíz) · NO es un cobro real — es activación de prueba (14 días, sin tarjeta) con timeline de confianza (Hoy/Día 12/Día 14) + los mismos 2 planes de la landing mostrados con transparencia para cuando el usuario decida seguir · CTA lleva a login, no a un checkout → EN REVISIÓN (docs/revisiones/paywall-veredicto.md)
+- Login/Auth: construido (login.html, raíz) · magic link simulado (ENVIANDO/ENVIADO/ERROR, reenvío con cuenta regresiva de 60s, anti-enumeración genérico) + botón de Google (solo UI, conexión real en Sesión 6) · pantalla secundaria (no es de las 4 que deciden el dinero) → medición + checklist propio, sin revisor-visual obligatorio
 - App interna: pendiente — secciones candidatas: Pantalla principal = reto/módulo del día (no el mapa) · Mapa de ruta de aprendizaje (mundos IOGP, estilo Duolingo) como sección SECUNDARIA aparte, no la home · Racha/Ranking de cuadrilla · Pasaporte QR · (Dashboard HSE es vista de ADMIN, no del trabajador)
 - Servicios externos: pendiente — GitHub/Supabase/Vercel/Resend/Hotmart/dominio
 
 ## Puertas de etapa (aprobación antes de avanzar)
 - Landing: construida, ACEPTADA CON OBSERVACIONES por decisión del usuario (2026-10-17, no con el veredicto pleno del gate) — evidencia: landing.html + docs/revisiones/landing-375.png + docs/revisiones/landing-veredicto.md (ronda 51: usabilidad 32/40, craft 15/20, copy 19/20) + preview local verificado (static-preview, puerto 4173)
-- Onboarding: no iniciada
-- Paywall: no iniciada
-- Login/Auth: no iniciada
+- Onboarding: construida, no aprobada — evidencia: onboarding.html + docs/revisiones/onboarding-375.png (+ -b/-c para el reconocimiento y el loading) + docs/revisiones/onboarding-veredicto.md (en curso)
+- Paywall: construida, no aprobada — evidencia: paywall.html + docs/revisiones/paywall-375.png + docs/revisiones/paywall-veredicto.md (en curso)
+- Login/Auth: construida, verificación propia pendiente (pantalla secundaria) — evidencia: login.html + docs/revisiones/login-375.png + los 3 estados probados a mano en el navegador (enviando/enviado/error)
 - App interna: no iniciada
 - Servicios externos: bloqueados
+
+## PUERTA DE ETAPA — Onboarding / Paywall / Login (Sesión 4, primera pasada)
+1. Objetivo de la etapa: llevar a Carlos (Gerente de HSE) de "ya decidido en la landing" a "cuenta activa con prueba de 14 días", sin quiz largo ni checkout falso.
+2. Archivos del SO leídos: 02B-ONBOARDING-Y-PAYWALL.md · 50-DISENO-ONBOARDING-PAYWALL.md · 52-COPY-VISUALES-CONVERSION.md · 57-AVATAR-Y-CONSCIENCIA.md · PREFLIGHT-PANTALLA.md · SECUENCIA-MAESTRA-CONSTRUCCION.md · FICHA-AVATAR.md · FICHA-ARTE.md.
+3. Pantallas creadas: onboarding.html (4 preguntas + reconocimiento + loading) · paywall.html (activación de prueba con timeline + planes) · login.html (magic link + Google).
+4. Protagonista de cada pantalla: onboarding = la pregunta/decisión activa de cada paso · paywall = el timeline de confianza (Hoy/Día 12/Día 14) · login = el botón de enviar el enlace.
+5. Acción primaria: onboarding = elegir un chip (auto-avanza) · paywall = "Activar mi prueba gratis de 14 días" · login = "Enviarme mi enlace de acceso".
+6. Evidencia de verificación:
+   - dev: preview local verificado (static-preview, puerto 4173), sin errores de consola en las 3 pantallas.
+   - screenshots 375px: docs/revisiones/onboarding-375.png (+ -b reconocimiento, -c loading) · docs/revisiones/paywall-375.png · docs/revisiones/login-375.png.
+   - veredicto del revisor: onboarding y paywall EN CURSO (agentes en segundo plano); login no requiere revisor (pantalla secundaria) — se verificaron a mano los 3 estados (enviando/enviado/error) y el anti-enumeración.
+   - flujo probado: onboarding completo (las 4 preguntas → reconocimiento dinámico → loading → redirección) verificado disparando los eventos directamente, ya que el click real del navegador automatizado no registraba en esta sesión de pruebas (limitación de la herramienta, no del código).
+7. Riesgos o pendientes: (a) el paywall y el login no tienen backend real todavía — el magic link y "activar prueba" son simulación local con sessionStorage, consistente con `checkout-real-pendiente` ya documentado para la landing; (b) la pregunta "¿cuántos trabajadores tiene tu cuadrilla?" no valida todavía el límite real de 20 del trial (se validará cuando exista backend); (c) ningún copy de estas 3 pantallas pasó aún por el proceso de 10 variantes de headline del 52 — se escribió directo desde FICHA-AVATAR.md dada la naturaleza B2B/utilitaria del flujo, a revisar si el revisor lo marca.
+8. Veredicto del agente: necesita corrección — a la espera del revisor independiente de onboarding y paywall (primera ronda).
+9. Siguiente etapa propuesta: cerrar onboarding/paywall tras sus rondas de revisión, dar por buena la verificación propia de login, y recién entonces preguntar al usuario si sigue con la App interna (Sesión 5).
 
 ## Decisiones técnicas (NO re-discutir sin pedirlo el usuario)
 - Framework: Next.js (coherente con las plantillas de landing del SO en `plantillas-codigo/landing/*.tsx` y con el soporte PWA que necesita el modo offline-first).

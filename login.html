@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Entra a tu panel — HSE Master App</title>
+<script>
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.documentElement.classList.add('js-motion');
+  }
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500..800&family=DM+Sans:wght@400..800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  :root {
+    --bg: #fffaf0; --surface: #ffffff; --ink: #1a1a1a; --ink-2: #6b6b6b;
+    --amarillo: #ffe600; --verde: #1bcc02; --verde-sombra: #1b9f03;
+    --azul: #3e7ef7; --azul-sombra: #0a4299; --rojo-sombra: #c75126;
+    --neutro-track: #e4dcc4;
+    --font-display: 'Baloo 2', sans-serif; --font-body: 'DM Sans', sans-serif;
+  }
+  html, body { overflow-x: hidden; }
+  body {
+    background: var(--bg); color: var(--ink); font-family: var(--font-body); line-height: 1.5;
+    min-height: 100dvh; display: flex; flex-direction: column;
+  }
+  a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid var(--azul); outline-offset: 2px; border-radius: 4px; }
+  .wrap { max-width: 440px; width: 100%; margin: 0 auto; padding: 0 16px 32px; flex: 1; display: flex; flex-direction: column; justify-content: center; }
+
+  .lg-header { padding: 16px; }
+  .lg-logo { display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--ink);
+             font-family: var(--font-display); font-weight: 800; font-size: 15px; width: fit-content; }
+  .lg-logo .dot { width: 24px; height: 24px; border-radius: 10px; background: var(--amarillo); border: 2px solid var(--ink); }
+
+  .lg-reveal { opacity: 0; transform: translateY(12px); }
+  .js-motion .lg-reveal { transition: opacity 350ms ease, transform 350ms ease; }
+  .lg-reveal.in { opacity: 1; transform: translateY(0); }
+
+  .lg-titulo { font-family: var(--font-display); font-size: 26px; font-weight: 800; line-height: 1.2; }
+  .lg-sub { margin-top: 8px; font-size: 14px; color: var(--ink-2); font-weight: 400; max-width: 34ch; }
+
+  .lg-form { margin-top: 28px; display: flex; flex-direction: column; gap: 12px; }
+  .lg-form.oculto { display: none; }
+  .lg-input {
+    width: 100%; height: 56px; border-radius: 16px; border: 3px solid var(--ink); background: var(--surface);
+    padding: 0 18px; font-family: var(--font-body); font-size: 16px; color: var(--ink);
+  }
+  .lg-input::placeholder { color: var(--ink-2); }
+  .lg-input.con-error { border-color: var(--rojo-sombra); }
+  .lg-error { font-size: 13px; color: var(--rojo-sombra); font-weight: 700; display: none; }
+  .lg-error.show { display: block; }
+
+  .lg-boton {
+    width: 100%; height: 56px; border-radius: 16px; border: 3px solid var(--ink); background: var(--verde);
+    color: var(--ink); font-family: var(--font-display); font-weight: 800; font-size: 15px; text-transform: uppercase;
+    letter-spacing: 0.01em; cursor: pointer; border-bottom: 4px solid var(--verde-sombra);
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+  }
+  .js-motion .lg-boton { transition: transform 120ms ease, border-bottom-width 120ms ease, opacity 150ms ease; }
+  .lg-boton:active:not(:disabled) { border-bottom-width: 3px; transform: translateY(3px); }
+  .lg-boton:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  .lg-spinner { width: 18px; height: 18px; border-radius: 999px; border: 3px solid rgb(26 26 26 / 0.25); border-top-color: var(--ink);
+                animation: girar 700ms linear infinite; display: none; }
+  .lg-boton.enviando .lg-spinner { display: inline-block; }
+  .lg-boton.enviando .lg-texto { opacity: 0.8; }
+  @keyframes girar { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .lg-spinner { animation: none; } }
+
+  .lg-separador { margin: 8px 0; display: flex; align-items: center; gap: 12px; color: var(--ink-2); font-size: 12px; font-weight: 700; text-transform: uppercase; }
+  .lg-separador::before, .lg-separador::after { content: ''; flex: 1; height: 1px; background: var(--neutro-track); }
+
+  .lg-secundario {
+    width: 100%; height: 52px; border-radius: 16px; border: 3px solid var(--ink); background: var(--surface);
+    color: var(--ink); font-family: var(--font-body); font-weight: 700; font-size: 14px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+  }
+
+  .lg-caption { margin-top: 16px; text-align: center; font-size: 13px; color: var(--ink-2); font-weight: 400;
+                display: flex; align-items: center; justify-content: center; gap: 6px; }
+
+  /* ===== ESTADO ENVIADO ===== */
+  .lg-enviado { display: none; text-align: center; }
+  .lg-enviado.show { display: block; }
+  .lg-enviado .ic { width: 72px; height: 72px; margin: 0 auto; border-radius: 22px; background: var(--amarillo);
+                     border: 3px solid var(--ink); display: flex; align-items: center; justify-content: center; }
+  .lg-enviado h2 { margin-top: 16px; font-family: var(--font-display); font-size: 22px; font-weight: 800; }
+  .lg-enviado p { margin-top: 8px; font-size: 14px; color: var(--ink-2); }
+  .lg-enviado p b { color: var(--ink); }
+  .lg-reenviar { margin-top: 20px; background: none; border: none; color: var(--azul-sombra); font-family: var(--font-body);
+                 font-weight: 700; font-size: 14px; cursor: pointer; }
+  .lg-reenviar:disabled { color: var(--ink-2); cursor: default; }
+</style>
+</head>
+<body>
+
+<div class="lg-header">
+  <a href="landing.html" class="lg-logo" aria-label="Ir al inicio"><span class="dot"></span>HSE Master App</a>
+</div>
+
+<main class="wrap">
+  <div id="lgPantallaForm">
+    <h1 class="lg-titulo lg-reveal">Entra a tu panel</h1>
+    <p class="lg-sub lg-reveal">Para guardarlo y verlo en cualquier dispositivo, desde el celular o la oficina.</p>
+
+    <form class="lg-form lg-reveal" id="lgForm" novalidate>
+      <input type="email" class="lg-input" id="lgEmail" placeholder="tu@correo.com" autocomplete="email" autofocus required>
+      <p class="lg-error" id="lgError">No pudimos enviar el enlace. Revisa el correo e intenta de nuevo.</p>
+      <button type="submit" class="lg-boton" id="lgEnviar">
+        <span class="lg-spinner" aria-hidden="true"></span>
+        <span class="lg-texto">Enviarme mi enlace de acceso</span>
+      </button>
+    </form>
+
+    <div class="lg-separador lg-reveal">o</div>
+
+    <button type="button" class="lg-secundario lg-reveal" id="lgGoogle">
+      <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.52 12.27c0-.85-.07-1.47-.22-2.12H12v3.85h6.6c-.13 1.09-.86 2.73-2.47 3.83l-.02.15 3.59 2.78.25.02c2.28-2.1 3.57-5.2 3.57-8.51"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.07 7.93-2.9l-3.78-2.95c-1.01.71-2.37 1.2-4.15 1.2-3.17 0-5.86-2.1-6.82-5.01l-.14.01-3.73 2.89-.05.14C3.25 21.3 7.28 24 12 24"/><path fill="#FBBC05" d="M5.18 14.34c-.25-.74-.39-1.53-.39-2.34s.14-1.6.38-2.34l-.01-.16-3.78-2.94-.12.06A11.9 11.9 0 0 0 0 12c0 1.93.47 3.76 1.26 5.38l3.92-3.04"/><path fill="#EA4335" d="M12 4.75c2.25 0 3.77.97 4.64 1.79l3.39-3.31C17.94 1.2 15.24 0 12 0 7.28 0 3.25 2.7 1.26 6.62l3.91 3.04C6.14 6.85 8.83 4.75 12 4.75"/></svg>
+      Continuar con Google
+    </button>
+
+    <p class="lg-caption lg-reveal">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+      Sin contraseñas: te llegará un enlace de un solo uso
+    </p>
+  </div>
+
+  <div class="lg-enviado" id="lgPantallaEnviado">
+    <span class="ic"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg></span>
+    <h2>Revisa tu correo</h2>
+    <p>Te enviamos el enlace a <b id="lgCorreoEnviado">tu@correo.com</b></p>
+    <button type="button" class="lg-reenviar" id="lgReenviar">Reenviar en <span id="lgCuenta">60</span>s</button>
+  </div>
+</main>
+
+<script>
+  const form = document.getElementById('lgForm');
+  const email = document.getElementById('lgEmail');
+  const boton = document.getElementById('lgEnviar');
+  const error = document.getElementById('lgError');
+  const pantallaForm = document.getElementById('lgPantallaForm');
+  const pantallaEnviado = document.getElementById('lgPantallaEnviado');
+
+  function emailValido(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    error.classList.remove('show');
+    email.classList.remove('con-error');
+    if (!emailValido(email.value.trim())) {
+      error.textContent = 'Escribe un correo válido para poder enviarte el enlace.';
+      error.classList.add('show');
+      email.classList.add('con-error');
+      return;
+    }
+    boton.classList.add('enviando');
+    boton.disabled = true;
+    email.disabled = true;
+
+    // Simulación local: aún no hay backend/Supabase conectado (Sesión 6).
+    setTimeout(() => {
+      const exito = true; // la simulación siempre "envía" — el estado de error queda listo para cuando exista backend real
+      if (exito) {
+        document.getElementById('lgCorreoEnviado').textContent = email.value.trim();
+        pantallaForm.style.display = 'none';
+        pantallaEnviado.classList.add('show');
+        iniciarReenvio();
+      } else {
+        boton.classList.remove('enviando');
+        boton.disabled = false;
+        email.disabled = false;
+        error.textContent = 'No pudimos enviar el enlace. Revisa el correo e intenta de nuevo.';
+        error.classList.add('show');
+      }
+    }, 900);
+  });
+
+  document.getElementById('lgGoogle').addEventListener('click', (botonGoogle) => {
+    // Simulación local: la conexión real con el proveedor OAuth llega en Sesión 6 (servicios externos).
+  });
+
+  function iniciarReenvio() {
+    const reenviarBtn = document.getElementById('lgReenviar');
+    const cuentaEl = document.getElementById('lgCuenta');
+    let restante = 60;
+    reenviarBtn.disabled = true;
+    const intervalo = setInterval(() => {
+      restante -= 1;
+      cuentaEl.textContent = restante;
+      if (restante <= 0) {
+        clearInterval(intervalo);
+        reenviarBtn.disabled = false;
+        reenviarBtn.textContent = 'Reenviar el enlace';
+      }
+    }, 1000);
+    reenviarBtn.addEventListener('click', () => {
+      if (reenviarBtn.disabled) return;
+      reenviarBtn.disabled = true;
+      reenviarBtn.textContent = 'Reenviando…';
+      setTimeout(() => {
+        reenviarBtn.textContent = 'Enviado de nuevo ✓';
+        setTimeout(() => { restante = 60; reenviarBtn.textContent = 'Reenviar en 60s'; iniciarReenvio(); }, 1500);
+      }, 700);
+    }, { once: true });
+  }
+
+  const reveals = document.querySelectorAll('.lg-reveal');
+  const sinMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  reveals.forEach((el, i) => {
+    if (sinMovimiento) { el.classList.add('in'); return; }
+    setTimeout(() => el.classList.add('in'), 60 + i * 60);
+  });
+</script>
+
+</body>
+</html>

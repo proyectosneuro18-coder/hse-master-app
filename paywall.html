@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Activa tu prueba gratis — HSE Master App</title>
+<script>
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.documentElement.classList.add('js-motion');
+  }
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500..800&family=DM+Sans:wght@400..800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  :root {
+    --bg: #fffaf0; --surface: #ffffff; --ink: #1a1a1a; --ink-2: #6b6b6b;
+    --amarillo: #ffe600; --amarillo-sombra: #e0bf00;
+    --verde: #1bcc02; --verde-sombra: #1b9f03;
+    --azul: #3e7ef7; --azul-sombra: #0a4299;
+    --rojo: #ff4e0e; --rojo-sombra: #c75126;
+    --neutro-track: #e4dcc4;
+    --font-display: 'Baloo 2', sans-serif; --font-body: 'DM Sans', sans-serif;
+  }
+  html, body { overflow-x: hidden; }
+  body {
+    background:
+      radial-gradient(480px 300px at 8% 0%, color-mix(in oklab, var(--amarillo) 22%, transparent), transparent 70%),
+      var(--bg);
+    color: var(--ink); font-family: var(--font-body); line-height: 1.5; min-height: 100dvh;
+  }
+  a:focus-visible, button:focus-visible { outline: 3px solid var(--azul); outline-offset: 2px; border-radius: 4px; }
+  .wrap { max-width: 480px; margin: 0 auto; padding: 0 16px 32px; }
+
+  .pw-header { display: flex; align-items: center; justify-content: space-between; padding: 16px; }
+  .pw-logo { display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--ink);
+             font-family: var(--font-display); font-weight: 800; font-size: 15px; }
+  .pw-logo .dot { width: 24px; height: 24px; border-radius: 10px; background: var(--amarillo); border: 2px solid var(--ink); }
+  .pw-cerrar { width: 44px; height: 44px; border-radius: 14px; border: 2px solid var(--ink); background: var(--surface);
+               color: var(--ink); display: flex; align-items: center; justify-content: center; cursor: pointer; text-decoration: none; }
+
+  .pw-reveal { opacity: 0; transform: translateY(14px); }
+  .js-motion .pw-reveal { transition: opacity 400ms ease, transform 400ms ease; }
+  .pw-reveal.in { opacity: 1; transform: translateY(0); }
+
+  .pw-headline { font-family: var(--font-display); font-size: 28px; font-weight: 800; line-height: 1.15; letter-spacing: -0.01em; }
+  .pw-headline em { font-style: normal; color: var(--azul-sombra); }
+  .pw-sub { margin-top: 10px; font-size: 14px; color: var(--ink-2); font-weight: 700; }
+  .pw-sub b { color: var(--ink); }
+
+  .pw-bloque { background: var(--surface); border: 3px solid var(--ink); border-radius: 20px; padding: 20px; margin-top: 20px; }
+
+  /* Timeline */
+  .pw-linea { display: flex; gap: 12px; }
+  .pw-linea .riel { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+  .pw-linea .nodo { width: 14px; height: 14px; border-radius: 999px; border: 2px solid var(--ink); background: var(--verde); flex-shrink: 0; }
+  .pw-linea .nodo.outline { background: var(--surface); }
+  .pw-linea .conector { width: 2px; flex: 1; background: var(--verde); min-height: 36px; }
+  .pw-linea .conector.neutro { background: var(--neutro-track); }
+  .pw-linea .contenido { padding-bottom: 20px; }
+  .pw-linea:last-child .contenido { padding-bottom: 0; }
+  .pw-linea .titulo { font-size: 15px; font-weight: 800; }
+  .pw-linea .detalle { margin-top: 2px; font-size: 13px; color: var(--ink-2); font-weight: 700; }
+
+  .pw-puente { margin-top: 16px; display: flex; flex-direction: column; gap: 8px; }
+  .pw-puente .item { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: var(--ink-2); }
+  .pw-puente .item svg { flex-shrink: 0; }
+
+  .pw-planes-tit { margin-top: 28px; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-2); }
+  .pw-planes { margin-top: 12px; display: flex; flex-direction: column; gap: 12px; }
+  .pw-plan { border: 3px solid var(--ink); border-radius: 18px; padding: 16px; position: relative; background: var(--surface); cursor: pointer; }
+  .pw-plan.elegido { background: var(--amarillo); }
+  .pw-plan .tag { position: absolute; top: -13px; left: 16px; background: var(--rojo); color: var(--ink); border: 2px solid var(--ink);
+                  border-radius: 999px; padding: 3px 10px; font-size: 10px; font-weight: 800; }
+  .pw-plan .fila { display: flex; align-items: baseline; justify-content: space-between; }
+  .pw-plan .nombre { font-weight: 800; font-size: 14px; }
+  .pw-plan .precio { font-family: var(--font-display); font-size: 22px; font-weight: 800; }
+  .pw-plan .precio small { font-size: 12px; font-weight: 700; font-family: var(--font-body); }
+  .pw-plan .nota { margin-top: 4px; font-size: 12px; font-weight: 700; color: var(--ink-2); }
+  .pw-plan.elegido .nota { color: var(--ink); }
+  .pw-plan .marca { position: absolute; top: 16px; right: 16px; width: 22px; height: 22px; border-radius: 999px;
+                     border: 2px solid var(--ink); background: var(--surface); display: flex; align-items: center; justify-content: center; }
+  .pw-plan.elegido .marca { background: var(--ink); }
+  .pw-plan .marca svg { opacity: 0; }
+  .pw-plan.elegido .marca svg { opacity: 1; }
+
+  .pw-cta-wrap { margin-top: 24px; }
+  .pw-boton { width: 100%; height: 56px; border-radius: 16px; border: 3px solid var(--ink); background: var(--verde);
+              color: var(--ink); font-family: var(--font-display); font-weight: 800; font-size: 15px; text-transform: uppercase;
+              letter-spacing: 0.01em; cursor: pointer; border-bottom: 4px solid var(--verde-sombra); }
+  .js-motion .pw-boton { transition: transform 120ms ease, border-bottom-width 120ms ease; }
+  .pw-boton:active { border-bottom-width: 3px; transform: translateY(3px); }
+  .pw-reversibilidad { margin-top: 10px; text-align: center; font-size: 13px; color: var(--ink-2); font-weight: 700; }
+
+  .pw-trust { margin-top: 20px; text-align: center; font-size: 12px; color: var(--ink-2); font-weight: 700;
+              display: flex; align-items: center; justify-content: center; gap: 6px; }
+</style>
+</head>
+<body>
+
+<header class="pw-header">
+  <a href="landing.html" class="pw-logo" aria-label="Ir al inicio"><span class="dot"></span>HSE Master App</a>
+  <a href="onboarding.html" class="pw-cerrar" aria-label="Volver">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+  </a>
+</header>
+
+<main class="wrap">
+  <h1 class="pw-headline pw-reveal">Tu panel para <em id="pwCuadrilla">tu cuadrilla</em> está listo</h1>
+  <p class="pw-sub pw-reveal">Hecho con tus <b>4 respuestas</b> — sin tarjeta, sin compromiso.</p>
+
+  <div class="pw-bloque pw-reveal">
+    <div class="pw-linea">
+      <div class="riel"><span class="nodo"></span><span class="conector"></span></div>
+      <div class="contenido">
+        <p class="titulo">Hoy — acceso completo</p>
+        <p class="detalle">Todo tu panel, tu cuadrilla y el Pase de los 3 Minutos, sin límites</p>
+      </div>
+    </div>
+    <div class="pw-linea">
+      <div class="riel"><span class="nodo"></span><span class="conector neutro"></span></div>
+      <div class="contenido">
+        <p class="titulo">Día 12 — te avisamos</p>
+        <p class="detalle">Un correo antes de que termine tu prueba, sin sorpresas</p>
+      </div>
+    </div>
+    <div class="pw-linea">
+      <div class="riel"><span class="nodo outline"></span></div>
+      <div class="contenido">
+        <p class="titulo">Día 14 — tú decides</p>
+        <p class="detalle">Como nunca pediste tarjeta, no hay ningún cobro automático</p>
+      </div>
+    </div>
+  </div>
+
+  <p class="pw-planes-tit pw-reveal">Si decides seguir, esto es lo que cuesta</p>
+  <div class="pw-planes pw-reveal">
+    <div class="pw-plan elegido" id="pwPlanAnual" data-plan="anual">
+      <span class="tag">2 MESES GRATIS</span>
+      <div class="fila">
+        <span class="nombre">Anual</span>
+        <span class="marca"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+      </div>
+      <p class="precio">US$6.67<small>/usuario/mes</small></p>
+      <p class="nota">Se cobra US$80/usuario/año</p>
+    </div>
+    <div class="pw-plan" id="pwPlanMensual" data-plan="mensual">
+      <div class="fila">
+        <span class="nombre">Mensual</span>
+        <span class="marca"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+      </div>
+      <p class="precio">US$8<small>/usuario/mes</small></p>
+      <p class="nota">Cancela cuando quieras</p>
+    </div>
+  </div>
+
+  <div class="pw-cta-wrap pw-reveal">
+    <button type="button" class="pw-boton" id="pwActivar">Activar mi prueba gratis de 14 días</button>
+    <p class="pw-reversibilidad">Hoy no pagas nada · Cancela cuando quieras · Sin tarjeta</p>
+  </div>
+
+  <p class="pw-trust pw-reveal">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+    Tus datos son privados de tu empresa — nadie más los ve
+  </p>
+</main>
+
+<script>
+  try {
+    const onb = JSON.parse(sessionStorage.getItem('hseOnboarding') || '{}');
+    if (onb.cuadrilla) {
+      document.getElementById('pwCuadrilla').textContent = onb.cuadrilla.toLowerCase();
+    }
+  } catch {}
+
+  document.querySelectorAll('.pw-plan').forEach((plan) => {
+    plan.addEventListener('click', () => {
+      document.querySelectorAll('.pw-plan').forEach((p) => { p.classList.remove('elegido'); });
+      plan.classList.add('elegido');
+    });
+  });
+
+  document.getElementById('pwActivar').addEventListener('click', () => {
+    const elegido = document.querySelector('.pw-plan.elegido');
+    try { sessionStorage.setItem('hsePlanElegido', elegido ? elegido.dataset.plan : 'anual'); } catch {}
+    window.location.href = 'login.html';
+  });
+
+  const reveals = document.querySelectorAll('.pw-reveal');
+  const sinMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  reveals.forEach((el, i) => {
+    if (sinMovimiento) { el.classList.add('in'); return; }
+    setTimeout(() => el.classList.add('in'), 80 + i * 80);
+  });
+</script>
+
+</body>
+</html>
