@@ -50,7 +50,7 @@
   .onb-pct { font-size: 12px; font-weight: 800; color: var(--ink-2); min-width: 32px; text-align: right; font-variant-numeric: tabular-nums; flex-shrink: 0; }
 
   /* ===== ESCENARIO DE PASOS ===== */
-  .onb-stage { position: relative; flex: 1; }
+  .onb-stage { position: relative; flex: 1; box-shadow: inset 0 10px 24px -18px rgb(26 26 26 / 0.35); }
   .onb-paso {
     position: absolute; inset: 0; padding: 24px 16px; display: flex; flex-direction: column;
     justify-content: center; opacity: 0; transform: translateX(40px); pointer-events: none; visibility: hidden;
@@ -71,7 +71,7 @@
     display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 18px;
     font-family: var(--font-body); font-size: 16px; font-weight: 500; color: var(--ink); text-align: left;
     cursor: pointer; opacity: 0; transform: translateY(10px);
-    box-shadow: 0 4px 0 -1px rgb(26 26 26 / 0.05), 0 6px 14px rgb(26 26 26 / 0.06);
+    box-shadow: 0 6px 0 -2px rgb(26 26 26 / 0.08), 0 10px 20px rgb(26 26 26 / 0.1);
   }
   .js-motion .onb-chip { transition: background 150ms ease, border-color 150ms ease, opacity 300ms ease, transform 300ms ease, scale 100ms ease; }
   .onb-paso.activo .onb-chip.in { opacity: 1; transform: translateY(0); }
@@ -86,6 +86,8 @@
 
   .onb-input-wrap { margin-top: 28px; display: none; flex-direction: column; gap: 12px; }
   .onb-input-wrap.show { display: flex; }
+  .onb-hint { font-size: 13px; color: var(--rojo-sombra); font-weight: 700; display: none; }
+  .onb-hint.show { display: block; }
   .onb-input {
     width: 100%; height: 56px; border-radius: 16px; border: 3px solid var(--ink); background: var(--surface);
     padding: 0 18px; font-family: var(--font-body); font-size: 16px; color: var(--ink);
@@ -208,14 +210,15 @@
     </div>
     <div class="onb-input-wrap" id="onbRetoInputWrap">
       <input type="text" class="onb-input" id="onbRetoInput" placeholder="Cuéntanos tu reto" maxlength="80" autocomplete="off">
-      <button type="button" class="onb-boton" id="onbRetoContinuar" disabled>Continuar</button>
+      <button type="button" class="onb-boton" id="onbRetoContinuar">Continuar</button>
+      <p class="onb-hint" id="onbRetoHint">Escribe tu reto antes de continuar.</p>
     </div>
   </section>
 
   <!-- PASO 3: RECONOCIMIENTO -->
   <section class="onb-paso" data-paso="3">
     <div class="onb-reco">
-      <span class="ic"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg></span>
+      <span class="ic"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 17.5h17"/><path d="M5 17.5Q5 7 12 7Q19 7 19 17.5"/><path d="M12 7V4"/></svg></span>
       <h2 id="onbRecoTitulo">—</h2>
       <p id="onbRecoCuerpo">—</p>
     </div>
@@ -346,13 +349,27 @@
   // Selección de chips (auto-avance en single-select) + semántica de radiogroup para lectores de pantalla
   document.querySelectorAll('[data-grupo]').forEach((grupo) => {
     grupo.setAttribute('role', 'radiogroup');
-    grupo.querySelectorAll('.onb-chip').forEach((chip) => {
+    const chipsDelGrupo = Array.from(grupo.querySelectorAll('.onb-chip'));
+    chipsDelGrupo.forEach((chip, i) => {
       chip.setAttribute('role', 'radio');
       chip.setAttribute('aria-checked', 'false');
+      chip.setAttribute('tabindex', i === 0 ? '0' : '-1');
+      chip.addEventListener('keydown', (e) => {
+        if (!['ArrowDown', 'ArrowRight', 'ArrowUp', 'ArrowLeft'].includes(e.key)) return;
+        e.preventDefault();
+        const idx = chipsDelGrupo.indexOf(chip);
+        const siguiente = (e.key === 'ArrowDown' || e.key === 'ArrowRight')
+          ? chipsDelGrupo[(idx + 1) % chipsDelGrupo.length]
+          : chipsDelGrupo[(idx - 1 + chipsDelGrupo.length) % chipsDelGrupo.length];
+        chipsDelGrupo.forEach((c) => c.setAttribute('tabindex', '-1'));
+        siguiente.setAttribute('tabindex', '0');
+        siguiente.focus();
+      });
       chip.addEventListener('click', () => {
-        grupo.querySelectorAll('.onb-chip').forEach((c) => { c.classList.remove('seleccionado'); c.setAttribute('aria-checked', 'false'); });
+        chipsDelGrupo.forEach((c) => { c.classList.remove('seleccionado'); c.setAttribute('aria-checked', 'false'); c.setAttribute('tabindex', '-1'); });
         chip.classList.add('seleccionado');
         chip.setAttribute('aria-checked', 'true');
+        chip.setAttribute('tabindex', '0');
         const nombre = grupo.dataset.grupo;
         const valor = chip.dataset.valor;
 
@@ -377,18 +394,20 @@
     });
   });
 
-  // "Otra cosa": input libre con confirmación explícita
+  // "Otra cosa": input libre con confirmación explícita — el botón nunca nace deshabilitado,
+  // valida al tocarlo y muestra un aviso en vez de bloquear la acción.
   const retoInput = document.getElementById('onbRetoInput');
   const retoContinuar = document.getElementById('onbRetoContinuar');
-  retoInput.addEventListener('input', () => {
-    retoContinuar.disabled = retoInput.value.trim().length === 0;
-  });
+  const retoHint = document.getElementById('onbRetoHint');
+  retoInput.addEventListener('input', () => { retoHint.classList.remove('show'); });
   retoInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !retoContinuar.disabled) { e.preventDefault(); retoContinuar.click(); }
+    if (e.key === 'Enter') { e.preventDefault(); retoContinuar.click(); }
   });
   retoContinuar.addEventListener('click', () => {
+    const texto = retoInput.value.trim();
+    if (!texto) { retoHint.classList.add('show'); retoInput.focus(); return; }
     respuestas.reto = 'otra';
-    respuestas.retoTexto = retoInput.value.trim();
+    respuestas.retoTexto = texto;
     respuestas.retoLabel = respuestas.retoTexto;
     irAPaso(3, 'adelante');
   });

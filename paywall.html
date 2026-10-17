@@ -37,7 +37,7 @@
   .pw-logo { display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--ink);
              font-family: var(--font-display); font-weight: 800; font-size: 15px; }
   .pw-logo .dot { width: 24px; height: 24px; border-radius: 10px; background: var(--amarillo); border: 2px solid var(--ink); }
-  .pw-cerrar { width: 44px; height: 44px; border-radius: 14px; border: 3px solid var(--ink); background: var(--surface);
+  .pw-cerrar { width: 44px; height: 44px; border-radius: 16px; border: 3px solid var(--ink); background: var(--surface);
                color: var(--ink); display: flex; align-items: center; justify-content: center; cursor: pointer; text-decoration: none; }
 
   .pw-reveal { opacity: 0; transform: translateY(14px); }
@@ -71,12 +71,12 @@
 
   .pw-planes-tit { margin-top: 28px; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-2); }
   .pw-planes { margin-top: 12px; display: flex; flex-direction: column; gap: 12px; }
-  .pw-plan { border: 3px solid var(--ink); border-radius: 20px; padding: 16px; position: relative; background: var(--surface); cursor: pointer;
-             transition: background 150ms ease, border-color 150ms ease; }
+  .pw-plan { border: 3px solid var(--ink); border-radius: 20px; padding: 16px; position: relative; background: var(--surface); cursor: pointer; }
+  .js-motion .pw-plan { transition: background 150ms ease, border-color 150ms ease; }
   .pw-plan:focus-visible { outline: 3px solid var(--azul); outline-offset: 2px; }
   .pw-plan.elegido { background: var(--amarillo); }
   .pw-plan .tag { position: absolute; top: -13px; left: 16px; background: var(--rojo); color: var(--ink); border: 2px solid var(--ink);
-                  border-radius: 14px; padding: 3px 10px; font-size: 10px; font-weight: 800; }
+                  border-radius: 8px; padding: 4px 10px; font-size: 10px; font-weight: 800; }
   .pw-plan .fila { display: flex; align-items: baseline; justify-content: space-between; }
   .pw-plan .nombre { font-weight: 800; font-size: 14px; }
   .pw-plan .precio { font-family: var(--font-display); font-size: 22px; font-weight: 800; }
@@ -112,7 +112,7 @@
 
 <main class="wrap">
   <h1 class="pw-headline pw-reveal">Tu panel para <em id="pwCuadrilla">tu cuadrilla</em> está listo</h1>
-  <p class="pw-emocion pw-reveal">Se acabó <b>firmar la charla por compromiso</b> sin saber si de verdad entendieron.</p>
+  <p class="pw-emocion pw-reveal">Firman la charla en la mañana y a los 10 minutos ya tienen <b>la mano en la línea de fuego</b>.</p>
   <p class="pw-sub pw-reveal">Desde hoy ves en 10 segundos quién de tu cuadrilla está listo para el pozo — hecho con tus <b>4 respuestas</b>, sin tarjeta.</p>
 
   <div class="pw-bloque pw-reveal">
@@ -120,7 +120,7 @@
       <div class="riel"><span class="nodo"></span><span class="conector"></span></div>
       <div class="contenido">
         <p class="titulo">Hoy — acceso completo</p>
-        <p class="detalle">Todo tu panel, tu cuadrilla y el Pase de los 3 Minutos, sin límites</p>
+        <p class="detalle">Toda tu cuadrilla corriendo el Pase de los 3 Minutos, sin límites</p>
       </div>
     </div>
     <div class="pw-linea">
@@ -162,7 +162,7 @@
 
   <div class="pw-cta-wrap pw-reveal">
     <button type="button" class="pw-boton" id="pwActivar">Activar mi prueba gratis de 14 días</button>
-    <p class="pw-reversibilidad">Hoy no pagas nada · Sin tarjeta · Respaldado por el Compromiso del Primer Pase</p>
+    <p class="pw-reversibilidad">Hoy no pagas nada · Sin tarjeta · Respaldado por el Compromiso del Primer Pase hasta el día 14</p>
   </div>
 
   <p class="pw-trust pw-reveal">
