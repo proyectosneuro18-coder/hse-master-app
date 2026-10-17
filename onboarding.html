@@ -25,7 +25,11 @@
   }
   html, body { overflow-x: hidden; overflow-y: auto; height: 100%; }
   body {
-    background: var(--bg); color: var(--ink); font-family: var(--font-body); line-height: 1.5;
+    background:
+      radial-gradient(480px 300px at 92% 0%, color-mix(in oklab, var(--amarillo) 20%, transparent), transparent 70%),
+      radial-gradient(420px 280px at 4% 100%, color-mix(in oklab, var(--azul) 12%, transparent), transparent 70%),
+      var(--bg);
+    color: var(--ink); font-family: var(--font-body); line-height: 1.5;
     min-height: 100dvh; display: flex; flex-direction: column;
   }
   a:focus-visible, button:focus-visible, input:focus-visible {
@@ -49,10 +53,10 @@
   .onb-stage { position: relative; flex: 1; }
   .onb-paso {
     position: absolute; inset: 0; padding: 8px 16px 32px; display: flex; flex-direction: column;
-    opacity: 0; transform: translateX(40px); pointer-events: none; visibility: hidden;
+    justify-content: center; opacity: 0; transform: translateX(40px); pointer-events: none; visibility: hidden;
   }
   .js-motion .onb-paso { transition: opacity 300ms ease, transform 300ms ease; }
-  .onb-paso.activo { opacity: 1; transform: translateX(0); pointer-events: auto; visibility: visible; position: relative; }
+  .onb-paso.activo { opacity: 1; transform: translateX(0); pointer-events: auto; visibility: visible; }
   .onb-paso.saliendo-izq { opacity: 0; transform: translateX(-24px); }
   .onb-paso.entrando-der { transform: translateX(40px); }
   .onb-paso.entrando-izq { transform: translateX(-40px); }
@@ -67,6 +71,7 @@
     display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 18px;
     font-family: var(--font-body); font-size: 16px; font-weight: 500; color: var(--ink); text-align: left;
     cursor: pointer; opacity: 0; transform: translateY(10px);
+    box-shadow: 0 4px 0 -1px rgb(26 26 26 / 0.05), 0 6px 14px rgb(26 26 26 / 0.06);
   }
   .js-motion .onb-chip { transition: background 150ms ease, border-color 150ms ease, opacity 300ms ease, transform 300ms ease, scale 100ms ease; }
   .onb-paso.activo .onb-chip.in { opacity: 1; transform: translateY(0); }
@@ -267,7 +272,7 @@
 </div>
 
 <script>
-  const respuestas = { cuadrilla: null, reto: null, retoTexto: null, horario: null };
+  const respuestas = { cuadrilla: null, reto: null, retoTexto: null, retoLabel: null, horario: null };
   const pasos = Array.from(document.querySelectorAll('.onb-paso'));
   let pasoActual = 1;
   const PROGRESO = { 1: 8, 2: 32, 3: 58, 4: 80, 5: 100 };
@@ -276,9 +281,11 @@
   const atrasBtn = document.getElementById('onbAtras');
   const sinMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  let progresoMaximo = PROGRESO[1];
   function actualizarProgreso(paso) {
-    fill.style.width = PROGRESO[paso] + '%';
-    pctEl.textContent = PROGRESO[paso] + '%';
+    progresoMaximo = Math.max(progresoMaximo, PROGRESO[paso]);
+    fill.style.width = progresoMaximo + '%';
+    pctEl.textContent = progresoMaximo + '%';
   }
   function actualizarAtras(paso) {
     atrasBtn.classList.toggle('show', paso > 1 && paso < 5);
@@ -331,12 +338,16 @@
     });
   }
 
-  // Selección de chips (auto-avance en single-select)
+  // Selección de chips (auto-avance en single-select) + semántica de radiogroup para lectores de pantalla
   document.querySelectorAll('[data-grupo]').forEach((grupo) => {
+    grupo.setAttribute('role', 'radiogroup');
     grupo.querySelectorAll('.onb-chip').forEach((chip) => {
+      chip.setAttribute('role', 'radio');
+      chip.setAttribute('aria-checked', 'false');
       chip.addEventListener('click', () => {
-        grupo.querySelectorAll('.onb-chip').forEach((c) => c.classList.remove('seleccionado'));
+        grupo.querySelectorAll('.onb-chip').forEach((c) => { c.classList.remove('seleccionado'); c.setAttribute('aria-checked', 'false'); });
         chip.classList.add('seleccionado');
+        chip.setAttribute('aria-checked', 'true');
         const nombre = grupo.dataset.grupo;
         const valor = chip.dataset.valor;
 
@@ -347,7 +358,10 @@
         }
         document.getElementById('onbRetoInputWrap')?.classList.remove('show');
         respuestas[nombre] = valor;
-        if (nombre === 'reto') respuestas.retoTexto = null;
+        if (nombre === 'reto') {
+          respuestas.retoTexto = null;
+          respuestas.retoLabel = chip.querySelector('span').textContent;
+        }
 
         setTimeout(() => {
           if (nombre === 'cuadrilla') irAPaso(2, 'adelante');
@@ -367,6 +381,7 @@
   retoContinuar.addEventListener('click', () => {
     respuestas.reto = 'otra';
     respuestas.retoTexto = retoInput.value.trim();
+    respuestas.retoLabel = respuestas.retoTexto;
     irAPaso(3, 'adelante');
   });
 
@@ -425,7 +440,7 @@
     const lineas = document.getElementById('onbLineas').querySelectorAll('.onb-linea');
     const textos = {
       1: `Analizando el tamaño de tu cuadrilla: ${respuestas.cuadrilla || '—'}`,
-      2: `Ajustando al reto que marcaste: ${respuestas.retoTexto || (RECONOCIMIENTOS[respuestas.reto]?.titulo) || '—'}`,
+      2: `Ajustando al reto que marcaste: ${respuestas.retoLabel || '—'}`,
       3: `Configurando el horario de tu charla: ${respuestas.horario || '—'}`,
       4: 'Preparando tu panel de HSE'
     };

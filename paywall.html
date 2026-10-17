@@ -48,6 +48,7 @@
   .pw-headline em { font-style: normal; color: var(--azul-sombra); }
   .pw-sub { margin-top: 10px; font-size: 14px; color: var(--ink-2); font-weight: 700; }
   .pw-sub b { color: var(--ink); }
+  .pw-emocion { margin-top: 14px; font-size: 15px; font-weight: 700; color: var(--azul-sombra); line-height: 1.4; }
 
   .pw-bloque { background: var(--surface); border: 3px solid var(--ink); border-radius: 20px; padding: 20px; margin-top: 20px; }
 
@@ -69,7 +70,8 @@
 
   .pw-planes-tit { margin-top: 28px; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-2); }
   .pw-planes { margin-top: 12px; display: flex; flex-direction: column; gap: 12px; }
-  .pw-plan { border: 3px solid var(--ink); border-radius: 18px; padding: 16px; position: relative; background: var(--surface); cursor: pointer; }
+  .pw-plan { border: 3px solid var(--ink); border-radius: 20px; padding: 16px; position: relative; background: var(--surface); cursor: pointer; }
+  .pw-plan:focus-visible { outline: 3px solid var(--azul); outline-offset: 2px; }
   .pw-plan.elegido { background: var(--amarillo); }
   .pw-plan .tag { position: absolute; top: -13px; left: 16px; background: var(--rojo); color: var(--ink); border: 2px solid var(--ink);
                   border-radius: 999px; padding: 3px 10px; font-size: 10px; font-weight: 800; }
@@ -77,7 +79,7 @@
   .pw-plan .nombre { font-weight: 800; font-size: 14px; }
   .pw-plan .precio { font-family: var(--font-display); font-size: 22px; font-weight: 800; }
   .pw-plan .precio small { font-size: 12px; font-weight: 700; font-family: var(--font-body); }
-  .pw-plan .nota { margin-top: 4px; font-size: 12px; font-weight: 700; color: var(--ink-2); }
+  .pw-plan .nota { margin-top: 4px; font-size: 14px; font-weight: 700; color: var(--ink-2); }
   .pw-plan.elegido .nota { color: var(--ink); }
   .pw-plan .marca { position: absolute; top: 16px; right: 16px; width: 22px; height: 22px; border-radius: 999px;
                      border: 2px solid var(--ink); background: var(--surface); display: flex; align-items: center; justify-content: center; }
@@ -93,7 +95,7 @@
   .pw-boton:active { border-bottom-width: 3px; transform: translateY(3px); }
   .pw-reversibilidad { margin-top: 10px; text-align: center; font-size: 13px; color: var(--ink-2); font-weight: 700; }
 
-  .pw-trust { margin-top: 20px; text-align: center; font-size: 12px; color: var(--ink-2); font-weight: 700;
+  .pw-trust { margin-top: 20px; text-align: center; font-size: 14px; color: var(--ink-2); font-weight: 700;
               display: flex; align-items: center; justify-content: center; gap: 6px; }
 </style>
 </head>
@@ -101,14 +103,15 @@
 
 <header class="pw-header">
   <a href="landing.html" class="pw-logo" aria-label="Ir al inicio"><span class="dot"></span>HSE Master App</a>
-  <a href="onboarding.html" class="pw-cerrar" aria-label="Volver">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+  <a href="onboarding.html" class="pw-cerrar" aria-label="Volver al recorrido de bienvenida">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
   </a>
 </header>
 
 <main class="wrap">
   <h1 class="pw-headline pw-reveal">Tu panel para <em id="pwCuadrilla">tu cuadrilla</em> está listo</h1>
   <p class="pw-sub pw-reveal">Hecho con tus <b>4 respuestas</b> — sin tarjeta, sin compromiso.</p>
+  <p class="pw-emocion pw-reveal">Desde hoy vas a ver en 10 segundos quién de tu cuadrilla está listo para el pozo — y quién todavía no.</p>
 
   <div class="pw-bloque pw-reveal">
     <div class="pw-linea">
@@ -135,8 +138,8 @@
   </div>
 
   <p class="pw-planes-tit pw-reveal">Si decides seguir, esto es lo que cuesta</p>
-  <div class="pw-planes pw-reveal">
-    <div class="pw-plan elegido" id="pwPlanAnual" data-plan="anual">
+  <div class="pw-planes pw-reveal" role="radiogroup" aria-label="Elige el plan que se sugerirá al terminar tu prueba">
+    <div class="pw-plan elegido" id="pwPlanAnual" data-plan="anual" role="radio" aria-checked="true" tabindex="0">
       <span class="tag">2 MESES GRATIS</span>
       <div class="fila">
         <span class="nombre">Anual</span>
@@ -145,7 +148,7 @@
       <p class="precio">US$6.67<small>/usuario/mes</small></p>
       <p class="nota">Se cobra US$80/usuario/año</p>
     </div>
-    <div class="pw-plan" id="pwPlanMensual" data-plan="mensual">
+    <div class="pw-plan" id="pwPlanMensual" data-plan="mensual" role="radio" aria-checked="false" tabindex="0">
       <div class="fila">
         <span class="nombre">Mensual</span>
         <span class="marca"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
@@ -174,10 +177,15 @@
     }
   } catch {}
 
+  function elegirPlan(plan) {
+    document.querySelectorAll('.pw-plan').forEach((p) => { p.classList.remove('elegido'); p.setAttribute('aria-checked', 'false'); });
+    plan.classList.add('elegido');
+    plan.setAttribute('aria-checked', 'true');
+  }
   document.querySelectorAll('.pw-plan').forEach((plan) => {
-    plan.addEventListener('click', () => {
-      document.querySelectorAll('.pw-plan').forEach((p) => { p.classList.remove('elegido'); });
-      plan.classList.add('elegido');
+    plan.addEventListener('click', () => elegirPlan(plan));
+    plan.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); elegirPlan(plan); }
     });
   });
 
