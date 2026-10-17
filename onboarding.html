@@ -84,9 +84,6 @@
 
   .onb-chips { margin-top: 28px; display: flex; flex-direction: column; gap: 12px; }
   .onb-nota-cuadrilla { margin-top: 20px; font-size: 14px; color: var(--ink-2); text-align: center; }
-  .onb-marca-agua { display: block; margin: 20px auto 0; width: 140px; height: 140px; color: var(--azul);
-                     opacity: 0.16; }
-  .onb-marca-agua svg { width: 100%; height: 100%; }
   .onb-chip {
     width: 100%; min-height: 60px; border-radius: 16px; border: 3px solid var(--ink); background: var(--surface);
     display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 18px;
@@ -229,7 +226,6 @@
       </button>
     </div>
     <p class="onb-nota-cuadrilla">Puedes sumar más cuadrillas más adelante — esto no te limita.</p>
-    <span class="onb-marca-agua" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 17.5h17"/><path d="M5 17.5Q5 7 12 7Q19 7 19 17.5"/><path d="M12 7V4"/></svg></span>
   </section>
 
   <!-- PASO 2 -->
@@ -337,6 +333,9 @@
   const pctEl = document.getElementById('onbPct');
   const atrasBtn = document.getElementById('onbAtras');
   const sinMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function guardarProgreso() {
+    try { sessionStorage.setItem('hseOnboarding', JSON.stringify(respuestas)); } catch {}
+  }
 
   const progressBar = document.querySelector('.onb-progress');
   const srPaso = document.getElementById('onbSrPaso');
@@ -351,6 +350,7 @@
   }
   function actualizarHeader(paso) {
     document.getElementById('onbHeaderMedio').classList.toggle('oculto', paso === 5);
+    document.getElementById('onbLogo').setAttribute('aria-label', paso > 1 ? 'Salir del recorrido de bienvenida' : 'Ir al inicio');
   }
 
   let transicionando = false;
@@ -423,6 +423,9 @@
         siguiente.focus();
       });
       chip.addEventListener('click', () => {
+        if (grupo.style.pointerEvents === 'none') return;
+        grupo.style.pointerEvents = 'none';
+        setTimeout(() => { grupo.style.pointerEvents = ''; }, 320);
         chipsDelGrupo.forEach((c) => { c.classList.remove('seleccionado'); c.setAttribute('aria-checked', 'false'); c.setAttribute('tabindex', '-1'); });
         chip.classList.add('seleccionado');
         chip.setAttribute('aria-checked', 'true');
@@ -436,6 +439,7 @@
           respuestas.retoTexto = null;
           respuestas.retoLabel = chip.querySelector('span').textContent;
         }
+        guardarProgreso();
 
         setTimeout(() => {
           if (nombre === 'cuadrilla') irAPaso(2, 'adelante');
@@ -469,38 +473,49 @@
     respuestas.reto = 'otra';
     respuestas.retoTexto = texto;
     respuestas.retoLabel = respuestas.retoTexto;
+    guardarProgreso();
     irAPaso(3, 'adelante');
   });
 
   // Reconocimiento dinámico según el reto elegido
+  const ICONO_CASCO = '<path d="M3.5 17.5h17"/><path d="M5 17.5Q5 7 12 7Q19 7 19 17.5"/><path d="M12 7V4"/>';
+  const ICONO_QR = '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM19 14v3M14 19h3M17 17h4v4h-4z"/>';
+  const ICONO_PREGUNTA = '<circle cx="12" cy="12" r="10"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.5-2.5 2-2.5 3.5"/><path d="M12 17h.01"/>';
   const RECONOCIMIENTOS = {
     firman: {
       titulo: 'No es que no les importe',
-      cuerpo: 'Una firma en papel nunca prueba que entendieron — el <b>Pase de los 3 Minutos</b> reemplaza la firma por una prueba real, todos los días.'
+      cuerpo: 'Una firma en papel nunca prueba que entendieron — el <b>Pase de los 3 Minutos</b> reemplaza la firma por una prueba real, todos los días.',
+      icono: ICONO_CASCO
     },
     certificados: {
       titulo: 'No es tu equipo el que falla',
-      cuerpo: 'Cientos de carpetas de papel no fueron hechas para escalar. El Pase convierte cada certificación en un <b>código QR</b> que se verifica en segundos.'
+      cuerpo: 'Cientos de carpetas de papel no fueron hechas para escalar. El Pase convierte cada certificación en un <b>código QR</b> que se verifica en segundos.',
+      icono: ICONO_QR
     },
     'no-se-quien': {
       titulo: 'Un examen no distingue entender de adivinar',
-      cuerpo: 'El Pase mide si tu gente retuvo la regla de verdad, con retos de 3 minutos que <b>no se pueden adivinar</b>.'
+      cuerpo: 'El Pase mide si tu gente retuvo la regla de verdad, con retos de 3 minutos que <b>no se pueden adivinar</b>.',
+      icono: ICONO_PREGUNTA
     },
     auditoria: {
       titulo: 'Juntar papeles no debería tomarte días',
-      cuerpo: 'Con el Pase, cada trabajador trae su <b>código QR</b> listo — tu evidencia vive en el sistema, no en una carpeta.'
+      cuerpo: 'Con el Pase, cada trabajador trae su <b>código QR</b> listo — tu evidencia vive en el sistema, no en una carpeta.',
+      icono: ICONO_QR
     }
   };
   function prepararReconocimiento() {
     const titulo = document.getElementById('onbRecoTitulo');
     const cuerpo = document.getElementById('onbRecoCuerpo');
+    const iconoSvg = document.querySelector('.onb-reco .ic svg');
     if (respuestas.reto === 'otra' && respuestas.retoTexto) {
       titulo.textContent = 'Gracias por contarnos';
       cuerpo.innerHTML = `Anotamos tu reto: "${respuestas.retoTexto}". El <b>Pase de los 3 Minutos</b> está pensado para convertir la seguridad en un hábito diario, no en papeleo.`;
+      iconoSvg.innerHTML = ICONO_CASCO;
     } else {
       const r = RECONOCIMIENTOS[respuestas.reto] || RECONOCIMIENTOS.firman;
       titulo.textContent = r.titulo;
       cuerpo.innerHTML = r.cuerpo;
+      iconoSvg.innerHTML = r.icono;
     }
   }
   document.getElementById('onbRecoContinuar').addEventListener('click', () => irAPaso(4, 'adelante'));
@@ -527,7 +542,7 @@
 
   // Loading: anillo + líneas con pausas (labor illusion)
   function iniciarCarga() {
-    try { sessionStorage.setItem('hseOnboarding', JSON.stringify(respuestas)); } catch {}
+    guardarProgreso();
     const lineas = document.getElementById('onbLineas').querySelectorAll('.onb-linea');
     const textos = {
       1: `Analizando el tamaño de tu cuadrilla: ${respuestas.cuadrilla || '—'}`,
