@@ -91,7 +91,7 @@
   .hero .cta-row { margin-top: 24px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
   .hero .cta-row .boton { width: 100%; }
   @media (min-width: 480px) { .hero .cta-row .boton { width: auto; } }
-  .prueba-industria { margin-top: 16px; display: flex; align-items: center; gap: 12px; font-size: 12px; font-weight: 700; color: var(--ink-2); }
+  .prueba-industria { margin-top: 16px; display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 700; color: var(--ink-2); }
   .prueba-industria .chip { width: 26px; height: 26px; border-radius: 14px; background: var(--surface); border: 2px solid var(--ink);
                              display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .phone-stage { position: relative; width: 220px; margin: 0 auto; }
@@ -241,7 +241,7 @@
   .stack .check { width: 24px; height: 24px; border-radius: 999px; background: var(--verde); border: 2px solid var(--ink);
                   display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .stack .item h3 { font-size: 14px; font-weight: 800; }
-  .stack .item p { font-size: 12px; color: var(--ink-2); font-weight: 400; margin-top: 2px; }
+  .stack .item p { font-size: 14px; color: var(--ink-2); font-weight: 400; margin-top: 2px; }
   .planes { margin: 32px auto 0; max-width: 680px; display: grid; gap: 16px; grid-template-columns: 1fr; }
   @media (min-width: 640px) { .planes { grid-template-columns: 1fr 1fr; } }
   .plan { background: var(--bg); border: 3px solid var(--ink); border-radius: 20px; padding: 24px; position: relative; }
@@ -336,8 +336,8 @@
                 padding: 8px 16px calc(8px + env(safe-area-inset-bottom)); display: flex; flex-direction: column; gap: 6px;
                 opacity: 0; transform: translateY(100%); visibility: hidden;
                 transition: opacity 250ms ease, transform 250ms ease, visibility 0s 250ms; }
-  .sticky-nav { display: flex; gap: 16px; justify-content: center; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.02em; }
-  .sticky-nav a { color: var(--ink-2); text-decoration: none; }
+  .sticky-nav { display: flex; gap: 8px; justify-content: center; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.02em; }
+  .sticky-nav a { color: var(--ink-2); text-decoration: none; display: flex; align-items: center; min-height: 44px; padding: 0 8px; }
   .sticky-nav a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
   .sticky-cta-row { display: flex; gap: 8px; align-items: center; }
   .sticky-cta .boton { flex: 1; height: 48px; font-size: 13px; }
@@ -358,6 +358,7 @@
   .subir-arriba.show { opacity: 1; transform: translateY(0) scale(1); visibility: visible; transition-delay: 0s; }
   .subir-arriba:hover { background: var(--amarillo); }
   .subir-arriba:active { transform: scale(0.92); }
+  .subir-arriba.sin-sticky { bottom: 24px; }
   @media (min-width: 761px) { .subir-arriba { bottom: 24px; } }
   @media (prefers-reduced-motion: reduce) { .subir-arriba { transition: none; } }
 </style>
@@ -809,8 +810,10 @@
   let heroBtnOutOfView = false;
   let footerVisible = false;
   function actualizarSticky() {
-    sticky.classList.toggle('show', heroBtnOutOfView && !stickyDescartado && !footerVisible);
+    const stickyVisible = heroBtnOutOfView && !stickyDescartado && !footerVisible;
+    sticky.classList.toggle('show', stickyVisible);
     subirArriba.classList.toggle('show', heroBtnOutOfView);
+    subirArriba.classList.toggle('sin-sticky', !stickyVisible);
   }
   const io = new IntersectionObserver(([e]) => {
     heroBtnOutOfView = !e.isIntersecting;
