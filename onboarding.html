@@ -55,9 +55,10 @@
   /* ===== ESCENARIO DE PASOS ===== */
   .onb-stage { position: relative; flex: 1; background: var(--surface); box-shadow: inset 0 10px 24px -18px rgb(26 26 26 / 0.35); }
   .onb-paso {
-    position: absolute; inset: 0; padding: 24px 16px; display: flex; flex-direction: column;
-    justify-content: center; opacity: 0; transform: translateX(40px); pointer-events: none; visibility: hidden;
+    position: absolute; inset: 0; padding: 32px 16px 24px; display: flex; flex-direction: column;
+    justify-content: flex-start; opacity: 0; transform: translateX(40px); pointer-events: none; visibility: hidden;
   }
+  .onb-paso[data-paso="5"] { justify-content: center; }
   .js-motion .onb-paso { transition: opacity 300ms ease, transform 300ms ease; }
   .onb-paso.activo { opacity: 1; transform: translateX(0); pointer-events: auto; visibility: visible; }
   .onb-paso.saliendo-izq { opacity: 0; transform: translateX(-24px); }
@@ -153,8 +154,10 @@
   .onb-linea.vista { opacity: 1; }
   .onb-linea .marca { width: 20px; height: 20px; border-radius: 999px; flex-shrink: 0; margin-top: 1px;
                        border: 2px solid var(--ink-2); display: flex; align-items: center; justify-content: center; }
+  .onb-linea .marca svg { width: 11px; height: 11px; opacity: 0; }
   .onb-linea.activa .marca { border-color: var(--azul-sombra); background: var(--azul); animation: pulso 1s ease-in-out infinite; }
   .onb-linea.completa .marca { border-color: var(--ink); background: var(--verde); }
+  .onb-linea.completa .marca svg { opacity: 1; }
   .js-motion .onb-linea .marca { transition: background 150ms ease, border-color 150ms ease; }
   @keyframes pulso { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
   @media (prefers-reduced-motion: reduce) { .onb-linea.activa .marca { animation: none; } }
@@ -256,8 +259,8 @@
 
   <!-- PASO 4 -->
   <section class="onb-paso" data-paso="4">
-    <div class="onb-encabezado verde">
-      <span class="onb-icono verde"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
+    <div class="onb-encabezado azul">
+      <span class="onb-icono azul"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
       <h1 class="onb-pregunta">¿A qué hora es la charla antes del turno?</h1>
       <p class="onb-micro">Te avisamos justo antes, para que el reto se haga ahí mismo.</p>
     </div>
@@ -290,10 +293,10 @@
       </div>
       <h2>Preparando el panel de tu cuadrilla…</h2>
       <div class="onb-lineas" id="onbLineas">
-        <div class="onb-linea" data-linea="1"><span class="marca"></span><span class="txt">Analizando el tamaño de tu cuadrilla</span></div>
-        <div class="onb-linea" data-linea="2"><span class="marca"></span><span class="txt">Ajustando al reto que marcaste</span></div>
-        <div class="onb-linea" data-linea="3"><span class="marca"></span><span class="txt">Configurando el horario de tu charla</span></div>
-        <div class="onb-linea" data-linea="4"><span class="marca"></span><span class="txt">Preparando tu panel de HSE</span></div>
+        <div class="onb-linea" data-linea="1"><span class="marca"><svg viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="txt">Analizando el tamaño de tu cuadrilla</span></div>
+        <div class="onb-linea" data-linea="2"><span class="marca"><svg viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="txt">Ajustando al reto que marcaste</span></div>
+        <div class="onb-linea" data-linea="3"><span class="marca"><svg viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="txt">Configurando el horario de tu charla</span></div>
+        <div class="onb-linea" data-linea="4"><span class="marca"><svg viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="txt">Preparando tu panel de HSE</span></div>
       </div>
     </div>
   </section>
