@@ -34,9 +34,9 @@
   a:focus-visible, button:focus-visible { outline: 3px solid var(--azul); outline-offset: 2px; border-radius: 4px; }
   .wrap { max-width: 480px; margin: 0 auto; padding: 0 16px 32px; }
 
-  .pw-header { display: flex; align-items: center; justify-content: space-between; padding: 16px; }
+  .pw-header { display: flex; align-items: center; gap: 12px; padding: 16px; }
   .pw-logo { display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--ink);
-             font-family: var(--font-display); font-weight: 800; font-size: 15px; }
+             font-family: var(--font-display); font-weight: 800; font-size: 14px; }
   .pw-logo .dot { width: 24px; height: 24px; border-radius: 10px; background: var(--amarillo); border: 2px solid var(--ink); }
   .pw-cerrar { width: 44px; height: 44px; border-radius: 16px; border: 3px solid var(--ink); background: var(--surface);
                color: var(--ink); display: flex; align-items: center; justify-content: center; cursor: pointer; text-decoration: none; }
@@ -49,7 +49,7 @@
   .pw-headline em { font-style: normal; color: var(--azul-sombra); }
   .pw-sub { margin-top: 10px; font-size: 14px; color: var(--ink-2); font-weight: 700; }
   .pw-sub b { color: var(--ink); }
-  .pw-emocion { margin-top: 10px; font-size: 15px; font-weight: 700; color: var(--ink); line-height: 1.4; }
+  .pw-emocion { margin-top: 10px; font-size: 14px; font-weight: 700; color: var(--ink); line-height: 1.4; }
   .pw-emocion b { color: var(--rojo-sombra); }
 
   .pw-bloque { background: var(--surface); border: 3px solid var(--ink); border-radius: 20px; padding: 20px; margin-top: 20px;
@@ -67,26 +67,29 @@
   .pw-linea .conector.neutro { background: var(--neutro-track); }
   .pw-linea .contenido { padding-bottom: 20px; }
   .pw-linea:last-child .contenido { padding-bottom: 0; }
-  .pw-linea .titulo { font-size: 15px; font-weight: 800; }
+  .pw-linea .titulo { font-size: 14px; font-weight: 800; }
   .pw-linea .detalle { margin-top: 2px; font-size: 14px; color: var(--ink-2); font-weight: 700; }
 
   .pw-puente { margin-top: 16px; display: flex; flex-direction: column; gap: 8px; }
-  .pw-puente .item { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: var(--ink-2); }
+  .pw-puente .item { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; color: var(--ink-2); }
   .pw-puente .item svg { flex-shrink: 0; }
 
   .pw-panel { position: relative; margin-top: 28px; margin-left: -16px; margin-right: -16px; padding: 24px 16px 28px; background: var(--surface);
               box-shadow: inset 0 10px 20px -16px rgb(26 26 26 / 0.3); }
   .pw-panel::before { content: ''; position: absolute; top: 0; left: 16px; right: 16px; height: 2px;
                        background: linear-gradient(90deg, transparent, var(--amarillo-sombra), var(--azul), transparent); }
-  .pw-planes-tit { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-2); }
+  .pw-planes-tit { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-2); }
   .pw-planes { margin-top: 12px; display: flex; flex-direction: column; gap: 12px; }
   .pw-plan { border: 3px solid var(--ink); border-radius: 20px; padding: 16px; position: relative; background: var(--surface); cursor: pointer;
              box-shadow: 0 6px 0 -2px rgb(26 26 26 / 0.08), 0 10px 20px rgb(26 26 26 / 0.1); }
   .js-motion .pw-plan { transition: background 150ms ease, border-color 150ms ease; }
   .pw-plan:focus-visible { outline: 3px solid var(--azul); outline-offset: 2px; }
   .pw-plan.elegido { background: var(--amarillo); }
+  .pw-plan.elegido::after { content: ''; position: absolute; top: 0; bottom: 0; left: 0; width: 6px;
+                             background: repeating-linear-gradient(135deg, var(--ink) 0 6px, var(--amarillo-sombra) 6px 12px);
+                             border-radius: 17px 0 0 17px; }
   .pw-plan .tag { position: absolute; top: -13px; left: 16px; background: var(--rojo); color: var(--ink); border: 2px solid var(--ink);
-                  border-radius: 8px; padding: 4px 10px; font-size: 10px; font-weight: 800; }
+                  border-radius: 8px; padding: 4px 10px; font-size: 11px; font-weight: 800; }
   .pw-plan .fila { display: flex; align-items: baseline; justify-content: space-between; }
   .pw-plan .nombre { font-weight: 800; font-size: 14px; }
   .pw-plan .precio { font-family: var(--font-display); font-size: 22px; font-weight: 800; }
@@ -101,7 +104,7 @@
 
   .pw-cta-wrap { margin-top: 24px; }
   .pw-boton { width: 100%; height: 56px; border-radius: 16px; border: 3px solid var(--ink); background: var(--verde);
-              color: var(--ink); font-family: var(--font-display); font-weight: 800; font-size: 15px; text-transform: uppercase;
+              color: var(--ink); font-family: var(--font-display); font-weight: 800; font-size: 14px; text-transform: uppercase;
               letter-spacing: 0.01em; cursor: pointer; border-bottom: 4px solid var(--verde-sombra); }
   .js-motion .pw-boton { transition: transform 120ms ease, border-bottom-width 120ms ease; }
   .pw-boton:active { border-bottom-width: 3px; transform: translateY(3px); }
@@ -188,10 +191,15 @@
 <script>
   try {
     const onb = JSON.parse(sessionStorage.getItem('hseOnboarding') || '{}');
-    if (onb.cuadrilla) {
-      document.getElementById('pwCuadrilla').textContent = onb.cuadrilla.toLowerCase();
-    }
-  } catch {}
+    const ETIQUETAS_CUADRILLA = {
+      'Menos de 10 trabajadores': 'menos de 10 trabajadores',
+      'Entre 10 y 20 trabajadores': 'tu cuadrilla de 10 a 20',
+      'Más de 20 trabajadores': 'tu cuadrilla de más de 20'
+    };
+    document.getElementById('pwCuadrilla').textContent = ETIQUETAS_CUADRILLA[onb.cuadrilla] || 'tu cuadrilla';
+  } catch (err) {
+    document.getElementById('pwCuadrilla').textContent = 'tu cuadrilla';
+  }
 
   function elegirPlan(plan) {
     document.querySelectorAll('.pw-plan').forEach((p) => { p.classList.remove('elegido'); p.setAttribute('aria-checked', 'false'); });
