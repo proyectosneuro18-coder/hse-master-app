@@ -35,7 +35,7 @@
   .wrap { max-width: 480px; margin: 0 auto; padding: 0 16px 32px; }
 
   .pw-header { display: flex; align-items: center; gap: 12px; padding: 16px; }
-  .pw-logo { display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--ink);
+  .pw-logo { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; text-decoration: none; color: var(--ink);
              font-family: var(--font-display); font-weight: 800; font-size: 14px; }
   .pw-logo .dot { width: 24px; height: 24px; border-radius: 10px; background: var(--amarillo); border: 2px solid var(--ink); }
   .pw-cerrar { width: 44px; height: 44px; border-radius: 16px; border: 3px solid var(--ink); background: var(--surface);
@@ -47,7 +47,7 @@
 
   .pw-headline { font-family: var(--font-display); font-size: 28px; font-weight: 800; line-height: 1.15; letter-spacing: -0.01em; }
   .pw-headline em { font-style: normal; color: var(--azul-sombra); }
-  .pw-sub { margin-top: 10px; font-size: 14px; color: var(--ink-2); font-weight: 700; }
+  .pw-sub { margin-top: 10px; font-size: 13px; color: var(--ink-2); font-weight: 700; }
   .pw-emocion { margin-top: 10px; font-size: 14px; font-weight: 700; color: var(--ink); line-height: 1.4; }
   .pw-emocion b { color: #a83d1a; }
 
@@ -93,6 +93,9 @@
   .pw-plan .precio { font-family: var(--font-display); font-size: 22px; font-weight: 800; }
   .pw-plan .precio small { font-size: 12px; font-weight: 700; font-family: var(--font-body); }
   .pw-plan .nota { margin-top: 4px; font-size: 14px; font-weight: 700; color: var(--ink-2); }
+  .pw-plan .total { margin-top: 6px; font-size: 12px; font-weight: 700; color: var(--ink-2); }
+  .pw-plan .total:empty { display: none; }
+  .pw-plan.elegido .total { color: var(--ink); }
   .pw-plan.elegido .nota { color: var(--ink); }
   .pw-plan .marca { position: absolute; top: 16px; right: 16px; width: 22px; height: 22px; border-radius: 999px;
                      border: 2px solid var(--ink); background: var(--surface); display: flex; align-items: center; justify-content: center; }
@@ -160,6 +163,7 @@
       </div>
       <p class="precio">US$6.67<small>/usuario/mes</small></p>
       <p class="nota">Se cobra US$80/usuario/año</p>
+      <p class="total" id="pwAnualTotal"></p>
     </div>
     <div class="pw-plan" id="pwPlanMensual" data-plan="mensual" role="radio" aria-checked="false" tabindex="-1">
       <div class="fila">
@@ -168,6 +172,7 @@
       </div>
       <p class="precio">US$8<small>/usuario/mes</small></p>
       <p class="nota">Cancela cuando quieras</p>
+      <p class="total" id="pwMensualTotal"></p>
     </div>
   </div>
 
@@ -192,6 +197,17 @@
       'Más de 20 trabajadores': 'tu cuadrilla de más de 20'
     };
     document.getElementById('pwCuadrilla').textContent = ETIQUETAS_CUADRILLA[onb.cuadrilla] || 'tu cuadrilla';
+
+    const PERSONAS_ESTIMADAS = {
+      'Menos de 10 trabajadores': 8,
+      'Entre 10 y 20 trabajadores': 15,
+      'Más de 20 trabajadores': 25
+    };
+    const n = PERSONAS_ESTIMADAS[onb.cuadrilla];
+    if (n) {
+      document.getElementById('pwAnualTotal').textContent = `≈ US$${Math.round(6.67 * n)}/mes en total para tus ${n} trabajadores`;
+      document.getElementById('pwMensualTotal').textContent = `≈ US$${8 * n}/mes en total para tus ${n} trabajadores`;
+    }
   } catch (err) {
     document.getElementById('pwCuadrilla').textContent = 'tu cuadrilla';
   }

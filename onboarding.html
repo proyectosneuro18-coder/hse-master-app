@@ -42,11 +42,10 @@
   .onb-logo { display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--ink);
               font-family: var(--font-display); font-weight: 800; font-size: 15px; flex-shrink: 0; }
   .onb-logo .dot { width: 24px; height: 24px; border-radius: 10px; background: var(--amarillo); border: 2px solid var(--ink); }
-  .onb-atras { width: 44px; height: 44px; border-radius: 14px; border: none; background: none; color: var(--ink-2);
-               display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; visibility: hidden; }
-  .onb-salir { width: 44px; height: 44px; border-radius: 14px; border: 2px solid var(--ink); background: var(--surface); color: var(--ink);
+  .onb-atras, .onb-salir { width: 44px; height: 44px; border-radius: 14px; border: 2px solid var(--ink); background: var(--surface); color: var(--ink);
                display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
-  .onb-salir:hover { background: var(--amarillo); }
+  .onb-atras { visibility: hidden; }
+  .onb-atras:hover, .onb-salir:hover { background: var(--amarillo); }
   .onb-atras.show { visibility: visible; }
   .onb-progress { flex: 1; height: 3px; background: var(--neutro-track); border-radius: 999px; overflow: hidden; }
   .onb-progress-fill { height: 100%; width: 8%; background: var(--verde); border-radius: 999px; transition: width 350ms ease; }
@@ -58,7 +57,7 @@
     position: absolute; inset: 0; padding: 32px 16px 24px; display: flex; flex-direction: column;
     justify-content: flex-start; opacity: 0; transform: translateX(40px); pointer-events: none; visibility: hidden;
   }
-  .onb-paso[data-paso="5"] { justify-content: center; }
+  .onb-paso[data-paso="1"], .onb-paso[data-paso="3"], .onb-paso[data-paso="5"] { justify-content: center; }
   .js-motion .onb-paso { transition: opacity 300ms ease, transform 300ms ease; }
   .onb-paso.activo { opacity: 1; transform: translateX(0); pointer-events: auto; visibility: visible; }
   .onb-paso.saliendo-izq { opacity: 0; transform: translateX(-24px); }
@@ -202,7 +201,7 @@
   <section class="onb-paso activo" data-paso="1">
     <div class="onb-encabezado azul">
       <span class="onb-icono azul"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="12" r="3"/><circle cx="17" cy="12" r="3"/><circle cx="12" cy="7" r="3"/></svg></span>
-      <h1 class="onb-pregunta">¿Cuántos trabajadores tiene tu cuadrilla?</h1>
+      <h2 class="onb-pregunta">¿Cuántos trabajadores tiene tu cuadrilla?</h2>
       <p class="onb-micro">Así configuramos tu panel desde el primer día.</p>
     </div>
     <div class="onb-chips" data-grupo="cuadrilla">
@@ -222,7 +221,7 @@
   <section class="onb-paso" data-paso="2">
     <div class="onb-encabezado rojo">
       <span class="onb-icono rojo"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg></span>
-      <h1 class="onb-pregunta">¿Cuál es tu reto más urgente hoy?</h1>
+      <h2 class="onb-pregunta">¿Cuál es tu reto más urgente hoy?</h2>
       <p class="onb-micro">Usamos tu respuesta para mostrarte cómo te ayuda el Pase.</p>
     </div>
     <div class="onb-chips" data-grupo="reto">
@@ -241,7 +240,7 @@
     </div>
     <button type="button" class="onb-link-secundario" id="onbOtraCosa">Es otra cosa — cuéntanos</button>
     <div class="onb-input-wrap" id="onbRetoInputWrap">
-      <input type="text" class="onb-input" id="onbRetoInput" placeholder="Cuéntanos tu reto" maxlength="80" autocomplete="off">
+      <input type="text" class="onb-input" id="onbRetoInput" aria-label="Cuéntanos tu reto más urgente" placeholder="Cuéntanos tu reto" maxlength="80" autocomplete="off">
       <button type="button" class="onb-boton" id="onbRetoContinuar">Continuar</button>
       <p class="onb-hint" id="onbRetoHint">Escribe tu reto antes de continuar.</p>
     </div>
@@ -261,7 +260,7 @@
   <section class="onb-paso" data-paso="4">
     <div class="onb-encabezado azul">
       <span class="onb-icono azul"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
-      <h1 class="onb-pregunta">¿A qué hora es la charla antes del turno?</h1>
+      <h2 class="onb-pregunta">¿A qué hora es la charla antes del turno?</h2>
       <p class="onb-micro">Te avisamos justo antes, para que el reto se haga ahí mismo.</p>
     </div>
     <div class="onb-chips" data-grupo="horario">
@@ -554,6 +553,18 @@
 
   actualizarProgreso(1);
   animarChipsDelPaso(pasos[0]);
+
+  // Si ya hay respuestas guardadas en esta sesión (viene de "volver" desde el paywall), no las repite desde cero.
+  try {
+    const guardado = JSON.parse(sessionStorage.getItem('hseOnboarding') || 'null');
+    if (guardado && guardado.cuadrilla && guardado.reto && guardado.horario) {
+      Object.assign(respuestas, guardado);
+      irAPaso(4, 'adelante');
+      const valorHorario = CSS.escape(guardado.horario);
+      const chipHorario = document.querySelector(`[data-grupo="horario"] .onb-chip[data-valor="${valorHorario}"]`);
+      if (chipHorario) { chipHorario.classList.add('seleccionado'); chipHorario.setAttribute('aria-checked', 'true'); }
+    }
+  } catch {}
 </script>
 
 </body>
