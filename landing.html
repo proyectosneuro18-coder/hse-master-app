@@ -119,8 +119,8 @@
   /* ===== 2. PROBLEMA ===== */
   .problema { background: radial-gradient(480px 300px at 92% 8%, color-mix(in oklab, var(--azul) 14%, transparent), transparent 70%), var(--surface);
               border-top: 3px solid var(--ink); border-bottom: 3px solid var(--ink); }
-  .problema h2 { font-size: 28px; text-align: center; }
-  @media (min-width: 700px) { .problema h2 { font-size: 34px; } }
+  .problema h2 { font-size: 26px; text-align: center; }
+  @media (min-width: 700px) { .problema h2 { font-size: 32px; } }
   .preguntas { margin-top: 32px; display: grid; gap: 16px; grid-template-columns: 1fr; }
   @media (min-width: 700px) { .preguntas { grid-template-columns: 1fr 1fr; } }
   .pregunta-card { display: flex; gap: 16px; align-items: flex-start; background: var(--bg); border: 3px solid var(--ink); border-radius: 20px; padding: 16px;
@@ -133,7 +133,7 @@
   .pregunta-card p { font-size: 14px; font-weight: 700; }
 
   /* ===== 3. AGITACIÓN ===== */
-  .agitacion { background: radial-gradient(480px 300px at 8% 92%, color-mix(in oklab, var(--rojo) 13%, transparent), transparent 70%), var(--bg); }
+  .agitacion { background: radial-gradient(480px 300px at 8% 92%, color-mix(in oklab, var(--rojo) 30%, transparent), transparent 70%), var(--bg); }
   .agitacion .wrap { max-width: 820px; }
   .agitacion h2 { font-size: 26px; text-align: center; }
   .agita-grid { margin-top: 32px; display: grid; gap: 16px; grid-template-columns: 1fr; }
@@ -186,7 +186,7 @@
   .slide { scroll-snap-align: center; flex: 0 0 240px; }
   .slide .frame { position: relative; width: 240px; aspect-ratio: 9/18; border: 8px solid var(--ink); border-radius: 32px; background: var(--bg);
                   overflow: hidden; box-shadow: 0 14px 30px rgb(0 0 0 / 0.12); }
-  .phone-mini::after, .slide .frame::after { content: 'Vista previa'; position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+  .phone-mini::after { content: 'Vista previa'; position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
                           background: var(--ink); color: #fff; font-size: 11px; font-weight: 800; text-transform: uppercase;
                           letter-spacing: 0.04em; padding: 5px 10px; border-radius: 999px; white-space: nowrap; }
   .slide .frame .in { padding: 16px; height: 100%; display: flex; flex-direction: column; justify-content: center; }
@@ -219,9 +219,10 @@
              background-blend-mode: multiply; background-color: var(--amarillo); }
 
   /* ===== 6. OFERTA ===== */
-  .oferta { background: radial-gradient(480px 300px at 8% 8%, color-mix(in oklab, var(--rojo) 12%, transparent), transparent 70%), var(--surface);
+  .oferta { background: radial-gradient(480px 300px at 8% 8%, color-mix(in oklab, var(--rojo) 30%, transparent), transparent 70%), var(--surface);
             border-top: 3px solid var(--ink); border-bottom: 3px solid var(--ink); }
-  .oferta h2 { text-align: center; font-size: 28px; }
+  .oferta h2 { text-align: center; font-size: 26px; }
+  @media (min-width: 700px) { .oferta h2 { font-size: 32px; } }
   .oferta .sub { text-align: center; margin-top: 8px; color: var(--ink-2); font-weight: 600; }
   .stack { margin: 32px auto 0; max-width: 560px; background: var(--bg); border: 3px solid var(--ink); border-radius: 20px; padding: 24px; }
   .stack .item { display: flex; gap: 12px; align-items: flex-start; padding: 8px 0; border-bottom: 2px dashed var(--neutro-track); }
@@ -251,7 +252,7 @@
   .plan .nota { font-size: 12px; font-weight: 700; color: var(--ink-2); margin-top: 4px; }
   .plan.rec .nota { color: var(--ink); }
   .plan .boton { width: 100%; margin-top: 16px; height: 56px; font-size: 13px; }
-  .link-secundario { background: var(--surface); color: var(--ink-2); border-color: var(--ink-2); border-bottom: 4px solid var(--ink-2); font-size: 13px; }
+  .link-secundario { background: var(--surface); color: var(--ink-2); border: 3px solid var(--ink); border-bottom: 4px solid var(--ink-2); font-size: 13px; }
   .link-secundario:hover { background: var(--bg); }
   .trial-strip { max-width: 680px; margin: 24px auto 0; text-align: center; font-size: 13px; font-weight: 700; color: var(--ink-2); }
   .mailto-status { margin-top: 10px; display: none; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: var(--ink); text-align: left; }
@@ -268,13 +269,15 @@
   .garantia .wrap { max-width: 720px; text-align: center; }
   .garantia .escudo { width: 64px; height: 64px; margin: 0 auto; border-radius: 14px; background: var(--azul);
                        border: 3px solid var(--ink); display: flex; align-items: center; justify-content: center; }
-  .garantia h2 { margin-top: 16px; font-size: 28px; }
+  .garantia h2 { margin-top: 16px; font-size: 26px; }
+  @media (min-width: 700px) { .garantia h2 { font-size: 32px; } }
   .garantia p { margin-top: 12px; font-size: 14px; color: var(--ink-2); font-weight: 600; line-height: 1.7; }
 
   /* ===== 8. FAQ ===== */
   .faq { background: radial-gradient(480px 300px at 92% 8%, color-mix(in oklab, var(--verde) 13%, transparent), transparent 70%), var(--surface);
          border-top: 3px solid var(--ink); border-bottom: 3px solid var(--ink); }
-  .faq h2 { text-align: center; font-size: 28px; }
+  .faq h2 { text-align: center; font-size: 26px; }
+  @media (min-width: 700px) { .faq h2 { font-size: 32px; } }
   .faq-list { max-width: 720px; margin: 32px auto 0; display: flex; flex-direction: column; gap: 12px; }
   .faq-grupo { max-width: 720px; margin: 24px auto 0; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-2); }
   .faq-grupo-2 { margin-top: 32px; }
@@ -293,11 +296,11 @@
   .faq-item[open] .chev { transform: rotate(180deg); }
 
   /* ===== 9. CTA FINAL ===== */
-  .cta-final { background: radial-gradient(480px 300px at 50% 10%, color-mix(in oklab, var(--amarillo) 22%, transparent), transparent 70%), var(--bg);
+  .cta-final { background: radial-gradient(480px 300px at 50% 10%, color-mix(in oklab, var(--amarillo) 34%, transparent), transparent 70%), var(--bg);
                text-align: center; }
   .cta-final .wrap { max-width: 680px; }
-  .cta-final h2 { font-size: 28px; }
-  @media (min-width: 700px) { .cta-final h2 { font-size: 34px; } }
+  .cta-final h2 { font-size: 26px; }
+  @media (min-width: 700px) { .cta-final h2 { font-size: 32px; } }
   .cta-final p.fp { margin-top: 16px; font-size: 14px; color: var(--ink-2); font-weight: 600; line-height: 1.7; }
   .cta-final .cta-row { margin-top: 24px; display: flex; justify-content: center; }
   .ps { margin-top: 24px; text-align: left; background: var(--surface); border: 2px dashed var(--ink-2); border-radius: 20px; padding: 16px; font-size: 13px; color: var(--ink-2); font-weight: 600; line-height: 1.6; }
@@ -492,8 +495,9 @@
 <!-- 5. LA APP POR DENTRO -->
 <section class="app-dentro">
   <div class="wrap reveal">
-    <h2 style="text-align:center; font-size:28px;">Así se ve el Pase de los 3 Minutos por dentro</h2>
-    <p style="text-align:center; margin-top:8px; color:var(--ink-2); font-weight:600;">Vista previa de la app — construida con su estilo final, no capturas de otra herramienta. El contenido de las pantallas es ilustrativo.</p>
+    <div style="text-align:center;"><span class="badge">VISTA PREVIA</span></div>
+    <h2 style="text-align:center; font-size:26px; margin-top:12px;">Así se ve el Pase de los 3 Minutos por dentro</h2>
+    <p style="text-align:center; margin-top:8px; color:var(--ink-2); font-weight:600;">Construida con su estilo final, no capturas de otra herramienta. El contenido de las pantallas es ilustrativo.</p>
     <div class="carrusel-wrap">
       <div class="carrusel" id="carrusel" tabindex="0" role="group" aria-label="Pantallas de la app, usa las flechas del teclado para moverte">
         <div class="slide">
