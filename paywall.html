@@ -41,13 +41,12 @@
   .pw-cerrar { width: 44px; height: 44px; border-radius: 16px; border: 3px solid var(--ink); background: var(--surface);
                color: var(--ink); display: flex; align-items: center; justify-content: center; cursor: pointer; text-decoration: none; }
 
-  .pw-reveal { opacity: 0; transform: translateY(14px); }
-  .js-motion .pw-reveal { transition: opacity 400ms ease, transform 400ms ease; }
-  .pw-reveal.in { opacity: 1; transform: translateY(0); }
+  .pw-reveal { opacity: 1; transform: none; }
+  .js-motion .pw-reveal { opacity: 0; transform: translateY(14px); transition: opacity 400ms ease, transform 400ms ease; }
+  .js-motion .pw-reveal.in { opacity: 1; transform: translateY(0); }
 
   .pw-headline { font-family: var(--font-display); font-size: 28px; font-weight: 800; line-height: 1.15; letter-spacing: -0.01em; }
   .pw-headline em { font-style: normal; color: var(--azul-sombra); }
-  .pw-sub { margin-top: 10px; font-size: 13px; color: var(--ink-2); font-weight: 700; }
   .pw-emocion { margin-top: 10px; font-size: 14px; font-weight: 700; color: var(--ink); line-height: 1.4; }
   .pw-emocion b { color: var(--rojo-texto); }
 
@@ -132,12 +131,11 @@
 
 <main class="wrap">
   <h1 class="pw-headline pw-reveal">Tu panel para <span id="pwCuadrilla">tu cuadrilla</span> está <em>listo</em></h1>
-  <p class="pw-emocion pw-reveal">Firman la charla en la mañana y a los 10 minutos ya tienen <b>la mano en la línea de fuego</b>.</p>
-  <p class="pw-sub pw-reveal">Desde hoy ves en 10 segundos quién de tu cuadrilla está listo para el pozo — hecho con tus 4 respuestas, sin tarjeta.</p>
+  <p class="pw-emocion pw-reveal">Firman la charla y a los 10 minutos ya tienen <b>la mano en la línea de fuego</b> — desde hoy ves en 10 segundos quién sí está listo para el pozo.</p>
 
   <div class="pw-bloque pw-reveal">
     <div class="pw-linea">
-      <div class="riel"><span class="nodo casco"><svg viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 17.5h17"/><path d="M5 17.5Q5 7 12 7Q19 7 19 17.5"/><path d="M12 7V4"/></svg></span><span class="conector"></span></div>
+      <div class="riel"><span class="nodo casco"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 17.5h17"/><path d="M5 17.5Q5 7 12 7Q19 7 19 17.5"/><path d="M12 7V4"/></svg></span><span class="conector"></span></div>
       <div class="contenido">
         <p class="titulo">Hoy — tu cuadrilla ya corre el Pase, sin límites</p>
       </div>
@@ -181,7 +179,7 @@
   </div>
 
   <div class="pw-cta-wrap pw-reveal">
-    <button type="button" class="pw-boton" id="pwActivar">Activar mi prueba gratis de 14 días</button>
+    <button type="button" class="pw-boton" id="pwActivar">Crear mi acceso y activar la prueba</button>
     <p class="pw-reversibilidad">Hoy no pagas nada · Sin tarjeta</p>
     <p class="pw-garantia"><b>Compromiso del Primer Pase</b> — si tu cuadrilla no completa su primera charla de 3 minutos el día 1, te ayudamos sin costo</p>
   </div>

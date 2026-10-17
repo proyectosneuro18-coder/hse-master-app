@@ -19,7 +19,7 @@
     --amarillo: #ffe600; --amarillo-sombra: #e0bf00;
     --verde: #1bcc02; --verde-sombra: #1b9f03;
     --azul: #3e7ef7; --azul-sombra: #0a4299;
-    --rojo: #ff4e0e; --rojo-sombra: #c75126;
+    --rojo: #ff4e0e; --rojo-sombra: #c75126; --rojo-texto: #a83d1a;
     --neutro-track: #e4dcc4;
     --font-display: 'Baloo 2', sans-serif; --font-body: 'DM Sans', sans-serif;
   }
@@ -38,7 +38,8 @@
 
   /* ===== HEADER: logo + atrás + barra de progreso ===== */
   .onb-header { display: flex; align-items: center; gap: 12px; padding: 16px; flex-shrink: 0; }
-  .onb-header.oculto { display: none; }
+  .onb-header-medio { flex: 1; display: flex; align-items: center; gap: 12px; }
+  .onb-header-medio.oculto { visibility: hidden; }
   .onb-logo { display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--ink);
               font-family: var(--font-display); font-weight: 800; font-size: 15px; flex-shrink: 0; }
   .onb-logo .dot { width: 24px; height: 24px; border-radius: 10px; background: var(--amarillo); border: 2px solid var(--ink); }
@@ -101,7 +102,7 @@
                           text-underline-offset: 3px; cursor: pointer; align-self: flex-start; }
   .onb-input-wrap { margin-top: 16px; display: none; flex-direction: column; gap: 12px; }
   .onb-input-wrap.show { display: flex; }
-  .onb-hint { font-size: 13px; color: var(--rojo-sombra); font-weight: 700; display: none; }
+  .onb-hint { font-size: 13px; color: var(--rojo-texto); font-weight: 700; display: none; }
   .onb-hint.show { display: block; }
   .onb-input {
     width: 100%; height: 56px; border-radius: 16px; border: 3px solid var(--ink); background: var(--surface);
@@ -148,9 +149,10 @@
   .onb-anillo.listo .pct svg { opacity: 1; transform: rotate(0deg) scale(1); }
   .onb-loading h2 { font-family: var(--font-display); font-size: 22px; font-weight: 800; text-align: center; }
   .onb-lineas { width: 100%; max-width: 320px; display: flex; flex-direction: column; gap: 14px; }
-  .onb-linea { display: flex; align-items: flex-start; gap: 12px; font-size: 15px; opacity: 0.4; }
-  .js-motion .onb-linea { transition: opacity 300ms ease; }
-  .onb-linea.vista { opacity: 1; }
+  .onb-linea { display: flex; align-items: flex-start; gap: 12px; font-size: 15px; }
+  .onb-linea .txt { color: var(--ink-2); }
+  .js-motion .onb-linea .txt { transition: color 300ms ease; }
+  .onb-linea.vista .txt { color: var(--ink); }
   .onb-linea .marca { width: 20px; height: 20px; border-radius: 999px; flex-shrink: 0; margin-top: 1px;
                        border: 2px solid var(--ink-2); display: flex; align-items: center; justify-content: center; }
   .onb-linea .marca svg { width: 11px; height: 11px; opacity: 0; }
@@ -185,11 +187,13 @@
 
 <div class="onb-header">
   <a href="landing.html" class="onb-logo" id="onbLogo" aria-label="Ir al inicio"><span class="dot"></span>HSE Master App</a>
-  <button type="button" class="onb-atras" id="onbAtras" aria-label="Volver a la pregunta anterior">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-  </button>
-  <div class="onb-progress"><div class="onb-progress-fill" id="onbProgressFill"></div></div>
-  <span class="onb-pct" id="onbPct">8%</span>
+  <div class="onb-header-medio" id="onbHeaderMedio">
+    <button type="button" class="onb-atras" id="onbAtras" aria-label="Volver a la pregunta anterior">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+    </button>
+    <div class="onb-progress"><div class="onb-progress-fill" id="onbProgressFill"></div></div>
+    <span class="onb-pct" id="onbPct">8%</span>
+  </div>
   <button type="button" class="onb-salir" id="onbSalir" aria-label="Salir del recorrido de bienvenida">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
   </button>
@@ -331,7 +335,7 @@
     atrasBtn.classList.toggle('show', paso > 1 && paso < 5);
   }
   function actualizarHeader(paso) {
-    document.querySelector('.onb-header').classList.toggle('oculto', paso === 5);
+    document.getElementById('onbHeaderMedio').classList.toggle('oculto', paso === 5);
   }
 
   let transicionando = false;
@@ -559,14 +563,19 @@
   animarChipsDelPaso(pasos[0]);
 
   // Si ya hay respuestas guardadas en esta sesión (viene de "volver" desde el paywall), no las repite desde cero.
+  function marcarChipGuardado(grupo, valor) {
+    if (!valor) return;
+    const chip = document.querySelector(`[data-grupo="${grupo}"] .onb-chip[data-valor="${CSS.escape(valor)}"]`);
+    if (chip) { chip.classList.add('seleccionado'); chip.setAttribute('aria-checked', 'true'); }
+  }
   try {
     const guardado = JSON.parse(sessionStorage.getItem('hseOnboarding') || 'null');
     if (guardado && guardado.cuadrilla && guardado.reto && guardado.horario) {
       Object.assign(respuestas, guardado);
       irAPaso(4, 'adelante');
-      const valorHorario = CSS.escape(guardado.horario);
-      const chipHorario = document.querySelector(`[data-grupo="horario"] .onb-chip[data-valor="${valorHorario}"]`);
-      if (chipHorario) { chipHorario.classList.add('seleccionado'); chipHorario.setAttribute('aria-checked', 'true'); }
+      marcarChipGuardado('cuadrilla', guardado.cuadrilla);
+      if (guardado.reto !== 'otra') marcarChipGuardado('reto', guardado.reto);
+      marcarChipGuardado('horario', guardado.horario);
     }
   } catch {}
 </script>
