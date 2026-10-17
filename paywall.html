@@ -58,7 +58,10 @@
   /* Timeline */
   .pw-linea { display: flex; gap: 12px; }
   .pw-linea .riel { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
-  .pw-linea .nodo { width: 14px; height: 14px; border-radius: 999px; border: 2px solid var(--ink); background: var(--verde); flex-shrink: 0; }
+  .pw-linea .nodo { width: 14px; height: 14px; border-radius: 999px; border: 2px solid var(--ink); background: var(--verde); flex-shrink: 0;
+                    display: flex; align-items: center; justify-content: center; }
+  .pw-linea .nodo.casco { width: 24px; height: 24px; margin: -5px -5px 0; }
+  .pw-linea .nodo.casco svg { width: 13px; height: 13px; }
   .pw-linea .nodo.outline { background: var(--surface); }
   .pw-linea .conector { width: 2px; flex: 1; background: var(--verde); min-height: 36px; }
   .pw-linea .conector.neutro { background: var(--neutro-track); }
@@ -71,7 +74,11 @@
   .pw-puente .item { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: var(--ink-2); }
   .pw-puente .item svg { flex-shrink: 0; }
 
-  .pw-planes-tit { margin-top: 28px; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-2); }
+  .pw-panel { position: relative; margin-top: 28px; margin-left: -16px; margin-right: -16px; padding: 24px 16px 28px; background: var(--surface);
+              box-shadow: inset 0 10px 20px -16px rgb(26 26 26 / 0.3); }
+  .pw-panel::before { content: ''; position: absolute; top: 0; left: 16px; right: 16px; height: 2px;
+                       background: linear-gradient(90deg, transparent, var(--amarillo-sombra), var(--azul), transparent); }
+  .pw-planes-tit { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-2); }
   .pw-planes { margin-top: 12px; display: flex; flex-direction: column; gap: 12px; }
   .pw-plan { border: 3px solid var(--ink); border-radius: 20px; padding: 16px; position: relative; background: var(--surface); cursor: pointer;
              box-shadow: 0 6px 0 -2px rgb(26 26 26 / 0.08), 0 10px 20px rgb(26 26 26 / 0.1); }
@@ -99,6 +106,7 @@
   .js-motion .pw-boton { transition: transform 120ms ease, border-bottom-width 120ms ease; }
   .pw-boton:active { border-bottom-width: 3px; transform: translateY(3px); }
   .pw-reversibilidad { margin-top: 10px; text-align: center; font-size: 14px; color: var(--ink-2); font-weight: 700; }
+  .pw-reversibilidad b { color: var(--ink); }
 
   .pw-trust { margin-top: 20px; text-align: center; font-size: 14px; color: var(--ink-2); font-weight: 700;
               display: flex; align-items: flex-start; justify-content: center; gap: 6px; }
@@ -115,13 +123,13 @@
 </header>
 
 <main class="wrap">
-  <h1 class="pw-headline pw-reveal">Tu panel para <em id="pwCuadrilla">tu cuadrilla</em> está listo</h1>
+  <h1 class="pw-headline pw-reveal">Tu panel para <span id="pwCuadrilla">tu cuadrilla</span> está <em>listo</em></h1>
   <p class="pw-emocion pw-reveal">Firman la charla en la mañana y a los 10 minutos ya tienen <b>la mano en la línea de fuego</b>.</p>
   <p class="pw-sub pw-reveal">Desde hoy ves en 10 segundos quién de tu cuadrilla está listo para el pozo — hecho con tus <b>4 respuestas</b>, sin tarjeta.</p>
 
   <div class="pw-bloque pw-reveal">
     <div class="pw-linea">
-      <div class="riel"><span class="nodo"></span><span class="conector"></span></div>
+      <div class="riel"><span class="nodo casco"><svg viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 17.5h17"/><path d="M5 17.5Q5 7 12 7Q19 7 19 17.5"/><path d="M12 7V4"/></svg></span><span class="conector"></span></div>
       <div class="contenido">
         <p class="titulo">Hoy — acceso completo</p>
         <p class="detalle">Toda tu cuadrilla corriendo el Pase de los 3 Minutos, sin límites</p>
@@ -143,6 +151,7 @@
     </div>
   </div>
 
+  <div class="pw-panel">
   <p class="pw-planes-tit pw-reveal">Si decides seguir, esto es lo que cuesta</p>
   <div class="pw-planes pw-reveal" role="radiogroup" aria-label="Elige el plan que se sugerirá al terminar tu prueba">
     <div class="pw-plan elegido" id="pwPlanAnual" data-plan="anual" role="radio" aria-checked="true" tabindex="0">
@@ -166,13 +175,14 @@
 
   <div class="pw-cta-wrap pw-reveal">
     <button type="button" class="pw-boton" id="pwActivar">Activar mi prueba gratis de 14 días</button>
-    <p class="pw-reversibilidad">Hoy no pagas nada · Sin tarjeta · Si tu cuadrilla no completa su primer Pase, te ayudamos sin costo</p>
+    <p class="pw-reversibilidad">Hoy no pagas nada · Sin tarjeta · <b>Compromiso del Primer Pase:</b> si no lo completan el día 1, te ayudamos sin costo</p>
   </div>
 
   <p class="pw-trust pw-reveal">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
     Tus datos son privados de tu empresa — nadie más los ve
   </p>
+  </div>
 </main>
 
 <script>

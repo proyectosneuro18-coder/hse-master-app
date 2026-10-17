@@ -38,7 +38,7 @@
 
   /* ===== HEADER: logo + atrás + barra de progreso ===== */
   .onb-header { display: flex; align-items: center; gap: 12px; padding: 16px; flex-shrink: 0; }
-  .onb-header.oculto { visibility: hidden; }
+  .onb-header.oculto { display: none; }
   .onb-logo { display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--ink);
               font-family: var(--font-display); font-weight: 800; font-size: 15px; flex-shrink: 0; }
   .onb-logo .dot { width: 24px; height: 24px; border-radius: 10px; background: var(--amarillo); border: 2px solid var(--ink); }
@@ -64,7 +64,7 @@
   .onb-paso.entrando-der { transform: translateX(40px); }
   .onb-paso.entrando-izq { transform: translateX(-40px); }
 
-  .onb-icono { width: 56px; height: 56px; border-radius: 18px; border: 3px solid var(--ink); background: var(--surface);
+  .onb-icono { width: 56px; height: 56px; border-radius: 16px; border: 3px solid var(--ink); background: var(--surface);
                display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
   .onb-icono.azul { background: var(--azul); }
   .onb-icono.rojo { background: var(--rojo); }
@@ -130,10 +130,18 @@
 
   /* ===== LOADING ===== */
   .onb-loading { display: flex; flex-direction: column; align-items: center; flex: 1; justify-content: center; gap: 28px; padding: 0 16px 32px; }
-  .onb-anillo { position: relative; width: 112px; height: 112px; }
+  .onb-anillo { position: relative; width: 112px; height: 112px; transform: scale(1); }
+  .js-motion .onb-anillo { transition: transform 400ms cubic-bezier(.34,1.56,.64,1); }
+  .onb-anillo.listo { transform: scale(1.1); }
   .onb-anillo svg { width: 100%; height: 100%; transform: rotate(-90deg); }
-  .onb-anillo .pct { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  .onb-anillo .pct { position: absolute; inset: 0; display: grid; place-items: center;
                       font-family: var(--font-display); font-size: 24px; font-weight: 800; font-variant-numeric: tabular-nums; }
+  .onb-anillo .pct .num, .onb-anillo .pct svg { grid-area: 1 / 1; }
+  .onb-anillo .pct svg { width: 36px; height: 36px; opacity: 0; transform: rotate(0deg) scale(0.5); }
+  .js-motion .onb-anillo .pct .num,
+  .js-motion .onb-anillo .pct svg { transition: opacity 250ms ease, transform 250ms cubic-bezier(.34,1.56,.64,1); }
+  .onb-anillo.listo .pct .num { opacity: 0; transform: scale(0.5); }
+  .onb-anillo.listo .pct svg { opacity: 1; transform: rotate(0deg) scale(1); }
   .onb-loading h2 { font-family: var(--font-display); font-size: 22px; font-weight: 800; text-align: center; }
   .onb-lineas { width: 100%; max-width: 320px; display: flex; flex-direction: column; gap: 14px; }
   .onb-linea { display: flex; align-items: flex-start; gap: 12px; font-size: 15px; opacity: 0.4; }
@@ -268,7 +276,7 @@
           <circle cx="60" cy="60" r="50" fill="none" stroke="var(--verde)" stroke-width="10" stroke-linecap="round"
                   stroke-dasharray="314" stroke-dashoffset="314" id="onbAro"/>
         </svg>
-        <span class="pct" id="onbAroPct">0%</span>
+        <span class="pct" id="onbAroPct"><span class="num">0%</span><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--verde-sombra)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
       </div>
       <h2>Preparando el panel de tu cuadrilla…</h2>
       <div class="onb-lineas" id="onbLineas">
@@ -496,17 +504,22 @@
 
     const aro = document.getElementById('onbAro');
     const aroPct = document.getElementById('onbAroPct');
+    const aroNum = aroPct.querySelector('.num');
+    const aroWrap = document.querySelector('.onb-anillo');
     const CIRCUNFERENCIA = 314;
     let pctActual = 0;
     function setAro(pct) {
       aro.style.transition = sinMovimiento ? 'none' : 'stroke-dashoffset 500ms ease';
       aro.setAttribute('stroke-dashoffset', String(CIRCUNFERENCIA * (1 - pct / 100)));
-      if (sinMovimiento) { aroPct.textContent = pct + '%'; pctActual = pct; return; }
+      if (pct >= 100) {
+        setTimeout(() => aroWrap.classList.add('listo'), sinMovimiento ? 0 : 450);
+      }
+      if (sinMovimiento) { aroNum.textContent = pct + '%'; pctActual = pct; return; }
       const desde = pctActual; const hasta = pct; const inicio = performance.now(); const duracion = 500;
       pctActual = pct;
       function tick(ahora) {
         const t = Math.min(1, (ahora - inicio) / duracion);
-        aroPct.textContent = Math.round(desde + (hasta - desde) * t) + '%';
+        aroNum.textContent = Math.round(desde + (hasta - desde) * t) + '%';
         if (t < 1) requestAnimationFrame(tick);
       }
       requestAnimationFrame(tick);
