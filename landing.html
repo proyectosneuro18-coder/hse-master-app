@@ -274,6 +274,7 @@
                    color: var(--azul-sombra); text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
   .copiar-correo:hover { color: var(--ink); }
   .copiar-correo.copiado { color: var(--ink); text-decoration: none; }
+  .copiar-correo.fallo { color: var(--rojo-sombra); text-decoration: underline; }
 
   /* ===== 7. GARANTÍA ===== */
   .garantia { background: radial-gradient(480px 300px at 50% 85%, color-mix(in oklab, var(--azul) 15%, transparent), transparent 70%), var(--bg); }
@@ -804,15 +805,29 @@
   const sticky = document.getElementById('stickyCta');
   const subirArriba = document.getElementById('subirArriba');
   let stickyDescartado = false;
+  try { stickyDescartado = localStorage.getItem('stickyCerrado') === '1'; } catch {}
+  let heroBtnOutOfView = false;
+  let footerVisible = false;
+  function actualizarSticky() {
+    sticky.classList.toggle('show', heroBtnOutOfView && !stickyDescartado && !footerVisible);
+    subirArriba.classList.toggle('show', heroBtnOutOfView);
+  }
   const io = new IntersectionObserver(([e]) => {
-    sticky.classList.toggle('show', !e.isIntersecting && !stickyDescartado);
-    subirArriba.classList.toggle('show', !e.isIntersecting);
+    heroBtnOutOfView = !e.isIntersecting;
+    actualizarSticky();
   }, { threshold: 0 });
   io.observe(heroBtn);
+  const footerLegal = document.querySelector('footer.legal');
+  const footerIo = new IntersectionObserver(([e]) => {
+    footerVisible = e.isIntersecting;
+    actualizarSticky();
+  }, { threshold: 0 });
+  footerIo.observe(footerLegal);
   subirArriba.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
   document.getElementById('stickyCerrar').addEventListener('click', () => {
     stickyDescartado = true;
-    sticky.classList.remove('show');
+    try { localStorage.setItem('stickyCerrado', '1'); } catch {}
+    actualizarSticky();
   });
 
   // FAQ: acordeón exclusivo — abrir uno cierra los demás (reduce carga cognitiva)
@@ -879,9 +894,12 @@
           document.body.removeChild(area);
         } catch { copiado = false; }
       }
-      boton.textContent = copiado ? '¡Copiado!' : correo;
-      boton.classList.add('copiado');
-      setTimeout(() => { boton.textContent = textoOriginal; boton.classList.remove('copiado'); }, copiado ? 2000 : 4000);
+      boton.textContent = copiado ? '¡Copiado!' : `No se pudo copiar — es: ${correo}`;
+      boton.classList.add(copiado ? 'copiado' : 'fallo');
+      setTimeout(() => {
+        boton.textContent = textoOriginal;
+        boton.classList.remove('copiado', 'fallo');
+      }, copiado ? 2000 : 5000);
     });
   });
   const flechaPrev = document.getElementById('carruselPrev');
