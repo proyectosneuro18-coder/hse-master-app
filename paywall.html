@@ -77,10 +77,12 @@
   .pw-panel::before { content: ''; position: absolute; top: 0; left: 16px; right: 16px; height: 2px;
                        background: linear-gradient(90deg, transparent, var(--amarillo-sombra), var(--azul), transparent); }
   .pw-planes-tit { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-2); }
+  .pw-dias-tit { margin-top: 20px; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: var(--azul-sombra); }
   .pw-planes { margin-top: 12px; display: flex; flex-direction: column; gap: 12px; }
   .pw-plan { border: 3px solid var(--ink); border-radius: 20px; padding: 16px; position: relative; background: var(--surface); cursor: pointer;
              box-shadow: 0 6px 0 -2px rgb(26 26 26 / 0.08), 0 10px 20px rgb(26 26 26 / 0.1); }
-  .js-motion .pw-plan { transition: background 150ms ease, border-color 150ms ease; }
+  .js-motion .pw-plan { transition: background 150ms ease, border-color 150ms ease, transform 100ms ease; }
+  .pw-plan:active { transform: scale(0.98); }
   .pw-plan:focus-visible { outline: 3px solid var(--azul); outline-offset: 2px; }
   .pw-plan.elegido { background: var(--amarillo); }
   .pw-plan.elegido::after { content: ''; position: absolute; top: 0; bottom: 0; left: 0; width: 6px;
@@ -110,10 +112,11 @@
               letter-spacing: 0.01em; cursor: pointer; border-bottom: 4px solid var(--verde-sombra); }
   .js-motion .pw-boton { transition: transform 120ms ease, border-bottom-width 120ms ease; }
   .pw-boton:active { border-bottom-width: 3px; transform: translateY(3px); }
-  .pw-reversibilidad { margin-top: 10px; text-align: center; font-size: 13px; color: var(--ink-2); font-weight: 700; }
   .pw-garantia { margin-top: 12px; padding: 12px 14px; border: 2px solid var(--ink); border-radius: 14px;
-                 background: color-mix(in oklab, var(--amarillo) 18%, var(--surface)); font-size: 13px; font-weight: 700; color: var(--ink-2); text-align: center; }
-  .pw-garantia b { color: var(--ink); }
+                 background: color-mix(in oklab, var(--amarillo) 18%, var(--surface)); text-align: center; }
+  .pw-reversibilidad { font-size: 14px; color: var(--ink); font-weight: 800; }
+  .pw-garantia-txt { margin-top: 4px; font-size: 13px; font-weight: 700; color: var(--ink-2); }
+  .pw-garantia-txt b { color: var(--ink); }
 
   .pw-trust { margin-top: 20px; text-align: center; font-size: 13px; color: var(--ink-2); font-weight: 700;
               display: flex; align-items: flex-start; justify-content: center; gap: 6px; }
@@ -124,7 +127,7 @@
 
 <header class="pw-header">
   <a href="landing.html" class="pw-logo" aria-label="Ir al inicio"><span class="dot"></span>HSE Master App</a>
-  <a href="onboarding.html" class="pw-cerrar" aria-label="Volver al recorrido de bienvenida">
+  <a href="onboarding.html" class="pw-cerrar" id="pwCerrar" aria-label="Volver al recorrido de bienvenida">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
   </a>
 </header>
@@ -133,6 +136,7 @@
   <h1 class="pw-headline pw-reveal">Tu panel para <span id="pwCuadrilla">tu cuadrilla</span> está <em>listo</em></h1>
   <p class="pw-emocion pw-reveal">Firman la charla y a los 10 minutos ya tienen <b>la mano en la línea de fuego</b> — desde hoy ves en 10 segundos quién sí está listo para el pozo.</p>
 
+  <p class="pw-dias-tit pw-reveal">Tu prueba gratis de 14 días</p>
   <div class="pw-bloque pw-reveal">
     <div class="pw-linea">
       <div class="riel"><span class="nodo icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 17.5h17"/><path d="M5 17.5Q5 7 12 7Q19 7 19 17.5"/><path d="M12 7V4"/></svg></span><span class="conector"></span></div>
@@ -180,8 +184,10 @@
 
   <div class="pw-cta-wrap pw-reveal">
     <button type="button" class="pw-boton" id="pwActivar">Crear mi acceso y activar la prueba</button>
-    <p class="pw-reversibilidad">Hoy no pagas nada · Sin tarjeta</p>
-    <p class="pw-garantia"><b>Compromiso del Primer Pase</b> — si tu cuadrilla no completa su primera charla de 3 minutos el día 1, te ayudamos sin costo</p>
+    <div class="pw-garantia">
+      <p class="pw-reversibilidad">Hoy no pagas nada · Sin tarjeta</p>
+      <p class="pw-garantia-txt"><b>Compromiso del Primer Pase</b> — si tu cuadrilla no completa su primera charla de 3 minutos el día 1, te ayudamos sin costo</p>
+    </div>
   </div>
 
   <p class="pw-trust pw-reveal">
@@ -259,6 +265,13 @@
       const elegido = document.querySelector('.pw-plan.elegido');
       try { sessionStorage.setItem('hsePlanElegido', elegido ? elegido.dataset.plan : 'anual'); } catch {}
       window.location.href = 'login.html';
+    });
+
+    // "Volver" regresa al paso exacto donde iba el usuario en vez de reiniciar el recorrido:
+    // si hay historial real, usa history.back() (conserva el estado tal cual); si no, el href
+    // normal navega a onboarding.html, que igual resume por sessionStorage (fallback de red).
+    document.getElementById('pwCerrar').addEventListener('click', (e) => {
+      if (window.history.length > 1) { e.preventDefault(); window.history.back(); }
     });
   } finally {
     revelarTodo();
