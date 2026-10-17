@@ -57,11 +57,11 @@
     position: absolute; inset: 0; padding: 32px 16px 24px; display: flex; flex-direction: column;
     justify-content: flex-start; opacity: 0; transform: translateX(40px); pointer-events: none; visibility: hidden;
   }
-  .onb-paso[data-paso="1"], .onb-paso[data-paso="3"], .onb-paso[data-paso="5"] { justify-content: center; }
+  .onb-paso[data-paso="3"], .onb-paso[data-paso="5"] { justify-content: center; }
   .js-motion .onb-paso { transition: opacity 300ms ease, transform 300ms ease; }
   .onb-paso.activo { opacity: 1; transform: translateX(0); pointer-events: auto; visibility: visible; }
   .onb-paso.saliendo-izq { opacity: 0; transform: translateX(-24px); }
-  .onb-paso.entrando-der { transform: translateX(40px); }
+  .onb-paso.entrando-der { opacity: 0; transform: translateX(40px); }
   .onb-paso.entrando-izq { transform: translateX(-40px); }
 
   .onb-encabezado { border-radius: 20px; border: 3px solid var(--ink); padding: 20px; margin-bottom: 24px; }
@@ -334,10 +334,14 @@
     document.querySelector('.onb-header').classList.toggle('oculto', paso === 5);
   }
 
+  let transicionando = false;
   function irAPaso(num, direccion) {
+    if (transicionando) return;
     const actualEl = pasos.find(p => Number(p.dataset.paso) === pasoActual);
     const siguienteEl = pasos.find(p => Number(p.dataset.paso) === num);
-    if (!siguienteEl) return;
+    if (!siguienteEl || siguienteEl === actualEl) return;
+    transicionando = true;
+    setTimeout(() => { transicionando = false; }, sinMovimiento ? 0 : 320);
     if (sinMovimiento) {
       actualEl.classList.remove('activo');
       siguienteEl.classList.add('activo');
@@ -425,7 +429,7 @@
   // revela el input libre. El botón de confirmar nunca nace deshabilitado — valida al tocarlo
   // y muestra un aviso en vez de bloquear la acción.
   document.getElementById('onbOtraCosa').addEventListener('click', () => {
-    document.querySelectorAll('.onb-chip[data-grupo-padre="reto"], [data-grupo="reto"] .onb-chip').forEach((c) => {
+    document.querySelectorAll('[data-grupo="reto"] .onb-chip').forEach((c) => {
       c.classList.remove('seleccionado'); c.setAttribute('aria-checked', 'false');
     });
     document.getElementById('onbRetoInputWrap').classList.add('show');

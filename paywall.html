@@ -19,7 +19,7 @@
     --amarillo: #ffe600; --amarillo-sombra: #e0bf00;
     --verde: #1bcc02; --verde-sombra: #1b9f03;
     --azul: #3e7ef7; --azul-sombra: #0a4299;
-    --rojo: #ff4e0e; --rojo-sombra: #c75126;
+    --rojo: #ff4e0e; --rojo-sombra: #c75126; --rojo-texto: #a83d1a;
     --neutro-track: #e4dcc4;
     --font-display: 'Baloo 2', sans-serif; --font-body: 'DM Sans', sans-serif;
   }
@@ -49,7 +49,7 @@
   .pw-headline em { font-style: normal; color: var(--azul-sombra); }
   .pw-sub { margin-top: 10px; font-size: 13px; color: var(--ink-2); font-weight: 700; }
   .pw-emocion { margin-top: 10px; font-size: 14px; font-weight: 700; color: var(--ink); line-height: 1.4; }
-  .pw-emocion b { color: #a83d1a; }
+  .pw-emocion b { color: var(--rojo-texto); }
 
   .pw-bloque { background: var(--surface); border: 3px solid var(--ink); border-radius: 20px; padding: 20px; margin-top: 20px;
                box-shadow: 0 6px 0 -2px rgb(26 26 26 / 0.08), 0 10px 20px rgb(26 26 26 / 0.1); }
@@ -62,6 +62,7 @@
   .pw-linea .nodo.casco { width: 24px; height: 24px; margin: -5px -5px 0; }
   .pw-linea .nodo.casco svg { width: 13px; height: 13px; }
   .pw-linea .nodo.outline { background: var(--surface); }
+  .pw-linea .nodo.proximo { background: var(--amarillo); }
   .pw-linea .conector { width: 2px; flex: 1; background: var(--verde); min-height: 36px; }
   .pw-linea .conector.neutro { background: var(--neutro-track); }
   .pw-linea .contenido { padding-bottom: 20px; }
@@ -101,6 +102,7 @@
                      border: 2px solid var(--ink); background: var(--surface); display: flex; align-items: center; justify-content: center; }
   .pw-plan.elegido .marca { background: var(--ink); }
   .pw-plan .marca svg { opacity: 0; }
+  .js-motion .pw-plan .marca svg { transition: opacity 150ms ease; }
   .pw-plan.elegido .marca svg { opacity: 1; }
 
   .pw-cta-wrap { margin-top: 24px; }
@@ -110,7 +112,9 @@
   .js-motion .pw-boton { transition: transform 120ms ease, border-bottom-width 120ms ease; }
   .pw-boton:active { border-bottom-width: 3px; transform: translateY(3px); }
   .pw-reversibilidad { margin-top: 10px; text-align: center; font-size: 14px; color: var(--ink-2); font-weight: 700; }
-  .pw-reversibilidad b { color: var(--ink); }
+  .pw-garantia { margin-top: 12px; padding: 12px 14px; border: 2px solid var(--ink); border-radius: 14px;
+                 background: color-mix(in oklab, var(--amarillo) 18%, var(--surface)); font-size: 13px; font-weight: 700; color: var(--ink-2); text-align: center; }
+  .pw-garantia b { color: var(--ink); }
 
   .pw-trust { margin-top: 20px; text-align: center; font-size: 14px; color: var(--ink-2); font-weight: 700;
               display: flex; align-items: flex-start; justify-content: center; gap: 6px; }
@@ -139,7 +143,7 @@
       </div>
     </div>
     <div class="pw-linea">
-      <div class="riel"><span class="nodo"></span><span class="conector neutro"></span></div>
+      <div class="riel"><span class="nodo proximo"></span><span class="conector neutro"></span></div>
       <div class="contenido">
         <p class="titulo">Día 12 — un correo te avisa, sin sorpresas</p>
       </div>
@@ -178,7 +182,8 @@
 
   <div class="pw-cta-wrap pw-reveal">
     <button type="button" class="pw-boton" id="pwActivar">Activar mi prueba gratis de 14 días</button>
-    <p class="pw-reversibilidad">Hoy no pagas nada · Sin tarjeta · <b>Compromiso del Primer Pase</b> (tu primera charla de 3 minutos): si no la completan el día 1, te ayudamos sin costo</p>
+    <p class="pw-reversibilidad">Hoy no pagas nada · Sin tarjeta</p>
+    <p class="pw-garantia"><b>Compromiso del Primer Pase</b> — si tu cuadrilla no completa su primera charla de 3 minutos el día 1, te ayudamos sin costo</p>
   </div>
 
   <p class="pw-trust pw-reveal">
@@ -189,60 +194,64 @@
 </main>
 
 <script>
-  try {
-    const onb = JSON.parse(sessionStorage.getItem('hseOnboarding') || '{}');
-    const ETIQUETAS_CUADRILLA = {
-      'Menos de 10 trabajadores': 'menos de 10 trabajadores',
-      'Entre 10 y 20 trabajadores': 'tu cuadrilla de 10 a 20',
-      'Más de 20 trabajadores': 'tu cuadrilla de más de 20'
-    };
-    document.getElementById('pwCuadrilla').textContent = ETIQUETAS_CUADRILLA[onb.cuadrilla] || 'tu cuadrilla';
-
-    const PERSONAS_ESTIMADAS = {
-      'Menos de 10 trabajadores': 8,
-      'Entre 10 y 20 trabajadores': 15,
-      'Más de 20 trabajadores': 25
-    };
-    const n = PERSONAS_ESTIMADAS[onb.cuadrilla];
-    if (n) {
-      document.getElementById('pwAnualTotal').textContent = `≈ US$${Math.round(6.67 * n)}/mes en total para tus ${n} trabajadores`;
-      document.getElementById('pwMensualTotal').textContent = `≈ US$${8 * n}/mes en total para tus ${n} trabajadores`;
-    }
-  } catch (err) {
-    document.getElementById('pwCuadrilla').textContent = 'tu cuadrilla';
-  }
-
-  const planes = Array.from(document.querySelectorAll('.pw-plan'));
-  function elegirPlan(plan, enfocar) {
-    planes.forEach((p) => { p.classList.remove('elegido'); p.setAttribute('aria-checked', 'false'); p.setAttribute('tabindex', '-1'); });
-    plan.classList.add('elegido');
-    plan.setAttribute('aria-checked', 'true');
-    plan.setAttribute('tabindex', '0');
-    if (enfocar) plan.focus();
-  }
-  planes.forEach((plan, i) => {
-    plan.addEventListener('click', () => elegirPlan(plan, false));
-    plan.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); elegirPlan(plan, false); return; }
-      if (!['ArrowDown', 'ArrowRight', 'ArrowUp', 'ArrowLeft'].includes(e.key)) return;
-      e.preventDefault();
-      const siguiente = (e.key === 'ArrowDown' || e.key === 'ArrowRight') ? planes[(i + 1) % planes.length] : planes[(i - 1 + planes.length) % planes.length];
-      elegirPlan(siguiente, true);
-    });
-  });
-
-  document.getElementById('pwActivar').addEventListener('click', () => {
-    const elegido = document.querySelector('.pw-plan.elegido');
-    try { sessionStorage.setItem('hsePlanElegido', elegido ? elegido.dataset.plan : 'anual'); } catch {}
-    window.location.href = 'login.html';
-  });
-
-  const reveals = document.querySelectorAll('.pw-reveal');
   const sinMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  reveals.forEach((el, i) => {
-    if (sinMovimiento) { el.classList.add('in'); return; }
-    setTimeout(() => el.classList.add('in'), 80 + i * 80);
-  });
+  function revelarTodo() {
+    document.querySelectorAll('.pw-reveal').forEach((el, i) => {
+      if (sinMovimiento) { el.classList.add('in'); return; }
+      setTimeout(() => el.classList.add('in'), 80 + i * 80);
+    });
+  }
+  try {
+    try {
+      const onb = JSON.parse(sessionStorage.getItem('hseOnboarding') || '{}');
+      const ETIQUETAS_CUADRILLA = {
+        'Menos de 10 trabajadores': 'menos de 10 trabajadores',
+        'Entre 10 y 20 trabajadores': 'tu cuadrilla de 10 a 20',
+        'Más de 20 trabajadores': 'tu cuadrilla de más de 20'
+      };
+      document.getElementById('pwCuadrilla').textContent = ETIQUETAS_CUADRILLA[onb.cuadrilla] || 'tu cuadrilla';
+
+      const PERSONAS_ESTIMADAS = {
+        'Menos de 10 trabajadores': 8,
+        'Entre 10 y 20 trabajadores': 15,
+        'Más de 20 trabajadores': 25
+      };
+      const n = PERSONAS_ESTIMADAS[onb.cuadrilla];
+      if (n) {
+        document.getElementById('pwAnualTotal').textContent = `≈ US$${Math.round(6.67 * n)}/mes en total para tus ${n} trabajadores`;
+        document.getElementById('pwMensualTotal').textContent = `≈ US$${8 * n}/mes en total para tus ${n} trabajadores`;
+      }
+    } catch (err) {
+      document.getElementById('pwCuadrilla').textContent = 'tu cuadrilla';
+    }
+
+    const planes = Array.from(document.querySelectorAll('.pw-plan'));
+    function elegirPlan(plan, enfocar) {
+      planes.forEach((p) => { p.classList.remove('elegido'); p.setAttribute('aria-checked', 'false'); p.setAttribute('tabindex', '-1'); });
+      plan.classList.add('elegido');
+      plan.setAttribute('aria-checked', 'true');
+      plan.setAttribute('tabindex', '0');
+      if (enfocar) plan.focus();
+    }
+    planes.forEach((plan, i) => {
+      plan.addEventListener('click', () => elegirPlan(plan, false));
+      plan.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); elegirPlan(plan, false); return; }
+        if (!['ArrowDown', 'ArrowRight', 'ArrowUp', 'ArrowLeft'].includes(e.key)) return;
+        e.preventDefault();
+        const siguiente = (e.key === 'ArrowDown' || e.key === 'ArrowRight') ? planes[(i + 1) % planes.length] : planes[(i - 1 + planes.length) % planes.length];
+        elegirPlan(siguiente, true);
+      });
+    });
+
+    document.getElementById('pwActivar').addEventListener('click', () => {
+      const elegido = document.querySelector('.pw-plan.elegido');
+      try { sessionStorage.setItem('hsePlanElegido', elegido ? elegido.dataset.plan : 'anual'); } catch {}
+      window.location.href = 'login.html';
+    });
+  } finally {
+    revelarTodo();
+  }
 </script>
 
 </body>
