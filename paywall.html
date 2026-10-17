@@ -27,6 +27,7 @@
   body {
     background:
       radial-gradient(480px 300px at 8% 0%, color-mix(in oklab, var(--amarillo) 22%, transparent), transparent 70%),
+      radial-gradient(420px 320px at 95% 85%, color-mix(in oklab, var(--azul) 14%, transparent), transparent 70%),
       var(--bg);
     color: var(--ink); font-family: var(--font-body); line-height: 1.5; min-height: 100dvh;
   }
@@ -51,7 +52,8 @@
   .pw-emocion { margin-top: 10px; font-size: 15px; font-weight: 700; color: var(--ink); line-height: 1.4; }
   .pw-emocion b { color: var(--rojo-sombra); }
 
-  .pw-bloque { background: var(--surface); border: 3px solid var(--ink); border-radius: 20px; padding: 20px; margin-top: 20px; }
+  .pw-bloque { background: var(--surface); border: 3px solid var(--ink); border-radius: 20px; padding: 20px; margin-top: 20px;
+               box-shadow: 0 6px 0 -2px rgb(26 26 26 / 0.08), 0 10px 20px rgb(26 26 26 / 0.1); }
 
   /* Timeline */
   .pw-linea { display: flex; gap: 12px; }
@@ -71,7 +73,8 @@
 
   .pw-planes-tit { margin-top: 28px; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-2); }
   .pw-planes { margin-top: 12px; display: flex; flex-direction: column; gap: 12px; }
-  .pw-plan { border: 3px solid var(--ink); border-radius: 20px; padding: 16px; position: relative; background: var(--surface); cursor: pointer; }
+  .pw-plan { border: 3px solid var(--ink); border-radius: 20px; padding: 16px; position: relative; background: var(--surface); cursor: pointer;
+             box-shadow: 0 6px 0 -2px rgb(26 26 26 / 0.08), 0 10px 20px rgb(26 26 26 / 0.1); }
   .js-motion .pw-plan { transition: background 150ms ease, border-color 150ms ease; }
   .pw-plan:focus-visible { outline: 3px solid var(--azul); outline-offset: 2px; }
   .pw-plan.elegido { background: var(--amarillo); }
@@ -98,7 +101,8 @@
   .pw-reversibilidad { margin-top: 10px; text-align: center; font-size: 14px; color: var(--ink-2); font-weight: 700; }
 
   .pw-trust { margin-top: 20px; text-align: center; font-size: 14px; color: var(--ink-2); font-weight: 700;
-              display: flex; align-items: center; justify-content: center; gap: 6px; }
+              display: flex; align-items: flex-start; justify-content: center; gap: 6px; }
+  .pw-trust svg { margin-top: 3px; }
 </style>
 </head>
 <body>
@@ -134,7 +138,7 @@
       <div class="riel"><span class="nodo outline"></span></div>
       <div class="contenido">
         <p class="titulo">Día 14 — tú decides</p>
-        <p class="detalle">Como nunca pediste tarjeta, no hay ningún cobro automático</p>
+        <p class="detalle">Sin cobro automático — decides con tu cuadrilla ya corriendo el Pase y el QR listo para el próximo auditor</p>
       </div>
     </div>
   </div>
@@ -162,7 +166,7 @@
 
   <div class="pw-cta-wrap pw-reveal">
     <button type="button" class="pw-boton" id="pwActivar">Activar mi prueba gratis de 14 días</button>
-    <p class="pw-reversibilidad">Hoy no pagas nada · Sin tarjeta · Respaldado por el Compromiso del Primer Pase hasta el día 14</p>
+    <p class="pw-reversibilidad">Hoy no pagas nada · Sin tarjeta · Si tu cuadrilla no completa su primer Pase, te ayudamos sin costo</p>
   </div>
 
   <p class="pw-trust pw-reveal">

@@ -44,13 +44,16 @@
   .onb-logo .dot { width: 24px; height: 24px; border-radius: 10px; background: var(--amarillo); border: 2px solid var(--ink); }
   .onb-atras { width: 44px; height: 44px; border-radius: 14px; border: none; background: none; color: var(--ink-2);
                display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; visibility: hidden; }
+  .onb-salir { width: 44px; height: 44px; border-radius: 14px; border: 2px solid var(--ink); background: var(--surface); color: var(--ink);
+               display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
+  .onb-salir:hover { background: var(--amarillo); }
   .onb-atras.show { visibility: visible; }
   .onb-progress { flex: 1; height: 3px; background: var(--neutro-track); border-radius: 999px; overflow: hidden; }
   .onb-progress-fill { height: 100%; width: 8%; background: var(--verde); border-radius: 999px; transition: width 350ms ease; }
   .onb-pct { font-size: 12px; font-weight: 800; color: var(--ink-2); min-width: 32px; text-align: right; font-variant-numeric: tabular-nums; flex-shrink: 0; }
 
   /* ===== ESCENARIO DE PASOS ===== */
-  .onb-stage { position: relative; flex: 1; box-shadow: inset 0 10px 24px -18px rgb(26 26 26 / 0.35); }
+  .onb-stage { position: relative; flex: 1; background: var(--surface); box-shadow: inset 0 10px 24px -18px rgb(26 26 26 / 0.35); }
   .onb-paso {
     position: absolute; inset: 0; padding: 24px 16px; display: flex; flex-direction: column;
     justify-content: center; opacity: 0; transform: translateX(40px); pointer-events: none; visibility: hidden;
@@ -61,6 +64,11 @@
   .onb-paso.entrando-der { transform: translateX(40px); }
   .onb-paso.entrando-izq { transform: translateX(-40px); }
 
+  .onb-icono { width: 56px; height: 56px; border-radius: 18px; border: 3px solid var(--ink); background: var(--surface);
+               display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+  .onb-icono.azul { background: var(--azul); }
+  .onb-icono.rojo { background: var(--rojo); }
+  .onb-icono.verde { background: var(--verde); }
   .onb-pregunta { font-family: var(--font-display); font-size: 28px; font-weight: 800; line-height: 1.15; letter-spacing: -0.01em; }
   @media (min-width: 400px) { .onb-pregunta { font-size: 30px; } }
   .onb-micro { margin-top: 8px; font-size: 14px; color: var(--ink-2); font-weight: 400; }
@@ -84,7 +92,10 @@
   .js-motion .onb-chip .check svg { transition: opacity 150ms ease, scale 150ms ease; }
   .onb-chip.seleccionado .check svg { opacity: 1; scale: 1; }
 
-  .onb-input-wrap { margin-top: 28px; display: none; flex-direction: column; gap: 12px; }
+  .onb-link-secundario { margin-top: 16px; background: none; border: none; padding: 8px 0; font-family: var(--font-body);
+                          font-size: 14px; font-weight: 700; color: var(--azul-sombra); text-decoration: underline;
+                          text-underline-offset: 3px; cursor: pointer; align-self: flex-start; }
+  .onb-input-wrap { margin-top: 16px; display: none; flex-direction: column; gap: 12px; }
   .onb-input-wrap.show { display: flex; }
   .onb-hint { font-size: 13px; color: var(--rojo-sombra); font-weight: 700; display: none; }
   .onb-hint.show { display: block; }
@@ -101,7 +112,6 @@
   }
   .js-motion .onb-boton { transition: transform 120ms ease, border-bottom-width 120ms ease, opacity 200ms ease; }
   .onb-boton:active { border-bottom-width: 3px; transform: translateY(3px); }
-  .onb-boton:disabled { opacity: 0.65; cursor: not-allowed; }
   .onb-boton-abajo { margin-top: auto; padding-top: 24px; }
 
   /* ===== RECONOCIMIENTO ===== */
@@ -166,12 +176,16 @@
   </button>
   <div class="onb-progress"><div class="onb-progress-fill" id="onbProgressFill"></div></div>
   <span class="onb-pct" id="onbPct">8%</span>
+  <button type="button" class="onb-salir" id="onbSalir" aria-label="Salir del recorrido de bienvenida">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+  </button>
 </div>
 
 <div class="onb-stage" id="onbStage">
 
   <!-- PASO 1 -->
   <section class="onb-paso activo" data-paso="1">
+    <span class="onb-icono azul"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="12" r="3"/><circle cx="17" cy="12" r="3"/><circle cx="12" cy="7" r="3"/></svg></span>
     <h1 class="onb-pregunta">¿Cuántos trabajadores tiene tu cuadrilla?</h1>
     <p class="onb-micro">Así configuramos tu panel desde el primer día.</p>
     <div class="onb-chips" data-grupo="cuadrilla">
@@ -189,6 +203,7 @@
 
   <!-- PASO 2 -->
   <section class="onb-paso" data-paso="2">
+    <span class="onb-icono rojo"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg></span>
     <h1 class="onb-pregunta">¿Cuál es tu reto más urgente hoy?</h1>
     <p class="onb-micro">Usamos tu respuesta para mostrarte cómo te ayuda el Pase.</p>
     <div class="onb-chips" data-grupo="reto">
@@ -204,10 +219,8 @@
       <button type="button" class="onb-chip" data-valor="auditoria">
         <span>Me cae una auditoría sorpresa</span><span class="check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
       </button>
-      <button type="button" class="onb-chip" data-valor="otra">
-        <span>Otra cosa (cuéntame)</span><span class="check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
-      </button>
     </div>
+    <button type="button" class="onb-link-secundario" id="onbOtraCosa">Es otra cosa — cuéntanos</button>
     <div class="onb-input-wrap" id="onbRetoInputWrap">
       <input type="text" class="onb-input" id="onbRetoInput" placeholder="Cuéntanos tu reto" maxlength="80" autocomplete="off">
       <button type="button" class="onb-boton" id="onbRetoContinuar">Continuar</button>
@@ -227,6 +240,7 @@
 
   <!-- PASO 4 -->
   <section class="onb-paso" data-paso="4">
+    <span class="onb-icono verde"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
     <h1 class="onb-pregunta">¿A qué hora es la charla antes del turno?</h1>
     <p class="onb-micro">Te avisamos justo antes, para que el reto se haga ahí mismo.</p>
     <div class="onb-chips" data-grupo="horario">
@@ -373,11 +387,6 @@
         const nombre = grupo.dataset.grupo;
         const valor = chip.dataset.valor;
 
-        if (nombre === 'reto' && valor === 'otra') {
-          document.getElementById('onbRetoInputWrap').classList.add('show');
-          document.getElementById('onbRetoInput').focus();
-          return; // no auto-avanza: espera el texto libre
-        }
         document.getElementById('onbRetoInputWrap')?.classList.remove('show');
         respuestas[nombre] = valor;
         if (nombre === 'reto') {
@@ -394,8 +403,16 @@
     });
   });
 
-  // "Otra cosa": input libre con confirmación explícita — el botón nunca nace deshabilitado,
-  // valida al tocarlo y muestra un aviso en vez de bloquear la acción.
+  // "Otra cosa": enlace secundario (no compite en peso visual con los 4 dolores reales) que
+  // revela el input libre. El botón de confirmar nunca nace deshabilitado — valida al tocarlo
+  // y muestra un aviso en vez de bloquear la acción.
+  document.getElementById('onbOtraCosa').addEventListener('click', () => {
+    document.querySelectorAll('.onb-chip[data-grupo-padre="reto"], [data-grupo="reto"] .onb-chip').forEach((c) => {
+      c.classList.remove('seleccionado'); c.setAttribute('aria-checked', 'false');
+    });
+    document.getElementById('onbRetoInputWrap').classList.add('show');
+    document.getElementById('onbRetoInput').focus();
+  });
   const retoInput = document.getElementById('onbRetoInput');
   const retoContinuar = document.getElementById('onbRetoContinuar');
   const retoHint = document.getElementById('onbRetoHint');
@@ -450,14 +467,18 @@
     if (pasoActual > 1) irAPaso(pasoActual - 1, 'atras');
   });
 
-  // Modal de salida (solo si ya avanzó más allá del paso 1)
+  // Modal de salida (solo si ya avanzó más allá del paso 1) — logo y botón "X" hacen lo mismo
   const modalFondo = document.getElementById('onbModalFondo');
-  document.getElementById('onbLogo').addEventListener('click', (e) => {
+  function pedirSalir(e) {
     if (pasoActual > 1) {
-      e.preventDefault();
+      if (e) e.preventDefault();
       modalFondo.classList.add('show');
+    } else {
+      window.location.href = 'landing.html';
     }
-  });
+  }
+  document.getElementById('onbLogo').addEventListener('click', pedirSalir);
+  document.getElementById('onbSalir').addEventListener('click', pedirSalir);
   document.getElementById('onbModalSeguir').addEventListener('click', () => modalFondo.classList.remove('show'));
   document.getElementById('onbModalSalir').addEventListener('click', () => { window.location.href = 'landing.html'; });
 
