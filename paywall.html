@@ -49,6 +49,8 @@
   .pw-headline em { font-style: normal; color: var(--azul-sombra); }
   .pw-emocion { margin-top: 10px; font-size: 14px; font-weight: 700; color: var(--ink); line-height: 1.4; }
   .pw-emocion b { color: var(--rojo-texto); }
+  .pw-error { margin-top: 8px; font-size: 13px; font-weight: 700; color: var(--rojo-texto); text-align: center; display: none; }
+  .pw-error.show { display: block; }
 
   .pw-bloque { background: var(--surface); border: 3px solid var(--ink); border-radius: 20px; padding: 20px; margin-top: 20px;
                box-shadow: 0 6px 0 -2px rgb(26 26 26 / 0.08), 0 10px 20px rgb(26 26 26 / 0.1); }
@@ -77,7 +79,7 @@
   .pw-panel::before { content: ''; position: absolute; top: 0; left: 16px; right: 16px; height: 2px;
                        background: linear-gradient(90deg, transparent, var(--amarillo-sombra), var(--azul), transparent); }
   .pw-planes-tit { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-2); }
-  .pw-dias-tit { margin-top: 20px; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: var(--azul-sombra); }
+  .pw-dias-tit { margin-top: 20px; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-2); }
   .pw-planes { margin-top: 12px; display: flex; flex-direction: column; gap: 12px; }
   .pw-plan { border: 3px solid var(--ink); border-radius: 20px; padding: 16px; position: relative; background: var(--surface); cursor: pointer;
              box-shadow: 0 6px 0 -2px rgb(26 26 26 / 0.08), 0 10px 20px rgb(26 26 26 / 0.1); }
@@ -92,7 +94,7 @@
                   border-radius: 8px; padding: 4px 10px; font-size: 11px; font-weight: 800; }
   .pw-plan .fila { display: flex; align-items: baseline; justify-content: space-between; }
   .pw-plan .nombre { font-weight: 800; font-size: 14px; }
-  .pw-plan .precio { font-family: var(--font-display); font-size: 22px; font-weight: 800; }
+  .pw-plan .precio { font-family: var(--font-display); font-size: 19px; font-weight: 800; }
   .pw-plan .precio small { font-size: 12px; font-weight: 700; font-family: var(--font-body); }
   .pw-plan .nota { margin-top: 4px; font-size: 13px; font-weight: 700; color: var(--ink-2); }
   .pw-plan .total { margin-top: 6px; font-size: 12px; font-weight: 700; color: var(--ink-2); }
@@ -109,7 +111,8 @@
   .pw-cta-wrap { margin-top: 24px; }
   .pw-boton { width: 100%; height: 56px; border-radius: 16px; border: 3px solid var(--ink); background: var(--verde);
               color: var(--ink); font-family: var(--font-display); font-weight: 800; font-size: 14px; text-transform: uppercase;
-              letter-spacing: 0.01em; cursor: pointer; border-bottom: 4px solid var(--verde-sombra); }
+              letter-spacing: 0.01em; cursor: pointer; border-bottom: 4px solid var(--verde-sombra);
+              box-shadow: 0 8px 20px -6px color-mix(in oklab, var(--verde) 55%, transparent); }
   .js-motion .pw-boton { transition: transform 120ms ease, border-bottom-width 120ms ease; }
   .pw-boton:active { border-bottom-width: 3px; transform: translateY(3px); }
   .pw-garantia { margin-top: 12px; padding: 12px 14px; border: 2px solid var(--ink); border-radius: 14px;
@@ -141,7 +144,7 @@
     <div class="pw-linea">
       <div class="riel"><span class="nodo icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 17.5h17"/><path d="M5 17.5Q5 7 12 7Q19 7 19 17.5"/><path d="M12 7V4"/></svg></span><span class="conector"></span></div>
       <div class="contenido">
-        <p class="titulo">Hoy — tu cuadrilla ya corre el Pase, sin límites</p>
+        <p class="titulo">Hoy — tu cuadrilla ya corre el Pase (el reto diario de 3 minutos), sin límites</p>
       </div>
     </div>
     <div class="pw-linea">
@@ -184,6 +187,7 @@
 
   <div class="pw-cta-wrap pw-reveal">
     <button type="button" class="pw-boton" id="pwActivar">Crear mi acceso y activar la prueba</button>
+    <p class="pw-error" id="pwError">Algo falló al continuar — inténtalo de nuevo o recarga la página.</p>
     <div class="pw-garantia">
       <p class="pw-reversibilidad">Hoy no pagas nada · Sin tarjeta</p>
       <p class="pw-garantia-txt"><b>Compromiso del Primer Pase</b> — si tu cuadrilla no completa su primera charla de 3 minutos el día 1, te ayudamos sin costo</p>
@@ -262,9 +266,13 @@
     });
 
     document.getElementById('pwActivar').addEventListener('click', () => {
-      const elegido = document.querySelector('.pw-plan.elegido');
-      try { sessionStorage.setItem('hsePlanElegido', elegido ? elegido.dataset.plan : 'anual'); } catch {}
-      window.location.href = 'login.html';
+      try {
+        const elegido = document.querySelector('.pw-plan.elegido');
+        try { sessionStorage.setItem('hsePlanElegido', elegido ? elegido.dataset.plan : 'anual'); } catch {}
+        window.location.href = 'login.html';
+      } catch (err) {
+        document.getElementById('pwError').classList.add('show');
+      }
     });
 
     // "Volver" regresa al paso exacto donde iba el usuario en vez de reiniciar el recorrido:
