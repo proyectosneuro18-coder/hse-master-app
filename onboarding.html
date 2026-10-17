@@ -44,16 +44,19 @@
               font-family: var(--font-display); font-weight: 800; font-size: 15px; flex-shrink: 0; }
   .onb-logo .dot { width: 24px; height: 24px; border-radius: 10px; background: var(--amarillo); border: 2px solid var(--ink); }
   .onb-atras, .onb-salir { width: 44px; height: 44px; border-radius: 14px; border: 2px solid var(--ink); background: var(--surface); color: var(--ink);
-               display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
-  .onb-atras { visibility: hidden; }
+               align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
+  .onb-salir { display: flex; }
+  .onb-atras { display: none; }
   .onb-atras:hover, .onb-salir:hover { background: var(--amarillo); }
-  .onb-atras.show { visibility: visible; }
+  .onb-atras.show { display: flex; }
   .onb-progress { flex: 1; height: 3px; background: var(--neutro-track); border-radius: 999px; overflow: hidden; }
   .onb-progress-fill { height: 100%; width: 8%; background: var(--verde); border-radius: 999px; transition: width 350ms ease; }
   .onb-pct { font-size: 12px; font-weight: 800; color: var(--ink-2); min-width: 32px; text-align: right; font-variant-numeric: tabular-nums; flex-shrink: 0; }
 
   /* ===== ESCENARIO DE PASOS ===== */
-  .onb-stage { position: relative; flex: 1; background: var(--surface); box-shadow: inset 0 10px 24px -18px rgb(26 26 26 / 0.35); }
+  .onb-stage { position: relative; flex: 1;
+               background: radial-gradient(480px 360px at 50% 88%, color-mix(in oklab, var(--azul) 7%, transparent), transparent 70%), var(--surface);
+               box-shadow: inset 0 10px 24px -18px rgb(26 26 26 / 0.35); }
   .onb-paso {
     position: absolute; inset: 0; padding: 32px 16px 24px; display: flex; flex-direction: column;
     justify-content: flex-start; opacity: 0; transform: translateX(40px); pointer-events: none; visibility: hidden;
@@ -79,6 +82,10 @@
   .onb-micro { margin-top: 8px; font-size: 14px; color: var(--ink-2); font-weight: 400; }
 
   .onb-chips { margin-top: 28px; display: flex; flex-direction: column; gap: 12px; }
+  .onb-nota-cuadrilla { margin-top: 20px; font-size: 13px; color: var(--ink-2); text-align: center; }
+  .onb-marca-agua { display: block; margin: 28px auto 0; width: 110px; height: 110px; color: var(--azul);
+                     opacity: 0.08; }
+  .onb-marca-agua svg { width: 100%; height: 100%; }
   .onb-chip {
     width: 100%; min-height: 60px; border-radius: 16px; border: 3px solid var(--ink); background: var(--surface);
     display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 18px;
@@ -219,6 +226,8 @@
         <span>Más de 20 trabajadores</span><span class="check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
       </button>
     </div>
+    <p class="onb-nota-cuadrilla">Puedes sumar más cuadrillas más adelante — esto no te limita.</p>
+    <span class="onb-marca-agua" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 17.5h17"/><path d="M5 17.5Q5 7 12 7Q19 7 19 17.5"/><path d="M12 7V4"/></svg></span>
   </section>
 
   <!-- PASO 2 -->
@@ -374,6 +383,7 @@
     const chips = pasoEl.querySelectorAll('.onb-chip');
     chips.forEach((chip, i) => {
       chip.classList.remove('in');
+      if (sinMovimiento) { chip.classList.add('in'); return; }
       setTimeout(() => chip.classList.add('in'), 80 + i * 60);
     });
     const ic = pasoEl.querySelector('.onb-reco .ic');
@@ -382,6 +392,7 @@
     [ic, h2, p].forEach((el, i) => {
       if (!el) return;
       el.classList.remove('in');
+      if (sinMovimiento) { el.classList.add('in'); return; }
       setTimeout(() => el.classList.add('in'), 80 + i * 90);
     });
   }

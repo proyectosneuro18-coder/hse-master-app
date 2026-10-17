@@ -58,8 +58,8 @@
   .pw-linea .riel { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
   .pw-linea .nodo { width: 14px; height: 14px; border-radius: 999px; border: 2px solid var(--ink); background: var(--verde); flex-shrink: 0;
                     display: flex; align-items: center; justify-content: center; }
-  .pw-linea .nodo.casco { width: 24px; height: 24px; margin: -5px -5px 0; }
-  .pw-linea .nodo.casco svg { width: 13px; height: 13px; }
+  .pw-linea .nodo.icono { width: 24px; height: 24px; margin: -5px -5px 0; }
+  .pw-linea .nodo.icono svg { width: 13px; height: 13px; }
   .pw-linea .nodo.outline { background: var(--surface); }
   .pw-linea .nodo.proximo { background: var(--amarillo); }
   .pw-linea .conector { width: 2px; flex: 1; background: var(--verde); min-height: 36px; }
@@ -92,7 +92,7 @@
   .pw-plan .nombre { font-weight: 800; font-size: 14px; }
   .pw-plan .precio { font-family: var(--font-display); font-size: 22px; font-weight: 800; }
   .pw-plan .precio small { font-size: 12px; font-weight: 700; font-family: var(--font-body); }
-  .pw-plan .nota { margin-top: 4px; font-size: 14px; font-weight: 700; color: var(--ink-2); }
+  .pw-plan .nota { margin-top: 4px; font-size: 13px; font-weight: 700; color: var(--ink-2); }
   .pw-plan .total { margin-top: 6px; font-size: 12px; font-weight: 700; color: var(--ink-2); }
   .pw-plan .total:empty { display: none; }
   .pw-plan.elegido .total { color: var(--ink); }
@@ -110,12 +110,12 @@
               letter-spacing: 0.01em; cursor: pointer; border-bottom: 4px solid var(--verde-sombra); }
   .js-motion .pw-boton { transition: transform 120ms ease, border-bottom-width 120ms ease; }
   .pw-boton:active { border-bottom-width: 3px; transform: translateY(3px); }
-  .pw-reversibilidad { margin-top: 10px; text-align: center; font-size: 14px; color: var(--ink-2); font-weight: 700; }
+  .pw-reversibilidad { margin-top: 10px; text-align: center; font-size: 13px; color: var(--ink-2); font-weight: 700; }
   .pw-garantia { margin-top: 12px; padding: 12px 14px; border: 2px solid var(--ink); border-radius: 14px;
                  background: color-mix(in oklab, var(--amarillo) 18%, var(--surface)); font-size: 13px; font-weight: 700; color: var(--ink-2); text-align: center; }
   .pw-garantia b { color: var(--ink); }
 
-  .pw-trust { margin-top: 20px; text-align: center; font-size: 14px; color: var(--ink-2); font-weight: 700;
+  .pw-trust { margin-top: 20px; text-align: center; font-size: 13px; color: var(--ink-2); font-weight: 700;
               display: flex; align-items: flex-start; justify-content: center; gap: 6px; }
   .pw-trust svg { margin-top: 3px; }
 </style>
@@ -135,19 +135,19 @@
 
   <div class="pw-bloque pw-reveal">
     <div class="pw-linea">
-      <div class="riel"><span class="nodo casco"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 17.5h17"/><path d="M5 17.5Q5 7 12 7Q19 7 19 17.5"/><path d="M12 7V4"/></svg></span><span class="conector"></span></div>
+      <div class="riel"><span class="nodo icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 17.5h17"/><path d="M5 17.5Q5 7 12 7Q19 7 19 17.5"/><path d="M12 7V4"/></svg></span><span class="conector"></span></div>
       <div class="contenido">
         <p class="titulo">Hoy — tu cuadrilla ya corre el Pase, sin límites</p>
       </div>
     </div>
     <div class="pw-linea">
-      <div class="riel"><span class="nodo proximo"></span><span class="conector neutro"></span></div>
+      <div class="riel"><span class="nodo proximo icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 6 8 7 8-7"/></svg></span><span class="conector neutro"></span></div>
       <div class="contenido">
         <p class="titulo">Día 12 — un correo te avisa, sin sorpresas</p>
       </div>
     </div>
     <div class="pw-linea">
-      <div class="riel"><span class="nodo outline"></span></div>
+      <div class="riel"><span class="nodo outline icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM19 14v3M14 19h3M17 17h4v4h-4z"/></svg></span></div>
       <div class="contenido">
         <p class="titulo">Día 14 — tú decides, con el QR ya listo para el auditor</p>
       </div>
@@ -163,7 +163,7 @@
         <span class="nombre">Anual</span>
         <span class="marca"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
       </div>
-      <p class="precio">US$6.67<small>/usuario/mes</small></p>
+      <p class="precio">US$<span id="pwPrecioAnual">0</span><small>/usuario/mes</small></p>
       <p class="nota">Se cobra US$80/usuario/año</p>
       <p class="total" id="pwAnualTotal"></p>
     </div>
@@ -172,7 +172,7 @@
         <span class="nombre">Mensual</span>
         <span class="marca"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
       </div>
-      <p class="precio">US$8<small>/usuario/mes</small></p>
+      <p class="precio">US$<span id="pwPrecioMensual">0</span><small>/usuario/mes</small></p>
       <p class="nota">Cancela cuando quieras</p>
       <p class="total" id="pwMensualTotal"></p>
     </div>
@@ -199,6 +199,19 @@
       setTimeout(() => el.classList.add('in'), 80 + i * 80);
     });
   }
+  function contarNumero(el, hasta, decimales) {
+    if (!el) return;
+    if (sinMovimiento) { el.textContent = decimales ? hasta.toFixed(decimales) : String(hasta); return; }
+    const duracion = 550;
+    const inicio = performance.now();
+    function tick(ahora) {
+      const t = Math.min(1, (ahora - inicio) / duracion);
+      const valor = hasta * t;
+      el.textContent = decimales ? valor.toFixed(decimales) : String(Math.round(valor));
+      if (t < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
   try {
     try {
       const onb = JSON.parse(sessionStorage.getItem('hseOnboarding') || '{}');
@@ -214,7 +227,7 @@
         'Entre 10 y 20 trabajadores': 15,
         'Más de 20 trabajadores': 25
       };
-      const n = PERSONAS_ESTIMADAS[onb.cuadrilla];
+      const n = PERSONAS_ESTIMADAS[onb.cuadrilla] || 15;
       if (n) {
         document.getElementById('pwAnualTotal').textContent = `≈ US$${Math.round(6.67 * n)}/mes en total para tus ${n} trabajadores`;
         document.getElementById('pwMensualTotal').textContent = `≈ US$${8 * n}/mes en total para tus ${n} trabajadores`;
@@ -249,6 +262,8 @@
     });
   } finally {
     revelarTodo();
+    contarNumero(document.getElementById('pwPrecioAnual'), 6.67, 2);
+    contarNumero(document.getElementById('pwPrecioMensual'), 8, 0);
   }
 </script>
 
