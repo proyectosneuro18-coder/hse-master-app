@@ -52,7 +52,7 @@
   /* ===== ESCENARIO DE PASOS ===== */
   .onb-stage { position: relative; flex: 1; }
   .onb-paso {
-    position: absolute; inset: 0; padding: 8px 16px 32px; display: flex; flex-direction: column;
+    position: absolute; inset: 0; padding: 24px 16px; display: flex; flex-direction: column;
     justify-content: center; opacity: 0; transform: translateX(40px); pointer-events: none; visibility: hidden;
   }
   .js-motion .onb-paso { transition: opacity 300ms ease, transform 300ms ease; }
@@ -99,7 +99,7 @@
   }
   .js-motion .onb-boton { transition: transform 120ms ease, border-bottom-width 120ms ease, opacity 200ms ease; }
   .onb-boton:active { border-bottom-width: 3px; transform: translateY(3px); }
-  .onb-boton:disabled { opacity: 0.4; cursor: not-allowed; }
+  .onb-boton:disabled { opacity: 0.65; cursor: not-allowed; }
   .onb-boton-abajo { margin-top: auto; padding-top: 24px; }
 
   /* ===== RECONOCIMIENTO ===== */
@@ -136,10 +136,15 @@
   @media (prefers-reduced-motion: reduce) { .onb-linea.activa .marca { animation: none; } }
 
   /* ===== MODAL DE SALIDA ===== */
-  .onb-modal-fondo { position: fixed; inset: 0; background: rgb(26 26 26 / 0.5); z-index: 90; display: none;
-                      align-items: center; justify-content: center; padding: 24px; }
-  .onb-modal-fondo.show { display: flex; }
-  .onb-modal { background: var(--surface); border: 3px solid var(--ink); border-radius: 20px; padding: 24px; max-width: 320px; width: 100%; }
+  .onb-modal-fondo { position: fixed; inset: 0; background: rgb(26 26 26 / 0.5); z-index: 90; display: flex;
+                      align-items: center; justify-content: center; padding: 24px;
+                      opacity: 0; visibility: hidden; pointer-events: none; }
+  .js-motion .onb-modal-fondo { transition: opacity 200ms ease, visibility 0s 200ms; }
+  .onb-modal-fondo.show { opacity: 1; visibility: visible; pointer-events: auto; transition-delay: 0s; }
+  .onb-modal { background: var(--surface); border: 3px solid var(--ink); border-radius: 20px; padding: 24px; max-width: 320px; width: 100%;
+               transform: scale(0.92); }
+  .js-motion .onb-modal { transition: transform 200ms ease; }
+  .onb-modal-fondo.show .onb-modal { transform: scale(1); }
   .onb-modal h3 { font-family: var(--font-display); font-size: 18px; font-weight: 800; }
   .onb-modal p { margin-top: 8px; font-size: 14px; color: var(--ink-2); }
   .onb-modal .fila { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
@@ -378,6 +383,9 @@
   retoInput.addEventListener('input', () => {
     retoContinuar.disabled = retoInput.value.trim().length === 0;
   });
+  retoInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !retoContinuar.disabled) { e.preventDefault(); retoContinuar.click(); }
+  });
   retoContinuar.addEventListener('click', () => {
     respuestas.reto = 'otra';
     respuestas.retoTexto = retoInput.value.trim();
@@ -449,10 +457,19 @@
     const aro = document.getElementById('onbAro');
     const aroPct = document.getElementById('onbAroPct');
     const CIRCUNFERENCIA = 314;
+    let pctActual = 0;
     function setAro(pct) {
       aro.style.transition = sinMovimiento ? 'none' : 'stroke-dashoffset 500ms ease';
       aro.setAttribute('stroke-dashoffset', String(CIRCUNFERENCIA * (1 - pct / 100)));
-      aroPct.textContent = pct + '%';
+      if (sinMovimiento) { aroPct.textContent = pct + '%'; pctActual = pct; return; }
+      const desde = pctActual; const hasta = pct; const inicio = performance.now(); const duracion = 500;
+      pctActual = pct;
+      function tick(ahora) {
+        const t = Math.min(1, (ahora - inicio) / duracion);
+        aroPct.textContent = Math.round(desde + (hasta - desde) * t) + '%';
+        if (t < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
     }
     const metas = [25, 55, 80, 100];
     const tiempos = sinMovimiento ? [0, 0, 0, 0] : [700, 900, 900, 900];
