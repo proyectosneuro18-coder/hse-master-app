@@ -80,6 +80,7 @@
                        background: linear-gradient(90deg, transparent, var(--amarillo-sombra), var(--azul), transparent); }
   .pw-planes-tit { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-2); }
   .pw-dias-tit { margin-top: 20px; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-2); }
+  .pw-planes-nota { margin-top: 4px; font-size: 13px; color: var(--ink-2); font-weight: 700; }
   .pw-planes { margin-top: 12px; display: flex; flex-direction: column; gap: 12px; }
   .pw-plan { border: 3px solid var(--ink); border-radius: 20px; padding: 16px; position: relative; background: var(--surface); cursor: pointer;
              box-shadow: 0 6px 0 -2px rgb(26 26 26 / 0.08), 0 10px 20px rgb(26 26 26 / 0.1); }
@@ -97,7 +98,7 @@
   .pw-plan .precio { font-family: var(--font-display); font-size: 19px; font-weight: 800; }
   .pw-plan .precio small { font-size: 12px; font-weight: 700; font-family: var(--font-body); }
   .pw-plan .nota { margin-top: 4px; font-size: 13px; font-weight: 700; color: var(--ink-2); }
-  .pw-plan .total { margin-top: 6px; font-size: 12px; font-weight: 700; color: var(--ink-2); }
+  .pw-plan .total { margin-top: 6px; font-size: 13px; font-weight: 700; color: var(--ink-2); }
   .pw-plan .total:empty { display: none; }
   .pw-plan.elegido .total { color: var(--ink); }
   .pw-plan.elegido .nota { color: var(--ink); }
@@ -109,9 +110,9 @@
   .pw-plan.elegido .marca svg { opacity: 1; }
 
   .pw-cta-wrap { margin-top: 24px; }
-  .pw-boton { width: 100%; height: 56px; border-radius: 16px; border: 3px solid var(--ink); background: var(--verde);
-              color: var(--ink); font-family: var(--font-display); font-weight: 800; font-size: 14px; text-transform: uppercase;
-              letter-spacing: 0.01em; cursor: pointer; border-bottom: 4px solid var(--verde-sombra);
+  .pw-boton { width: 100%; height: 56px; border-radius: 16px; border: 3px solid var(--ink); background: var(--verde-sombra);
+              color: var(--ink); font-family: var(--font-display); font-weight: 800; font-size: 15px; text-transform: uppercase;
+              letter-spacing: 0.01em; cursor: pointer; border-bottom: 4px solid color-mix(in oklab, black 25%, var(--verde-sombra));
               box-shadow: 0 8px 20px -6px color-mix(in oklab, var(--verde) 55%, transparent); }
   .js-motion .pw-boton { transition: transform 120ms ease, border-bottom-width 120ms ease; }
   .pw-boton:active { border-bottom-width: 3px; transform: translateY(3px); }
@@ -163,6 +164,7 @@
 
   <div class="pw-panel">
   <p class="pw-planes-tit pw-reveal">Si decides seguir, esto es lo que cuesta</p>
+  <p class="pw-planes-nota pw-reveal">Puedes cambiarlo después — hoy no se cobra nada</p>
   <div class="pw-planes pw-reveal" role="radiogroup" aria-label="Elige el plan que se sugerirá al terminar tu prueba">
     <div class="pw-plan elegido" id="pwPlanAnual" data-plan="anual" role="radio" aria-checked="true" tabindex="0">
       <span class="tag">2 MESES GRATIS</span>
@@ -190,7 +192,7 @@
     <p class="pw-error" id="pwError">Algo falló al continuar — inténtalo de nuevo o recarga la página.</p>
     <div class="pw-garantia">
       <p class="pw-reversibilidad">Hoy no pagas nada · Sin tarjeta</p>
-      <p class="pw-garantia-txt"><b>Compromiso del Primer Pase</b> — si tu cuadrilla no completa su primera charla de 3 minutos el día 1, te ayudamos sin costo</p>
+      <p class="pw-garantia-txt"><b>Compromiso del Primer Pase</b> — si tu cuadrilla no completa su primera charla de 3 minutos el día 1, te ayudamos personalmente a configurarlo, sin costo</p>
     </div>
   </div>
 
