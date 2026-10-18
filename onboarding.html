@@ -128,7 +128,7 @@
 
   /* ===== RECONOCIMIENTO ===== */
   .onb-reco { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 16px; }
-  .onb-reco .ic { width: 72px; height: 72px; border-radius: 22px; background: var(--amarillo); border: 3px solid var(--ink);
+  .onb-reco .ic { width: 72px; height: 72px; border-radius: 20px; background: var(--amarillo); border: 3px solid var(--ink);
                   display: flex; align-items: center; justify-content: center; opacity: 0; transform: scale(0.7); }
   .js-motion .onb-reco .ic { transition: opacity 300ms ease, transform 300ms ease; }
   .onb-paso.activo .onb-reco .ic.in { opacity: 1; transform: scale(1); }
@@ -212,7 +212,7 @@
   <!-- PASO 1 -->
   <section class="onb-paso activo" data-paso="1">
     <div class="onb-encabezado azul">
-      <span class="onb-icono azul"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="12" r="3"/><circle cx="17" cy="12" r="3"/><circle cx="12" cy="7" r="3"/></svg></span>
+      <span class="onb-icono azul"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
       <h2 class="onb-pregunta">¿Cuántos trabajadores tiene tu cuadrilla?</h2>
       <p class="onb-micro">Así configuramos tu panel desde el primer día.</p>
     </div>

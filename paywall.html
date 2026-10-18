@@ -18,7 +18,7 @@
     --bg: #fffaf0; --surface: #ffffff; --ink: #1a1a1a; --ink-2: #6b6b6b;
     --amarillo: #ffe600; --amarillo-sombra: #e0bf00;
     --verde: #1bcc02; --verde-sombra: #1b9f03;
-    --azul: #3e7ef7; --azul-sombra: #0a4299;
+    --azul: #3e7ef7; --azul-sombra: #0a4299; --azul-texto: #063a85;
     --rojo: #ff4e0e; --rojo-sombra: #c75126; --rojo-texto: #a83d1a;
     --neutro-track: #e4dcc4;
     --font-display: 'Baloo 2', sans-serif; --font-body: 'DM Sans', sans-serif;
@@ -46,8 +46,8 @@
   .js-motion .pw-reveal.in { opacity: 1; transform: translateY(0); }
 
   .pw-headline { font-family: var(--font-display); font-size: 28px; font-weight: 800; line-height: 1.15; letter-spacing: -0.01em; }
-  .pw-headline em { font-style: normal; color: var(--azul-sombra); }
-  .pw-emocion { margin-top: 10px; font-size: 14px; font-weight: 700; color: var(--ink); line-height: 1.4; }
+  .pw-headline em { font-style: normal; color: var(--azul-texto); }
+  .pw-emocion { margin-top: 8px; font-size: 14px; font-weight: 700; color: var(--ink); line-height: 1.4; }
   .pw-emocion b { color: var(--rojo-texto); }
   .pw-error { margin-top: 8px; font-size: 13px; font-weight: 700; color: var(--rojo-texto); text-align: center; display: none; }
   .pw-reintentar { background: none; border: none; padding: 0; color: var(--rojo-texto); font-size: 13px; font-weight: 800;
@@ -92,13 +92,13 @@
   .pw-plan:focus-visible { outline: 3px solid var(--azul); outline-offset: 2px; }
   .pw-plan.elegido { background: var(--amarillo); }
   .pw-plan .tag { position: absolute; top: -13px; left: 16px; background: var(--rojo); color: var(--ink); border: 2px solid var(--ink);
-                  border-radius: 8px; padding: 4px 10px; font-size: 11px; font-weight: 800; }
+                  border-radius: 8px; padding: 4px 8px; font-size: 11px; font-weight: 800; }
   .pw-plan .fila { display: flex; align-items: baseline; justify-content: space-between; }
   .pw-plan .nombre { font-weight: 800; font-size: 14px; }
   .pw-plan .precio { font-family: var(--font-display); font-size: 19px; font-weight: 800; }
   .pw-plan .precio small { font-size: 12px; font-weight: 700; font-family: var(--font-body); }
   .pw-plan .nota { margin-top: 4px; font-size: 13px; font-weight: 700; color: var(--ink-2); }
-  .pw-plan .total { margin-top: 6px; font-size: 13px; font-weight: 700; color: var(--ink-2); }
+  .pw-plan .total { margin-top: 4px; font-size: 13px; font-weight: 700; color: var(--ink-2); }
   .pw-plan .total:empty { display: none; }
   .pw-plan.elegido .total { color: var(--ink); }
   .pw-plan.elegido .nota { color: var(--ink); }
@@ -189,7 +189,7 @@
 
   <div class="pw-cta-wrap pw-reveal">
     <button type="button" class="pw-boton" id="pwActivar">Crear mi acceso y activar la prueba</button>
-    <p class="pw-error" id="pwError">Algo falló al continuar. <button type="button" class="pw-reintentar" id="pwReintentar">Reintentar</button></p>
+    <p class="pw-error" id="pwError"><span class="txt">Algo falló al continuar.</span> <button type="button" class="pw-reintentar" id="pwReintentar">Reintentar</button></p>
     <div class="pw-garantia">
       <p class="pw-reversibilidad">Hoy no pagas nada · Sin tarjeta</p>
       <p class="pw-garantia-txt"><b>Compromiso del Primer Pase</b> — si tu cuadrilla no completa su primera charla de 3 minutos el día 1, te ayudamos personalmente a configurarlo, sin costo</p>
@@ -280,6 +280,9 @@
       } catch (err) {
         activarBtn.disabled = false;
         activarBtn.textContent = 'Crear mi acceso y activar la prueba';
+        errorMsg.querySelector('.txt').textContent = navigator.onLine
+          ? 'Algo falló al continuar.'
+          : 'Parece que no tienes conexión.';
         errorMsg.classList.add('show');
       }
     }

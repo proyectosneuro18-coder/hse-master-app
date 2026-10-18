@@ -1,15 +1,15 @@
 # VEREDICTO revisor-visual — onboarding
-Fecha: 2026-10-17 11:00
+Fecha: 2026-10-17 12:00
 Screenshot: docs/revisiones/onboarding-375.png
-Usabilidad: 34/40
-Craft: 17/20
+Usabilidad: 38/40
+Craft: 16/20
 Copy (si vende): N-A
 Fidelidad (si hubo referencia): N-A
-Veredicto: NO LISTA
+Veredicto: LISTA
 
 Top defectos:
-1. [onboarding.html línea 258-468, `<p id="onbRetoHint">` en el paso 2] El mensaje de error "Escribe tu reto antes de continuar." no tiene `role="alert"` ni `aria-live`, así que un lector de pantalla no lo anuncia cuando aparece (la app sí usa `aria-live="polite"` en el contador de pasos y en el loading, pero no aquí) → agregar `role="alert"` (o `aria-live="assertive"`) al elemento `#onbRetoHint`.
-2. [onboarding.html líneas 318-327 (HTML) y 532-544 (JS), modal de confirmación de salida] El `.onb-modal` no tiene `role="dialog"`/`aria-modal="true"`, no mueve el foco al abrirse (queda en el botón que disparó el modal) ni lo devuelve al cerrarse, y no hay listener de `Escape` para cerrarlo con teclado → añadir los atributos ARIA, foco inicial en "Seguir aquí", retorno de foco al disparador, y `keydown` de Escape equivalente a "Seguir aquí".
-3. [onboarding.html líneas 606-614, restauración de `sessionStorage`] Solo se restaura el progreso guardado si las TRES respuestas (cuadrilla, reto, horario) están completas (`if (guardado.cuadrilla && guardado.reto && guardado.horario)`); si el usuario cerró a mitad de camino con solo 1 o 2 respondidas, esos datos quedan guardados pero se ignoran por completo y debe responder todo de nuevo desde el paso 1 → restaurar también el progreso parcial, marcar los chips ya elegidos y aterrizar en el primer paso sin responder (heurística 6, "reconocer y no recordar" — hoy el sistema le pide al usuario recordar y repetir lo que ya había dicho).
-4. [onboarding.html línea 230, `.onb-nota-cuadrilla { text-align: center }` en el paso 1] La nota "Puedes sumar más cuadrillas más adelante…" queda centrada mientras el encabezado, los 3 chips y (en el paso 2) el link "Es otra cosa" están alineados a la izquierda en toda la pantalla → alinear el texto a la izquierda para que el bloque completo comparta un solo eje.
-5. [Heurística 7, flexibilidad — todo el archivo] Más allá de las flechas de teclado en el radiogroup y Enter en el input de texto libre, no hay ningún atajo para el usuario que repite el flujo (ej. un supervisor que da de alta varias cuadrillas seguidas no puede reutilizar ni pre-cargar los valores de la cuadrilla anterior) → evaluar un acceso directo tipo "usar los mismos datos de la última cuadrilla" cuando se detecta una sesión repetida.
+1. [Craft eje 3 — identidad, toda la pantalla] Bordes gruesos de 3px en negro, botones "presionables" con border-bottom y la paleta amarillo/verde/azul/rojo sobre fondo claro se leen de inmediato como el lenguaje visual de Duolingo (la propia FICHA-ARTE documenta que la paleta y la mecánica del botón se tomaron de ahí, con rotación de hue como única diferenciación) — el kit sigue siendo intercambiable con un clon de esa app → sumar al menos 1 dispositivo gráfico exclusivo de HSE Master App visible en ESTA pantalla (no solo reservado para la pantalla principal/racha), ej. un motivo de casco o QR recurrente en los íconos de encabezado.
+2. [onboarding.html línea 131, `.onb-reco .ic`] El ícono circular del paso 3 (reconocimiento) usa `border-radius: 22px` sobre una caja de 72px — no pertenece a ninguna de las familias de radio de la ficha (20px cards / 16px botones+chips / 8px badge) ni está documentado como excepción → bajarlo a 20px para que coincida con la familia "cards" y el radio se sienta idéntico en toda la pantalla.
+3. [onboarding.html línea 215, ícono del encabezado del paso 1] El ícono de 3 círculos conectados (tipo "red/compartir") no comunica "cuadrilla de trabajadores" — un usuario no lo asocia de un vistazo con el tema de la pregunta, a diferencia de los íconos de los pasos 2 (alerta) y 4 (reloj) que sí mapean bien a su pregunta → reemplazar por un ícono de personas/grupo (ej. Lucide "users").
+4. [Heurística 7, flexibilidad — código completo] El único atajo es navegar el radiogroup con flechas y Enter para confirmar el texto libre; no existe forma de reutilizar los datos de una cuadrilla ya configurada para un supervisor que repite el flujo con una segunda cuadrilla → agregar un acceso opcional "usar los mismos datos de tu última cuadrilla" cuando se detecta progreso previo en `sessionStorage`.
+5. [onboarding.html línea 333, `const PROGRESO`] El salto de 8% (paso 1) a 32% (paso 2) es desproporcionadamente chico frente a los saltos posteriores (~22-26pp cada uno) — da la sensación de que responder la primera pregunta "no avanzó nada" → redistribuir a tramos más parejos, ej. 10/32/56/80/100.
