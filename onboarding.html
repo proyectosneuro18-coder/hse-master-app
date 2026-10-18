@@ -83,7 +83,7 @@
   .onb-encabezado .onb-micro { color: #565656; }
 
   .onb-chips { margin-top: 24px; display: flex; flex-direction: column; gap: 12px; }
-  .onb-nota-cuadrilla { margin-top: 16px; font-size: 14px; color: var(--ink-2); text-align: center; }
+  .onb-nota-cuadrilla { margin-top: 16px; font-size: 14px; color: var(--ink-2); text-align: left; }
   .onb-chip {
     width: 100%; min-height: 60px; border-radius: 16px; border: 3px solid var(--ink); background: var(--surface);
     display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 18px;
@@ -255,7 +255,7 @@
     <div class="onb-input-wrap" id="onbRetoInputWrap">
       <input type="text" class="onb-input" id="onbRetoInput" aria-label="Cuéntanos tu reto más urgente" placeholder="Cuéntanos tu reto" maxlength="80" autocomplete="off">
       <button type="button" class="onb-boton" id="onbRetoContinuar">Continuar</button>
-      <p class="onb-hint" id="onbRetoHint">Escribe tu reto antes de continuar.</p>
+      <p class="onb-hint" id="onbRetoHint" role="alert">Escribe tu reto antes de continuar.</p>
     </div>
   </section>
 
@@ -316,12 +316,12 @@
 </div>
 
 <div class="onb-modal-fondo" id="onbModalFondo">
-  <div class="onb-modal">
-    <h3>¿Seguro que quieres salir?</h3>
-    <p>Vas a perder las respuestas que ya diste.</p>
+  <div class="onb-modal" role="dialog" aria-modal="true" aria-labelledby="onbModalTitulo">
+    <h3 id="onbModalTitulo">¿Seguro que quieres salir?</h3>
+    <p>Tus respuestas quedan guardadas — puedes retomar donde lo dejaste.</p>
     <div class="fila">
       <button type="button" class="primario" id="onbModalSeguir">Seguir aquí</button>
-      <button type="button" class="secundario" id="onbModalSalir">Salir sin guardar</button>
+      <button type="button" class="secundario" id="onbModalSalir">Salir</button>
     </div>
   </div>
 </div>
@@ -530,18 +530,29 @@
 
   // Modal de salida (solo si ya avanzó más allá del paso 1) — logo y botón "X" hacen lo mismo
   const modalFondo = document.getElementById('onbModalFondo');
+  const modalSeguir = document.getElementById('onbModalSeguir');
+  let elementoAntesDelModal = null;
   function pedirSalir(e) {
     if (pasoActual > 1) {
       if (e) e.preventDefault();
+      elementoAntesDelModal = document.activeElement;
       modalFondo.classList.add('show');
+      modalSeguir.focus();
     } else {
       window.location.href = 'landing.html';
     }
   }
+  function cerrarModal() {
+    modalFondo.classList.remove('show');
+    if (elementoAntesDelModal) elementoAntesDelModal.focus();
+  }
   document.getElementById('onbLogo').addEventListener('click', pedirSalir);
   document.getElementById('onbSalir').addEventListener('click', pedirSalir);
-  document.getElementById('onbModalSeguir').addEventListener('click', () => modalFondo.classList.remove('show'));
+  modalSeguir.addEventListener('click', cerrarModal);
   document.getElementById('onbModalSalir').addEventListener('click', () => { window.location.href = 'landing.html'; });
+  modalFondo.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') cerrarModal();
+  });
 
   // Loading: anillo + líneas con pausas (labor illusion)
   function iniciarCarga() {
@@ -605,12 +616,16 @@
   }
   try {
     const guardado = JSON.parse(sessionStorage.getItem('hseOnboarding') || 'null');
-    if (guardado && guardado.cuadrilla && guardado.reto && guardado.horario) {
+    if (guardado && guardado.cuadrilla) {
       Object.assign(respuestas, guardado);
-      irAPaso(4, 'adelante');
       marcarChipGuardado('cuadrilla', guardado.cuadrilla);
-      if (guardado.reto !== 'otra') marcarChipGuardado('reto', guardado.reto);
-      marcarChipGuardado('horario', guardado.horario);
+      if (!guardado.reto) {
+        irAPaso(2, 'adelante');
+      } else {
+        if (guardado.reto !== 'otra') marcarChipGuardado('reto', guardado.reto);
+        irAPaso(4, 'adelante');
+        if (guardado.horario) marcarChipGuardado('horario', guardado.horario);
+      }
     }
   } catch {}
 </script>
