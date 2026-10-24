@@ -81,6 +81,34 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  /* ── Tokens de marca "Casco de Oro" (FICHA-ARTE.md — cosa juzgada, no redecidir) ── */
+  --hse-bg: #fffaf0;
+  --hse-surface: #ffffff;
+  --hse-ink: #1a1a1a;
+  --hse-ink-2: #6b6b6b;
+  --hse-amarillo: #ffe600;
+  --hse-amarillo-sombra: #e0bf00;
+  --hse-neutro-antes: #f3eee0;
+  --hse-verde: #1bcc02;
+  --hse-verde-sombra: #1b9f03;
+  --hse-azul: #3e7ef7;
+  --hse-azul-sombra: #0a4299;
+  --hse-azul-texto: #063a85;
+  --hse-rojo: #ff4e0e;
+  --hse-rojo-sombra: #c75126;
+  --hse-rojo-texto: #a83d1a;
+  --hse-neutro-track: #e4dcc4;
+  --hse-blanco: #ffffff;
+  --hse-footer-texto: #cfcfcf;
+  --hse-footer-muted: #8a8a8a;
+  --hse-footer-borde: #333333;
+  --hse-ink-disabled: #c9bf9e;
+  --hse-font-display: var(--font-baloo-2), sans-serif;
+  --hse-font-body: var(--font-dm-sans), sans-serif;
+  --hse-radius-card: 20px;
+  --hse-radius-boton: 16px;
+  --hse-radius-chip: 14px;
 }
 
 .dark {
@@ -121,10 +149,13 @@
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply bg-background text-foreground;
-  }
   html {
     @apply font-sans;
+    /* FICHA-ARTE.md: app solo modo claro (decisión del usuario) — evita que el navegador
+       aplique su estilado nativo oscuro (scrollbars, inputs) cuando el SO está en oscuro. */
+    color-scheme: light;
+  }
+  body {
+    @apply bg-background text-foreground;
   }
 }

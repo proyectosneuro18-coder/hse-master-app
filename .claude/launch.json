@@ -2,10 +2,10 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "static-preview",
-      "runtimeExecutable": "npx",
-      "runtimeArgs": ["-y", "serve", "-l", "4173", "."],
-      "port": 4173
+      "name": "next-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "port": 3000
     }
   ]
 }
