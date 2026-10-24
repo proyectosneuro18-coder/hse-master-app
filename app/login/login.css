@@ -1,0 +1,84 @@
+/* Estilos de /login — migrados tal cual desde login.html (FICHA-ARTE.md, cosa juzgada) */
+.lg-page * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+.lg-page {
+  --bg: var(--hse-bg); --surface: var(--hse-surface); --ink: var(--hse-ink); --ink-2: var(--hse-ink-2);
+  --amarillo: var(--hse-amarillo); --verde: var(--hse-verde); --verde-sombra: var(--hse-verde-sombra);
+  --azul: var(--hse-azul); --azul-sombra: var(--hse-azul-sombra); --rojo-sombra: var(--hse-rojo-sombra);
+  --neutro-track: var(--hse-neutro-track);
+  --font-display: var(--hse-font-display); --font-body: var(--hse-font-body);
+  background: var(--bg); color: var(--ink); font-family: var(--font-body); line-height: 1.5;
+  min-height: 100dvh; display: flex; flex-direction: column; overflow-x: hidden;
+}
+.lg-page a:focus-visible, .lg-page button:focus-visible, .lg-page input:focus-visible { outline: 3px solid var(--azul); outline-offset: 2px; border-radius: 4px; }
+.lg-page .wrap { max-width: 440px; width: 100%; margin: 0 auto; padding: 0 16px 32px; flex: 1; display: flex; flex-direction: column; justify-content: center; }
+
+.lg-page .lg-header { padding: 16px; }
+.lg-page .lg-logo { display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--ink);
+           font-family: var(--font-display); font-weight: 800; font-size: 15px; width: fit-content; }
+.lg-page .lg-logo .dot { width: 24px; height: 24px; border-radius: 10px; background: var(--amarillo); border: 2px solid var(--ink); }
+
+.lg-page .lg-reveal { opacity: 0; transform: translateY(12px); }
+.lg-page.js-motion .lg-reveal { transition: opacity 350ms ease, transform 350ms ease; }
+.lg-page .lg-reveal.in { opacity: 1; transform: translateY(0); }
+
+.lg-page .lg-titulo { font-family: var(--font-display); font-size: 26px; font-weight: 800; line-height: 1.2; }
+.lg-page .lg-sub { margin-top: 8px; font-size: 14px; color: var(--ink-2); font-weight: 400; max-width: 34ch; }
+
+.lg-page .lg-form { margin-top: 28px; display: flex; flex-direction: column; gap: 12px; }
+.lg-page .lg-input {
+  width: 100%; height: 56px; border-radius: 16px; border: 3px solid var(--ink); background: var(--surface);
+  padding: 0 18px; font-family: var(--font-body); font-size: 16px; color: var(--ink);
+}
+.lg-page .lg-input::placeholder { color: var(--ink-2); }
+.lg-page .lg-input.con-error { border-color: var(--rojo-sombra); }
+.lg-page .lg-error { font-size: 13px; color: var(--rojo-sombra); font-weight: 700; display: none; }
+.lg-page .lg-error.show { display: block; }
+
+.lg-page .lg-boton {
+  width: 100%; height: 56px; border-radius: 16px; border: 3px solid var(--ink); background: var(--verde);
+  color: var(--ink); font-family: var(--font-display); font-weight: 800; font-size: 15px; text-transform: uppercase;
+  letter-spacing: 0.01em; cursor: pointer; border-bottom: 4px solid var(--verde-sombra);
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+}
+.lg-page.js-motion .lg-boton { transition: transform 120ms ease, border-bottom-width 120ms ease, opacity 150ms ease; }
+.lg-page .lg-boton:active:not(:disabled) { border-bottom-width: 3px; transform: translateY(3px); }
+.lg-page .lg-boton:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.lg-page .lg-spinner { width: 18px; height: 18px; border-radius: 999px; border: 3px solid rgb(26 26 26 / 0.25); border-top-color: var(--ink);
+              animation: lg-girar 700ms linear infinite; display: none; }
+.lg-page .lg-boton.enviando .lg-spinner { display: inline-block; }
+.lg-page .lg-boton.enviando .lg-texto { opacity: 0.8; }
+@keyframes lg-girar { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .lg-page .lg-spinner { animation: none; } }
+
+.lg-page .lg-separador { margin: 8px 0; display: flex; align-items: center; gap: 12px; color: var(--ink-2); font-size: 12px; font-weight: 700; text-transform: uppercase; }
+.lg-page .lg-separador::before, .lg-page .lg-separador::after { content: ''; flex: 1; height: 1px; background: var(--neutro-track); }
+
+.lg-page .lg-secundario {
+  width: 100%; height: 52px; border-radius: 16px; border: 3px solid var(--ink); background: var(--surface);
+  color: var(--ink); font-family: var(--font-body); font-weight: 700; font-size: 14px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+}
+
+.lg-page .lg-caption { margin-top: 16px; text-align: center; font-size: 13px; color: var(--ink-2); font-weight: 400;
+              display: flex; align-items: center; justify-content: center; gap: 6px; }
+
+.lg-page .lg-enviado { text-align: center; }
+.lg-page .lg-enviado .ic { width: 72px; height: 72px; margin: 0 auto; border-radius: 22px; background: var(--amarillo);
+                   border: 3px solid var(--ink); display: flex; align-items: center; justify-content: center; }
+.lg-page .lg-enviado h2 { margin-top: 16px; font-family: var(--font-display); font-size: 22px; font-weight: 800; }
+.lg-page .lg-enviado p { margin-top: 8px; font-size: 14px; color: var(--ink-2); }
+.lg-page .lg-enviado p b { color: var(--ink); }
+.lg-page .lg-reenviar { margin-top: 20px; background: none; border: none; color: var(--azul-sombra); font-family: var(--font-body);
+               font-weight: 700; font-size: 14px; cursor: pointer; }
+.lg-page .lg-reenviar:disabled { color: var(--ink-2); cursor: default; }
+
+/* Campo del código de 6 dígitos (26-AUTH-MODERNO.md: SIEMPRE visible junto al enlace) */
+.lg-page .lg-codigo-wrap { margin-top: 20px; text-align: left; }
+.lg-page .lg-codigo-label { font-size: 13px; font-weight: 700; color: var(--ink); display: block; margin-bottom: 8px; }
+.lg-page .lg-codigo-input {
+  width: 100%; height: 56px; border-radius: 16px; border: 3px solid var(--ink); background: var(--surface);
+  padding: 0 18px; font-family: var(--font-display); font-size: 20px; letter-spacing: 0.3em; text-align: center;
+  color: var(--ink);
+}
+.lg-page .lg-codigo-input.con-error { border-color: var(--rojo-sombra); }
