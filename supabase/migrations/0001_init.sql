@@ -1,6 +1,22 @@
 -- HSE Master App — esquema inicial (multi-tenant: organización + membresías)
 -- Patrón canónico: docs/sistema/25-BASE-DE-DATOS.md (RLS rápido) + 09-SEGURIDAD.md
 
+-- Limpieza defensiva: permite volver a correr este archivo completo sin errores de
+-- "ya existe" si un intento anterior se cortó a la mitad. Seguro en una base de datos
+-- de desarrollo sin datos reales todavía — en producción esto NUNCA se corre así.
+drop table if exists public.qr_passes cascade;
+drop table if exists public.streaks cascade;
+drop table if exists public.attempts cascade;
+drop table if exists public.lessons cascade;
+drop table if exists public.modules cascade;
+drop table if exists public.workers cascade;
+drop table if exists public.crews cascade;
+drop table if exists public.memberships cascade;
+drop table if exists public.organizations cascade;
+drop function if exists private.is_org_admin_of_worker(uuid);
+drop function if exists private.is_org_admin(uuid);
+drop function if exists private.is_org_member(uuid);
+
 create schema if not exists private;
 
 -- ── ORGANIZACIONES Y MEMBRESÍAS ─────────────────────────────────────────────
@@ -71,10 +87,8 @@ create index crews_org_idx on public.crews(org_id);
 alter table public.crews enable row level security;
 create policy "admin de la org gestiona cuadrillas" on public.crews
   for all using (private.is_org_admin(org_id)) with check (private.is_org_admin(org_id));
-create policy "worker ve su propia cuadrilla" on public.crews
-  for select using (
-    exists (select 1 from public.workers w where w.crew_id = crews.id and w.user_id = (select auth.uid()))
-  );
+-- La policy "worker ve su propia cuadrilla" se crea mas abajo, DESPUES de crear
+-- public.workers (no puede referenciar una tabla que todavia no existe).
 
 -- ── TRABAJADORES (auth.users sintético: código de cuadrilla + PIN, ver 26) ───
 create table public.workers (
@@ -112,6 +126,12 @@ create policy "admin de la org actualiza trabajadores" on public.workers
   for update using (private.is_org_admin(org_id)) with check (private.is_org_admin(org_id));
 create policy "admin de la org elimina trabajadores" on public.workers
   for delete using (private.is_org_admin(org_id));
+
+-- Ahora que public.workers existe, se completa la policy de lectura de crews:
+create policy "worker ve su propia cuadrilla" on public.crews
+  for select using (
+    exists (select 1 from public.workers w where w.crew_id = crews.id and w.user_id = (select auth.uid()))
+  );
 
 -- ── CONTENIDO CURADO (global, no pertenece a ninguna organización) ──────────
 -- "Las 9 Reglas que Salvan Vidas" — ver progreso.html / FICHA-MODELO.md.

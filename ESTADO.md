@@ -101,13 +101,14 @@ Plataforma móvil B2B de microaprendizaje gamificado (estilo Duolingo) para capa
 ## Sesión en progreso 🔧
 Sesión 6 (servicios externos) EN CURSO (arrancada 2026-10-24, confirmada por el usuario):
 1. [x] Scaffold Next.js real + shadcn/ui instalado en la raíz, reemplaza las pantallas HTML sueltas (tsc + build limpios).
-2. [x] Esquema de base de datos + RLS + RPC del loop de retención escritos en `supabase/migrations/` (0001, 0002) — AÚN NO aplicados contra un proyecto Supabase real.
-3. [ ] Crear/conectar el proyecto Supabase real y aplicar las migraciones.
+2. [x] Esquema de base de datos + RLS + RPC del loop de retención escritos en `supabase/migrations/` (0001, 0002).
+3. [x] Proyecto Supabase real conectado (`vutlmftwbsbypqdndadh.supabase.co`, proyecto "Principal") y las 2 migraciones aplicadas con éxito — las 9 tablas existen (organizations, memberships, crews, workers, modules, lessons, attempts, streaks, qr_passes) + la RPC `registrar_intento`. `.env.local` creado en la raíz (fuera de git) con la URL + publishable key (públicas) + la secret key (el usuario la pegó directo en el archivo, nunca pasó por el chat).
+   ⚠️ Nota para más adelante: este único proyecto Supabase ("Principal"/producción) se está usando también como entorno de desarrollo por ahora — 62-PUBLICACION-SEGURA-Y-CONTINUA.md pide separar dev/preview/producción. No urgente mientras no haya usuarios reales; separar antes de vender de verdad.
 4. [ ] Login real (código+PIN trabajador, magic link Gerente de HSE).
 5. [ ] Migrar las 8 pantallas HTML a páginas Next.js conectadas a datos reales.
-6. [ ] Conectar GitHub y publicar en Vercel.
+6. [ ] Conectar Vercel y publicar (GitHub YA conectado: `github.com/proyectosneuro18-coder/hse-master-app`, rama `master` sincronizada).
 7. [ ] Resend (emails) + Hotmart (cobro) + dominio — pendiente de que el usuario cree esas cuentas.
-Cuentas ya confirmadas por el usuario: GitHub, Supabase, Vercel (SÍ las tiene). Resend/Hotmart/dominio: aún no preguntado el estado.
+Cuentas ya confirmadas por el usuario: GitHub, Supabase, Vercel (SÍ las tiene, Vercel aún sin conectar). Resend/Hotmart/dominio: aún no preguntado el estado.
 
 ## Próximas sesiones 📋
 - Sesión 6: Servicios externos — GitHub, Supabase (datos/RLS/auth real), Vercel (deploy), Resend (emails), Hotmart (cobro), dominio.
