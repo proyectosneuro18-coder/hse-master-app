@@ -105,6 +105,11 @@
   --hse-footer-muted: #8a8a8a;
   --hse-footer-borde: #333333;
   --hse-ink-disabled: #c9bf9e;
+  --hse-neutro-track-sombra: #cfc5a0;
+  --hse-skeleton-1: #f0e9d2;
+  --hse-skeleton-2: #f7f1dc;
+  --hse-tab-borde: #f0e6c8;
+  --hse-tab-inactivo: #9c9c9c;
   --hse-font-display: var(--font-baloo-2), sans-serif;
   --hse-font-body: var(--font-dm-sans), sans-serif;
   --hse-radius-card: 20px;

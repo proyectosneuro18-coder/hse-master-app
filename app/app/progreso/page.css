@@ -1,0 +1,116 @@
+.pr * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+.pr {
+    --bg: var(--hse-bg); --surface: var(--hse-surface); --ink: var(--hse-ink); --ink-2: var(--hse-ink-2);
+    --amarillo: var(--hse-amarillo); --amarillo-sombra: var(--hse-amarillo-sombra);
+    --verde: var(--hse-verde); --verde-sombra: var(--hse-verde-sombra);
+    --azul: var(--hse-azul); --azul-sombra: var(--hse-azul-sombra); --azul-texto: var(--hse-azul-texto);
+    --rojo: var(--hse-rojo); --rojo-sombra: var(--hse-rojo-sombra); --rojo-texto: var(--hse-rojo-texto);
+    --neutro-track: var(--hse-neutro-track);
+    --font-display: var(--hse-font-display); --font-body: var(--hse-font-body);
+  }
+html,
+body { overflow-x: hidden; }
+body {
+    background:
+      radial-gradient(480px 300px at 92% 0%, color-mix(in oklab, var(--amarillo) 18%, transparent), transparent 70%),
+      radial-gradient(420px 280px at 4% 100%, color-mix(in oklab, var(--azul) 10%, transparent), transparent 70%),
+      var(--bg);
+    color: var(--ink); font-family: var(--font-body); line-height: 1.5;
+    min-height: 100dvh; display: flex; flex-direction: column;
+  }
+.pr a:focus-visible,
+.pr button:focus-visible { outline: 3px solid var(--azul); outline-offset: 2px; border-radius: 4px; }
+.pr .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden;
+             clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+.pr .ap-offline { display: none; align-items: center; gap: 8px; padding: 10px 16px; background: var(--ink);
+                color: var(--hse-blanco); font-size: 12.5px; font-weight: 700; text-align: center; justify-content: center; }
+.pr .ap-offline.show { display: flex; }
+.pr .ap-header { display: flex; align-items: center; justify-content: space-between; padding: 16px; flex-shrink: 0; }
+.pr .ap-logo { display: flex; align-items: center; gap: 8px; font-family: var(--font-display); font-weight: 800; font-size: 15px; color: var(--ink); text-decoration: none; }
+.pr .ap-logo .dot { width: 24px; height: 24px; border-radius: 10px; background: var(--amarillo); border: 2px solid var(--ink); }
+.pr .ap-main { flex: 1; padding: 0 16px 76px; max-width: 480px; margin: 0 auto; width: 100%; }
+.pr .ap-reveal { opacity: 1; transform: none; }
+.pr.js-motion .ap-reveal { opacity: 0; transform: translateY(12px); transition: opacity 350ms ease, transform 350ms ease; }
+.pr.js-motion .ap-reveal.in { opacity: 1; transform: translateY(0); }
+/* ===== CABECERA DEL MUNDO ===== */
+.pr .pg-mundo { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-2); }
+.pr .pg-titulo { font-family: var(--font-display); font-size: 22px; font-weight: 800; line-height: 1.15; margin-top: 2px; letter-spacing: -0.01em; }
+.pr .pg-barra-track { margin-top: 14px; height: 10px; border-radius: 999px; background: var(--neutro-track); overflow: hidden; }
+.pr .pg-barra-fill { height: 100%; width: 0%; background: var(--verde); border-radius: 999px; }
+.pr.js-motion .pg-barra-fill { transition: width 900ms cubic-bezier(0.16,1,0.3,1); }
+.pr .pg-barra-tit { margin-top: 8px; font-size: 12px; font-weight: 700; color: var(--ink-2); }
+.pr .pg-barra-tit b { color: var(--ink); font-variant-numeric: tabular-nums; }
+/* ===== CAMINO DE NODOS ===== */
+.pr .pg-camino { position: relative; margin-top: 28px; padding-bottom: 8px; }
+.pr .pg-fila { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; position: relative; z-index: 1; }
+.pr .pg-fila:nth-child(even) { flex-direction: row-reverse; }
+.pr .pg-fila:last-child { margin-bottom: 0; }
+.pr .pg-conector { position: absolute; left: 50%; top: 30px; bottom: -28px; width: 4px; margin-left: -2px;
+                 background: repeating-linear-gradient(var(--neutro-track) 0 8px, transparent 8px 16px);
+                 border-radius: 999px; z-index: 0; }
+.pr .pg-conector.hecho { background: repeating-linear-gradient(var(--verde-sombra) 0 8px, transparent 8px 16px); }
+.pr .pg-nodo { position: relative; width: 60px; height: 60px; border-radius: 999px; border: 3px solid var(--ink);
+             display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: var(--surface);
+             cursor: pointer; }
+.pr.js-motion .pg-nodo { transition: transform 120ms ease; }
+.pr .pg-nodo:active { transform: scale(0.95); }
+.pr .pg-nodo.hecho { background: var(--verde); }
+.pr .pg-nodo.actual { background: var(--amarillo); width: 70px; height: 70px;
+                     box-shadow: 0 0 0 6px color-mix(in oklab, var(--amarillo) 28%, transparent); }
+.pr .pg-nodo.bloqueado { background: var(--surface); border-color: var(--neutro-track); color: var(--ink-2); }
+.pr .pg-nodo .num { position: absolute; top: -4px; right: -4px; background: var(--ink); color: var(--hse-blanco); font-size: 10px;
+                   font-weight: 800; width: 22px; height: 22px; border-radius: 999px; display: flex; align-items: center;
+                   justify-content: center; font-variant-numeric: tabular-nums; border: 2.5px solid var(--bg); }
+.pr .pg-etiqueta { font-size: 13.5px; font-weight: 800; max-width: 160px; }
+.pr .pg-etiqueta .sub { display: block; font-size: 11px; font-weight: 600; color: var(--ink-2); margin-top: 2px; }
+.pr .pg-fila.bloqueado .pg-etiqueta { color: var(--ink-2); }
+/* ===== RESTO DEL MUNDO (nodos bloqueados, condensados) ===== */
+.pr .pg-resto { margin-top: 20px; background: var(--surface); border: 2.5px solid var(--neutro-track); border-radius: 18px;
+              padding: 16px; }
+.pr .pg-resto-tit { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.03em; color: var(--ink-2); }
+.pr .pg-resto-lista { margin-top: 10px; display: flex; flex-direction: column; gap: 9px; }
+.pr .pg-resto-item { width: 100%; display: flex; align-items: center; gap: 10px; background: none; border: none;
+                    padding: 0; cursor: pointer; font-family: var(--font-body); text-align: left; }
+.pr .pg-resto-item .ic { width: 28px; height: 28px; border-radius: 999px; border: 2px solid var(--neutro-track);
+                        display: flex; align-items: center; justify-content: center; color: var(--ink-2); flex-shrink: 0; }
+.pr .pg-resto-item .nombre { font-size: 13px; font-weight: 700; color: var(--ink-2); }
+.pr.js-motion .pg-resto-item { transition: opacity 120ms ease; }
+.pr .pg-resto-item:active { opacity: 0.6; }
+/* ===== SKELETON ===== */
+.pr .ap-skeleton { display: none; }
+.pr .ap-skeleton.show { display: block; }
+.pr .ap-sk-bloque { border-radius: 16px; background: linear-gradient(90deg, var(--hse-skeleton-1) 25%, var(--hse-skeleton-2) 37%, var(--hse-skeleton-1) 63%); background-size: 400% 100%; }
+.pr.js-motion .ap-sk-bloque { animation: pg-shimmer 1.4s ease-in-out infinite; }
+@keyframes pg-shimmer { 0% { background-position: 100% 0; } 100% { background-position: 0 0; } }
+.pr .ap-sk-barra { height: 10px; margin-top: 14px; border-radius: 999px; }
+.pr .ap-sk-nodo { height: 60px; margin-top: 28px; border-radius: 20px; }
+.pr .ap-contenido { display: none; }
+.pr .ap-contenido.show { display: block; }
+.pr .ap-estado { display: none; margin-top: 18px; background: var(--surface); border: 3px solid var(--ink); border-radius: 20px;
+               padding: 24px 20px; text-align: center; }
+.pr .ap-estado.show { display: block; }
+.pr .ap-estado .ic { width: 56px; height: 56px; border-radius: 16px; margin: 0 auto 14px; display: flex; align-items: center;
+                    justify-content: center; border: 2.5px solid var(--ink); }
+.pr .ap-estado.vacio .ic { background: var(--azul); color: var(--hse-blanco); }
+.pr .ap-estado.error .ic { background: color-mix(in oklab, var(--rojo) 18%, var(--surface)); color: var(--rojo-texto); }
+.pr .ap-estado h2 { font-family: var(--font-display); font-size: 17px; font-weight: 800; }
+.pr .ap-estado p { font-size: 13px; color: var(--ink-2); margin-top: 6px; line-height: 1.5; }
+.pr .ap-estado button { margin-top: 14px; height: 48px; padding: 0 20px; border-radius: 16px; border: 2.5px solid var(--ink);
+                       background: var(--surface); font-family: var(--font-display); font-weight: 800; font-size: 13px; cursor: pointer; color: var(--ink); }
+.pr .ap-estado.error button { background: var(--rojo); color: var(--hse-blanco); border-color: var(--ink); }
+/* ===== TAB BAR ===== */
+.pr .ap-tabbar { display: flex; align-items: stretch; justify-content: space-around; padding: 6px 8px calc(10px + env(safe-area-inset-bottom));
+               border-top: 2.5px solid var(--hse-tab-borde); background: var(--surface); flex-shrink: 0; min-height: 60px;
+               position: fixed; left: 0; right: 0; bottom: 0; z-index: 10; }
+.pr .ap-tab { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; flex: 1;
+            font-size: 10px; font-weight: 700; color: var(--hse-tab-inactivo); background: none; border: none; cursor: pointer; padding: 6px 0;
+            position: relative; text-decoration: none; }
+.pr .ap-tab .chip { display: flex; align-items: center; justify-content: center; width: 38px; height: 26px; border-radius: 8px; }
+.pr .ap-tab.activa { color: var(--azul-texto); }
+.pr .ap-tab.activa .chip { background: color-mix(in oklab, var(--azul) 16%, transparent); }
+/* ===== TOAST ===== */
+.pr .ap-toast { position: fixed; left: 16px; right: 16px; bottom: 76px; max-width: 448px; margin: 0 auto; background: var(--ink);
+              color: var(--hse-blanco); font-size: 13px; font-weight: 700; padding: 12px 16px; border-radius: 14px; text-align: center;
+              opacity: 0; transform: translateY(10px); pointer-events: none; z-index: 20; }
+.pr.js-motion .ap-toast { transition: opacity 250ms ease, transform 250ms ease; }
+.pr .ap-toast.show { opacity: 1; transform: translateY(0); }

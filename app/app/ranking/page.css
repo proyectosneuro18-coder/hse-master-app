@@ -1,0 +1,101 @@
+.rk * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+.rk {
+    --bg: var(--hse-bg); --surface: var(--hse-surface); --ink: var(--hse-ink); --ink-2: var(--hse-ink-2);
+    --amarillo: var(--hse-amarillo); --amarillo-sombra: var(--hse-amarillo-sombra);
+    --verde: var(--hse-verde); --verde-sombra: var(--hse-verde-sombra);
+    --azul: var(--hse-azul); --azul-sombra: var(--hse-azul-sombra); --azul-texto: var(--hse-azul-texto);
+    --rojo: var(--hse-rojo); --rojo-sombra: var(--hse-rojo-sombra); --rojo-texto: var(--hse-rojo-texto);
+    --neutro-track: var(--hse-neutro-track);
+    --font-display: var(--hse-font-display); --font-body: var(--hse-font-body);
+  }
+html,
+body { overflow-x: hidden; }
+body {
+    background:
+      radial-gradient(480px 300px at 92% 0%, color-mix(in oklab, var(--amarillo) 18%, transparent), transparent 70%),
+      radial-gradient(420px 280px at 4% 100%, color-mix(in oklab, var(--azul) 10%, transparent), transparent 70%),
+      var(--bg);
+    color: var(--ink); font-family: var(--font-body); line-height: 1.5;
+    min-height: 100dvh; display: flex; flex-direction: column;
+  }
+.rk a:focus-visible,
+.rk button:focus-visible { outline: 3px solid var(--azul); outline-offset: 2px; border-radius: 4px; }
+.rk .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden;
+             clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+.rk .ap-offline { display: none; align-items: center; gap: 8px; padding: 10px 16px; background: var(--ink);
+                color: var(--hse-blanco); font-size: 12.5px; font-weight: 700; text-align: center; justify-content: center; }
+.rk .ap-offline.show { display: flex; }
+.rk .ap-header { display: flex; align-items: center; justify-content: space-between; padding: 16px; flex-shrink: 0; }
+.rk .ap-logo { display: flex; align-items: center; gap: 8px; font-family: var(--font-display); font-weight: 800; font-size: 15px; color: var(--ink); text-decoration: none; }
+.rk .ap-logo .dot { width: 24px; height: 24px; border-radius: 10px; background: var(--amarillo); border: 2px solid var(--ink); }
+.rk .ap-main { flex: 1; padding: 0 16px 76px; max-width: 480px; margin: 0 auto; width: 100%; }
+.rk .rk-titulo { font-family: var(--font-display); font-size: 24px; font-weight: 800; letter-spacing: -0.01em; }
+.rk .rk-sub { font-size: 12.5px; color: var(--ink-2); margin-top: 2px; font-weight: 600; }
+.rk .ap-reveal { opacity: 1; transform: none; }
+.rk.js-motion .ap-reveal { opacity: 0; transform: translateY(12px); transition: opacity 350ms ease, transform 350ms ease; }
+.rk.js-motion .ap-reveal.in { opacity: 1; transform: translateY(0); }
+.rk .rk-resumen { margin-top: 10px; font-size: 13px; font-weight: 700; color: var(--azul-texto); }
+/* ===== FILTRO DE PERIODO ===== */
+.rk .rk-filtro { display: flex; gap: 8px; margin-top: 14px; }
+.rk .rk-filtro button { flex: 1; height: 40px; border-radius: 16px; border: 2.5px solid var(--ink); background: var(--surface);
+                       font-family: var(--font-body); font-size: 12.5px; font-weight: 700; color: var(--ink-2); cursor: pointer; }
+.rk.js-motion .rk-filtro button { transition: transform 120ms ease, background 150ms ease, color 150ms ease; }
+.rk .rk-filtro button:active { transform: scale(0.97); }
+.rk .rk-filtro button.activo { background: var(--ink); color: var(--hse-blanco); }
+/* ===== LISTA ===== */
+.rk .rk-lista { margin-top: 16px; display: flex; flex-direction: column; gap: 10px; }
+.rk .rk-fila { display: flex; align-items: center; gap: 12px; background: var(--surface); border: 2.5px solid var(--ink);
+             border-radius: 16px; padding: 12px 14px; box-shadow: 0 4px 0 -1px rgb(26 26 26/0.06), 0 6px 14px rgb(26 26 26/0.08); }
+.rk .rk-fila.tuya { border-color: var(--amarillo-sombra); background: color-mix(in oklab, var(--amarillo) 14%, var(--surface)); }
+.rk .rk-fila .pos { font-family: var(--font-display); font-size: 16px; font-weight: 800; width: 28px; text-align: center; flex-shrink: 0; color: var(--ink-2); }
+.rk .rk-fila.medalla .pos { display: flex; align-items: center; justify-content: center; }
+.rk .rk-fila .nombre { font-size: 13.5px; font-weight: 800; flex: 1; min-width: 0; }
+.rk .rk-fila .pts { font-family: var(--font-display); font-size: 14px; font-weight: 800; flex-shrink: 0; font-variant-numeric: tabular-nums; }
+.rk .rk-fila .delta { font-size: 10.5px; font-weight: 800; width: 34px; text-align: right; flex-shrink: 0; }
+.rk .rk-fila .delta.sube { color: var(--verde-sombra); }
+.rk .rk-fila .delta.baja { color: var(--rojo-texto); }
+.rk .rk-fila .delta.igual { color: var(--ink-2); }
+.rk .rk-nota { margin-top: 16px; font-size: 11.5px; color: var(--ink-2); text-align: center; line-height: 1.5; }
+/* ===== SKELETON ===== */
+.rk .ap-skeleton { display: none; }
+.rk .ap-skeleton.show { display: block; }
+.rk .ap-sk-bloque { border-radius: 16px; background: linear-gradient(90deg, var(--hse-skeleton-1) 25%, var(--hse-skeleton-2) 37%, var(--hse-skeleton-1) 63%); background-size: 400% 100%; }
+.rk.js-motion .ap-sk-bloque { animation: rk-shimmer 1.4s ease-in-out infinite; }
+@keyframes rk-shimmer { 0% { background-position: 100% 0; } 100% { background-position: 0 0; } }
+.rk .ap-sk-fila { height: 56px; margin-top: 10px; }
+.rk .ap-contenido { display: none; }
+.rk .ap-contenido.show { display: block; }
+.rk .ap-estado { display: none; margin-top: 18px; background: var(--surface); border: 3px solid var(--ink); border-radius: 20px;
+               padding: 24px 20px; text-align: center; }
+.rk .ap-estado.show { display: block; }
+.rk .ap-estado .ic { width: 56px; height: 56px; border-radius: 16px; margin: 0 auto 14px; display: flex; align-items: center;
+                    justify-content: center; border: 2.5px solid var(--ink); }
+.rk .ap-estado.vacio .ic { background: var(--azul); color: var(--hse-blanco); }
+.rk .ap-estado.error .ic { background: color-mix(in oklab, var(--rojo) 18%, var(--surface)); color: var(--rojo-texto); }
+.rk .ap-estado h2 { font-family: var(--font-display); font-size: 17px; font-weight: 800; }
+.rk .ap-estado p { font-size: 13px; color: var(--ink-2); margin-top: 6px; line-height: 1.5; }
+.rk .ap-estado button { margin-top: 14px; height: 48px; padding: 0 20px; border-radius: 16px; border: 2.5px solid var(--ink);
+                       background: var(--verde-sombra); border-bottom: 4px solid color-mix(in oklab, black 25%, var(--verde-sombra));
+                       font-family: var(--font-display); font-weight: 800; font-size: 13px; cursor: pointer; color: var(--ink); }
+.rk.js-motion .ap-estado button { transition: transform 120ms ease, border-bottom-width 120ms ease; }
+.rk .ap-estado button:active { border-bottom-width: 3px; transform: translateY(3px); }
+.rk .ap-estado.error button { background: var(--rojo); color: var(--hse-blanco); border-color: var(--ink);
+                             border-bottom-color: color-mix(in oklab, black 25%, var(--rojo)); }
+/* ===== TAB BAR ===== */
+.rk .ap-tabbar { display: flex; align-items: stretch; justify-content: space-around; padding: 6px 8px calc(10px + env(safe-area-inset-bottom));
+               border-top: 2.5px solid var(--hse-tab-borde); background: var(--surface); flex-shrink: 0; min-height: 60px;
+               position: fixed; left: 0; right: 0; bottom: 0; z-index: 10; }
+.rk .ap-tab { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; flex: 1;
+            font-size: 10px; font-weight: 700; color: var(--hse-tab-inactivo); background: none; border: none; cursor: pointer; padding: 6px 0;
+            position: relative; text-decoration: none; }
+.rk.js-motion .ap-tab { transition: transform 120ms ease; }
+.rk .ap-tab:active { transform: scale(0.95); }
+.rk .ap-tab .chip { display: flex; align-items: center; justify-content: center; width: 38px; height: 26px; border-radius: 8px; }
+.rk .ap-tab.activa { color: var(--azul-texto); }
+.rk .ap-tab.activa .chip { background: color-mix(in oklab, var(--azul) 16%, transparent); }
+/* ===== TOAST ===== */
+.rk .ap-toast { position: fixed; left: 16px; right: 16px; bottom: 76px; max-width: 448px; margin: 0 auto; background: var(--ink);
+              color: var(--hse-blanco); font-size: 13px; font-weight: 700; padding: 12px 16px; border-radius: 14px; text-align: center;
+              opacity: 0; transform: translateY(10px); pointer-events: none; z-index: 20; }
+.rk.js-motion .ap-toast { transition: opacity 250ms ease, transform 250ms ease; }
+.rk .ap-toast.show { opacity: 1; transform: translateY(0); }
