@@ -1,0 +1,571 @@
+<!doctype html>
+<!--
+SPEC (PREFLIGHT, 04-ARQUITECTURA / 56-M0 / 24-GAMIFICACION):
+pantalla: app-principal (M0 — el ritual diario, "Hoy")
+objeto_principal: el bloque-héroe de racha (dato que cambia hoy) + la tarjeta del reto de hoy
+niveles: {display: 40px racha / 26px saludo, title: 19-23px, body: 13-15px, label: 9-11px}
+acento_en: CTA "Empezar mi reto" (verde) + bloque héroe (amarillo)
+baseline_aplican: [stagger, conteo héroe, tap, transición tabs, celebración (incremento de racha)]
+dispositivo_ownable: bloque-héroe de racha amarillo (FICHA-ARTE, aprobado Sesión 2)
+estados: [empty, loading, success, error, disabled, offline]  -- probar con ?estado=empty|error|offline
+-->
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hoy — HSE Master App</title>
+<script>
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.documentElement.classList.add('js-motion');
+  }
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500..800&family=DM+Sans:wght@400..800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  :root {
+    --bg: #fffaf0; --surface: #ffffff; --ink: #1a1a1a; --ink-2: #6b6b6b;
+    --amarillo: #ffe600; --amarillo-sombra: #e0bf00;
+    --verde: #1bcc02; --verde-sombra: #1b9f03;
+    --azul: #3e7ef7; --azul-sombra: #0a4299; --azul-texto: #063a85;
+    --rojo: #ff4e0e; --rojo-sombra: #c75126; --rojo-texto: #a83d1a;
+    --neutro-track: #e4dcc4;
+    --font-display: 'Baloo 2', sans-serif; --font-body: 'DM Sans', sans-serif;
+  }
+  html, body { overflow-x: hidden; }
+  body {
+    background:
+      radial-gradient(480px 300px at 92% 0%, color-mix(in oklab, var(--amarillo) 18%, transparent), transparent 70%),
+      radial-gradient(420px 280px at 4% 100%, color-mix(in oklab, var(--azul) 10%, transparent), transparent 70%),
+      var(--bg);
+    color: var(--ink); font-family: var(--font-body); line-height: 1.5;
+    min-height: 100dvh; display: flex; flex-direction: column;
+  }
+  a:focus-visible, button:focus-visible { outline: 3px solid var(--azul); outline-offset: 2px; border-radius: 4px; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden;
+             clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+  /* ===== OFFLINE BANNER ===== */
+  .ap-offline { display: none; align-items: center; gap: 8px; padding: 10px 16px; background: var(--ink);
+                color: #fff; font-size: 12.5px; font-weight: 700; text-align: center; justify-content: center; }
+  .ap-offline.show { display: flex; }
+
+  /* ===== HEADER ===== */
+  .ap-header { display: flex; align-items: center; justify-content: space-between; padding: 16px; flex-shrink: 0; }
+  .ap-logo { display: flex; align-items: center; gap: 8px; font-family: var(--font-display); font-weight: 800; font-size: 15px; color: var(--ink); }
+  .ap-logo .dot { width: 24px; height: 24px; border-radius: 10px; background: var(--amarillo); border: 2px solid var(--ink); }
+  .ap-avatar { width: 40px; height: 40px; border-radius: 14px; border: 2.5px solid var(--ink); background: var(--surface);
+               display: flex; align-items: center; justify-content: center; color: var(--ink); cursor: pointer; position: relative;
+               text-decoration: none; }
+
+  /* ===== CONTENIDO ===== */
+  .ap-main { flex: 1; padding: 0 16px 16px; max-width: 480px; margin: 0 auto; width: 100%; }
+  .ap-fecha { font-size: 12px; font-weight: 700; color: var(--ink-2); }
+  .ap-saludo { font-family: var(--font-display); font-size: 24px; font-weight: 800; margin-top: 2px; letter-spacing: -0.01em; }
+
+  .ap-reveal { opacity: 1; transform: none; }
+  .js-motion .ap-reveal { opacity: 0; transform: translateY(12px); transition: opacity 350ms ease, transform 350ms ease; }
+  .js-motion .ap-reveal.in { opacity: 1; transform: translateY(0); }
+
+  /* ===== HÉROE DE RACHA (dispositivo ownable) ===== */
+  .ap-heroe { margin-top: 16px; background: var(--amarillo); border: 3px solid var(--ink); border-radius: 20px; padding: 18px;
+              position: relative; overflow: hidden; box-shadow: 0 6px 0 -2px rgb(26 26 26 / 0.08), 0 10px 20px rgb(26 26 26 / 0.1); }
+  .ap-heroe-fila { display: flex; align-items: center; gap: 8px; }
+  .ap-heroe-fila svg { flex-shrink: 0; }
+  .ap-heroe .label { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; }
+  .ap-heroe .dato { font-family: var(--font-display); font-size: 40px; font-weight: 800; line-height: 1.05; margin-top: 4px;
+                     font-variant-numeric: tabular-nums; }
+  .ap-heroe .dato small { font-size: 16px; font-weight: 700; }
+  .ap-heroe.pulso { animation: ap-pulso 420ms var(--ease-pop, ease-out); }
+  @keyframes ap-pulso { 0% { transform: scale(1); } 40% { transform: scale(1.035); } 100% { transform: scale(1); } }
+
+  /* ===== INSIGHT (M0 pieza 4 — la voz del Pase) ===== */
+  .ap-insight { margin-top: 12px; background: var(--surface); border: 2.5px solid var(--ink); border-radius: 16px;
+                padding: 12px 14px; display: flex; gap: 10px; align-items: flex-start;
+                box-shadow: 0 4px 0 -1px rgb(26 26 26 / 0.06), 0 6px 14px rgb(26 26 26 / 0.08); }
+  .ap-insight .ic { width: 32px; height: 32px; border-radius: 10px; background: color-mix(in oklab, var(--azul) 16%, var(--surface));
+                     display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--azul-texto); }
+  .ap-insight p { font-size: 13px; line-height: 1.45; color: var(--ink); }
+  .ap-insight p b { color: var(--azul-texto); }
+  .ap-insight .ayuda { background: none; border: none; padding: 0; margin-left: 2px; color: var(--azul-texto); font-weight: 800;
+                        cursor: pointer; text-decoration: underline; font-size: 13px; font-family: var(--font-body); }
+
+  /* ===== CHIPS ===== */
+  .ap-chips { display: flex; gap: 8px; margin-top: 12px; }
+  .ap-chip { flex: 1; background: var(--surface); border: 2.5px solid var(--ink); border-radius: 14px; padding: 10px 6px; text-align: center;
+             box-shadow: 0 4px 0 -1px rgb(26 26 26 / 0.06), 0 6px 14px rgb(26 26 26 / 0.08); }
+  .ap-chip .ic { margin: 0 auto 4px; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; }
+  .ap-chip .n { font-family: var(--font-display); font-size: 17px; font-weight: 800; font-variant-numeric: tabular-nums; }
+  .ap-chip .l { font-size: 9px; font-weight: 700; color: var(--ink-2); text-transform: uppercase; letter-spacing: 0.02em; margin-top: 1px; }
+
+  /* ===== SEMANA ===== */
+  .ap-semana { margin-top: 16px; background: var(--surface); border: 2.5px solid var(--ink); border-radius: 16px; padding: 14px;
+               box-shadow: 0 4px 0 -1px rgb(26 26 26 / 0.06), 0 6px 14px rgb(26 26 26 / 0.08); }
+  .ap-semana-tit { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.03em; color: var(--ink-2); }
+  .ap-semana-fila { display: flex; justify-content: space-between; margin-top: 10px; }
+  .ap-semana-dia { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .ap-semana-dia .l { font-size: 10px; font-weight: 700; color: var(--ink-2); }
+  .ap-semana-dia .c { width: 28px; height: 28px; border-radius: 999px; border: 2.5px solid var(--neutro-track);
+                       display: flex; align-items: center; justify-content: center; }
+  .ap-semana-dia.hecho .c { background: var(--verde); border-color: var(--ink); }
+  .ap-semana-dia.hoy .c { border-color: var(--ink); border-style: dashed; }
+  .ap-semana-dia.hoy .l { color: var(--ink); font-weight: 800; }
+
+  /* ===== RETO DE HOY ===== */
+  .ap-reto { margin-top: 16px; background: var(--surface); border: 3px solid var(--ink); border-radius: 20px; padding: 16px;
+             box-shadow: 0 6px 0 -2px rgb(26 26 26 / 0.08), 0 10px 20px rgb(26 26 26 / 0.1); }
+  .ap-reto-fila { display: flex; gap: 12px; align-items: center; }
+  .ap-reto-icono { width: 48px; height: 48px; border-radius: 14px; background: var(--amarillo); border: 2.5px solid var(--ink);
+                    display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .ap-reto h2 { font-family: var(--font-display); font-size: 15px; font-weight: 800; line-height: 1.3; }
+  .ap-reto p { font-size: 12.5px; color: var(--ink-2); margin-top: 2px; font-weight: 600; }
+
+  .ap-boton {
+    width: 100%; height: 56px; border-radius: 16px; border: 3px solid var(--ink); background: var(--verde-sombra);
+    color: var(--ink); font-family: var(--font-display); font-weight: 800; font-size: 15px; text-transform: uppercase;
+    letter-spacing: 0.01em; cursor: pointer; border-bottom: 4px solid color-mix(in oklab, black 25%, var(--verde-sombra));
+    margin-top: 16px; display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .js-motion .ap-boton { transition: transform 120ms ease, border-bottom-width 120ms ease, opacity 200ms ease, background 200ms ease; }
+  .ap-boton:active { border-bottom-width: 3px; transform: translateY(3px); }
+  .ap-boton:disabled { background: var(--neutro-track); border-bottom-color: #cfc5a0; cursor: default;
+                        color: var(--ink-2); opacity: 1; }
+  .ap-boton .spinner { width: 18px; height: 18px; border: 3px solid rgba(26,26,26,0.25); border-top-color: var(--ink);
+                        border-radius: 999px; display: none; }
+  .js-motion .ap-boton .spinner { animation: ap-girar 700ms linear infinite; }
+  @keyframes ap-girar { to { transform: rotate(360deg); } }
+  .ap-boton.cargando .spinner { display: inline-block; }
+  .ap-boton.cargando .txt { opacity: 0.7; }
+
+  /* ===== SKELETON (loading > 100ms) ===== */
+  .ap-skeleton { display: none; }
+  .ap-skeleton.show { display: block; }
+  .ap-sk-bloque { border-radius: 20px; background: linear-gradient(90deg, #f0e9d2 25%, #f7f1dc 37%, #f0e9d2 63%);
+                  background-size: 400% 100%; }
+  .js-motion .ap-sk-bloque { animation: ap-shimmer 1.4s ease-in-out infinite; }
+  @keyframes ap-shimmer { 0% { background-position: 100% 0; } 100% { background-position: 0 0; } }
+  .ap-sk-heroe { height: 110px; margin-top: 16px; }
+  .ap-sk-insight { height: 56px; margin-top: 12px; border-radius: 16px; }
+  .ap-sk-chips { height: 62px; margin-top: 12px; border-radius: 14px; }
+  .ap-sk-reto { height: 148px; margin-top: 16px; }
+  .ap-contenido { display: none; }
+  .ap-contenido.show { display: block; }
+
+  /* ===== ESTADOS: vacío / error ===== */
+  .ap-estado { display: none; margin-top: 16px; background: var(--surface); border: 3px solid var(--ink); border-radius: 20px;
+               padding: 24px 20px; text-align: center; }
+  .ap-estado.show { display: block; }
+  .ap-estado .ic { width: 56px; height: 56px; border-radius: 16px; margin: 0 auto 14px; display: flex; align-items: center;
+                    justify-content: center; border: 2.5px solid var(--ink); }
+  .ap-estado.vacio .ic { background: var(--verde); color: #fff; }
+  .ap-estado.error .ic { background: color-mix(in oklab, var(--rojo) 18%, var(--surface)); color: var(--rojo-texto); }
+  .ap-estado h2 { font-family: var(--font-display); font-size: 17px; font-weight: 800; }
+  .ap-estado p { font-size: 13px; color: var(--ink-2); margin-top: 6px; line-height: 1.5; }
+  .ap-estado button { margin-top: 14px; height: 48px; padding: 0 20px; border-radius: 14px; border: 2.5px solid var(--ink);
+                       background: var(--surface); font-family: var(--font-display); font-weight: 800; font-size: 13px;
+                       cursor: pointer; color: var(--ink); }
+  .ap-estado.error button { background: var(--rojo); color: #fff; border-color: var(--ink); }
+
+  /* ===== TAB BAR ===== */
+  .ap-tabbar { display: flex; align-items: stretch; justify-content: space-around; padding: 6px 8px calc(10px + env(safe-area-inset-bottom));
+               border-top: 2.5px solid #f0e6c8; background: var(--surface); flex-shrink: 0; min-height: 60px;
+               position: fixed; left: 0; right: 0; bottom: 0; z-index: 10; }
+  .ap-main { padding-bottom: 76px; }
+  .ap-tab { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; flex: 1;
+            font-size: 10px; font-weight: 700; color: #9c9c9c; background: none; border: none; cursor: pointer; padding: 6px 0;
+            position: relative; text-decoration: none; }
+  .ap-tab .chip { display: flex; align-items: center; justify-content: center; width: 38px; height: 26px; border-radius: 8px; }
+  .ap-tab.activa { color: var(--azul-texto); }
+  .ap-tab.activa .chip { background: color-mix(in oklab, var(--azul) 16%, transparent); }
+
+  /* ===== EJERCICIO (reto real — "toca el peligro") ===== */
+  .ap-ejercicio { position: fixed; inset: 0; z-index: 30; display: none; align-items: center; justify-content: center;
+                  padding: 16px; background: rgb(8 10 26 / 0.86); }
+  .ap-ejercicio.show { display: flex; }
+  .js-motion .ap-ejercicio { opacity: 0; transition: opacity 200ms ease; }
+  .js-motion .ap-ejercicio.show { opacity: 1; }
+  .ap-ej-card { width: 100%; max-width: 343px; background: var(--bg); border: 3px solid var(--ink); border-radius: 20px;
+                padding: 20px; max-height: 92dvh; overflow-y: auto; }
+  .js-motion .ap-ej-card { transform: scale(0.95); transition: transform 200ms ease; }
+  .js-motion .ap-ejercicio.show .ap-ej-card { transform: scale(1); }
+  .ap-ej-salir { width: 40px; height: 40px; border-radius: 12px; border: 2.5px solid var(--ink); background: var(--surface);
+                 display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--ink); }
+  .ap-ej-tit { font-family: var(--font-display); font-size: 19px; font-weight: 800; margin-top: 14px; line-height: 1.25; }
+  .ap-ej-sub { font-size: 13px; color: var(--ink-2); margin-top: 4px; font-weight: 600; }
+  .ap-ej-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+  .ap-ej-item { height: 86px; border-radius: 16px; border: 2.5px solid var(--ink); background: var(--surface);
+                display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; cursor: pointer;
+                font-family: var(--font-body); font-size: 11px; font-weight: 700; color: var(--ink); padding: 4px; text-align: center; }
+  .js-motion .ap-ej-item { transition: transform 120ms ease, background 150ms ease, border-color 150ms ease; }
+  .ap-ej-item:active { transform: scale(0.96); }
+  .ap-ej-item.correcto { background: var(--verde); color: #fff; }
+  .ap-ej-item.incorrecto { background: color-mix(in oklab, var(--rojo) 16%, var(--surface)); border-color: var(--rojo-texto); }
+  .ap-ej-feedback { margin-top: 14px; font-size: 13px; font-weight: 700; min-height: 18px; display: none; }
+  .ap-ej-feedback.show { display: block; }
+  .ap-ej-feedback.mal { color: var(--rojo-texto); }
+  .ap-ej-feedback.bien { color: var(--verde-sombra); }
+  .ap-ej-exito { display: none; text-align: center; }
+  .ap-ej-exito.show { display: block; }
+  .ap-ej-exito .ic { width: 56px; height: 56px; border-radius: 16px; background: var(--verde); border: 2.5px solid var(--ink);
+                      display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; color: #fff; }
+  .ap-ej-exito h3 { font-family: var(--font-display); font-size: 18px; font-weight: 800; }
+  .ap-ej-exito p { font-size: 13px; color: var(--ink-2); margin-top: 6px; line-height: 1.5; }
+
+  /* ===== TOAST ===== */
+  .ap-toast { position: fixed; left: 16px; right: 16px; bottom: 76px; max-width: 448px; margin: 0 auto; background: var(--ink);
+              color: #fff; font-size: 13px; font-weight: 700; padding: 12px 16px; border-radius: 14px; text-align: center;
+              opacity: 0; transform: translateY(10px); pointer-events: none; z-index: 20; }
+  .js-motion .ap-toast { transition: opacity 250ms ease, transform 250ms ease; }
+  .ap-toast.show { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="ap-offline" id="apOffline" role="status">
+  <span>Sin conexión — tu progreso se guarda y se sincroniza solo</span>
+</div>
+
+<header class="ap-header">
+  <span class="ap-logo"><span class="dot" aria-hidden="true"></span>HSE</span>
+  <a class="ap-avatar" href="perfil.html" aria-label="Ir a tu perfil">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>
+  </a>
+</header>
+
+<main class="ap-main">
+  <p class="ap-fecha">Martes 6 de agosto · Cuadrilla Pozo 7</p>
+  <h1 class="ap-saludo">Buenos días, Luis</h1>
+
+  <!-- SKELETON -->
+  <div class="ap-skeleton show" id="apSkeleton" aria-hidden="true">
+    <div class="ap-sk-bloque ap-sk-heroe"></div>
+    <div class="ap-sk-bloque ap-sk-insight"></div>
+    <div class="ap-sk-bloque ap-sk-chips"></div>
+    <div class="ap-sk-bloque ap-sk-insight"></div>
+    <div class="ap-sk-bloque ap-sk-reto"></div>
+  </div>
+
+  <!-- CONTENIDO REAL -->
+  <div class="ap-contenido" id="apContenido">
+
+    <div class="ap-heroe ap-reveal" id="apHeroe">
+      <div class="ap-heroe-fila">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--ink)" aria-hidden="true"><path d="M12 2c1 3-2 4-2 7a4 4 0 0 0 8 0c0-1-.3-2-1-3 1.5.5 3 2.5 3 6a8 8 0 1 1-16 0c0-5 3-7 4-7 0 0-1 2 1 3 0-3 1.5-4 3-6Z"/></svg>
+        <p class="label">Racha de seguridad</p>
+      </div>
+      <p class="dato" id="apRachaNum">0 <small>días</small></p>
+    </div>
+
+    <div class="ap-insight ap-reveal">
+      <span class="ic" aria-hidden="true">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5Z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </span>
+      <p>Tu <b>Pase</b> detectó algo: tu cuadrilla repite el mismo error de <b>Bloqueo y Etiquetado</b> cada lunes. <button type="button" class="ayuda" id="apAyudaPase" aria-label="Qué es el Pase">¿Qué es el Pase?</button></p>
+    </div>
+
+    <div class="ap-chips ap-reveal">
+      <div class="ap-chip">
+        <span class="ic" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--verde-sombra)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6 9 17-5-5"/><path d="M20 6 9 17l-5-5"/></svg></span>
+        <p class="n">9/12</p><p class="l">Módulos</p>
+      </div>
+      <div class="ap-chip">
+        <span class="ic" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--rojo)" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13a8 8 0 0 1 16 0v1H4v-1Z"/><path d="M3 14h18v2a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-2Z"/><path d="M9 17v2M15 17v2"/></svg></span>
+        <p class="n">3</p><p class="l">Vidas</p>
+      </div>
+      <div class="ap-chip">
+        <span class="ic" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--azul-texto)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 0 1-10 0V4Z"/><path d="M7 5H4v2a3 3 0 0 0 3 3M17 5h3v2a3 3 0 0 1-3 3"/></svg></span>
+        <p class="n">2°</p><p class="l">Ranking</p>
+      </div>
+    </div>
+
+    <div class="ap-semana ap-reveal">
+      <p class="ap-semana-tit">Tu semana</p>
+      <div class="ap-semana-fila">
+        <div class="ap-semana-dia hecho"><span class="c" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="l">L</span></div>
+        <div class="ap-semana-dia hecho"><span class="c" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="l">M</span></div>
+        <div class="ap-semana-dia hoy" id="apDiaHoy"><span class="c" aria-hidden="true"></span><span class="l">X</span></div>
+        <div class="ap-semana-dia"><span class="c" aria-hidden="true"></span><span class="l">J</span></div>
+        <div class="ap-semana-dia"><span class="c" aria-hidden="true"></span><span class="l">V</span></div>
+        <div class="ap-semana-dia"><span class="c" aria-hidden="true"></span><span class="l">S</span></div>
+        <div class="ap-semana-dia"><span class="c" aria-hidden="true"></span><span class="l">D</span></div>
+      </div>
+    </div>
+
+    <div class="ap-reto ap-reveal" id="apRetoCard">
+      <div class="ap-reto-fila">
+        <span class="ap-reto-icono" id="apRetoIcono" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/><circle cx="12" cy="12" r="4"/></svg>
+        </span>
+        <div>
+          <h2 id="apRetoTitulo">Reto de hoy · Bloqueo y Etiquetado</h2>
+          <p id="apRetoSub">3 minutos · toca el equipo en riesgo</p>
+        </div>
+      </div>
+
+      <button type="button" class="ap-boton" id="apBoton">
+        <span class="spinner" aria-hidden="true"></span>
+        <span class="txt">Empezar mi reto</span>
+      </button>
+      <p class="sr-only" id="apAnuncio" role="status" aria-live="polite"></p>
+    </div>
+
+  </div>
+
+  <!-- ESTADO VACÍO -->
+  <div class="ap-estado vacio" id="apVacio">
+    <div class="ic" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+    <h2>Ya completaste los módulos de esta semana</h2>
+    <p>Tu cuadrilla terminó todo lo asignado. El próximo lote de retos abre el lunes.</p>
+    <button type="button" id="apVerProgreso">Ver tu progreso</button>
+  </div>
+
+  <!-- ESTADO ERROR -->
+  <div class="ap-estado error" id="apError">
+    <div class="ic" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 2.5 18a1.5 1.5 0 0 0 1.3 2.2h16.4a1.5 1.5 0 0 0 1.3-2.2L13.7 3.9a1.5 1.5 0 0 0-2.6 0Z"/></svg></div>
+    <h2>No pudimos cargar tu reto de hoy</h2>
+    <p>Puede ser tu conexión en el pozo. Tu progreso anterior está a salvo — intenta de nuevo.</p>
+    <button type="button" id="apReintentar">Reintentar</button>
+  </div>
+</main>
+
+<nav class="ap-tabbar" aria-label="Navegación principal">
+  <button type="button" class="ap-tab activa" aria-current="page">
+    <span class="chip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg></span>
+    Hoy
+  </button>
+  <a class="ap-tab" href="progreso.html">
+    <span class="chip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg></span>
+    Progreso
+  </a>
+  <a class="ap-tab" href="ranking.html">
+    <span class="chip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 0 1-10 0V4Z"/><path d="M7 5H4v2a3 3 0 0 0 3 3M17 5h3v2a3 3 0 0 1-3 3"/></svg></span>
+    Ranking
+  </a>
+  <a class="ap-tab" href="perfil.html">
+    <span class="chip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg></span>
+    Perfil
+  </a>
+</nav>
+
+<div class="ap-ejercicio" id="apEjercicio" role="dialog" aria-modal="true" aria-labelledby="apEjTit">
+  <div class="ap-ej-card">
+    <button type="button" class="ap-ej-salir" id="apEjSalir" aria-label="Salir del reto sin terminar">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+
+    <div id="apEjPregunta">
+      <h2 class="ap-ej-tit" id="apEjTit">¿Cuál NO está bloqueado?</h2>
+      <p class="ap-ej-sub">Toca el equipo que corre riesgo de energizarse sin aviso</p>
+      <div class="ap-ej-grid" id="apEjGrid">
+        <button type="button" class="ap-ej-item" data-peligro="false">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+          Candado + etiqueta
+        </button>
+        <button type="button" class="ap-ej-item" data-peligro="true">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 7-2.6"/></svg>
+          Válvula sin candado
+        </button>
+        <button type="button" class="ap-ej-item" data-peligro="false">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 4.5 3 7.5 8 9 5-1.5 8-4.5 8-9V6l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg>
+          Casco puesto
+        </button>
+        <button type="button" class="ap-ej-item" data-peligro="false">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="m9 12 2 2 4-4"/></svg>
+          Panel etiquetado
+        </button>
+      </div>
+      <p class="ap-ej-feedback" id="apEjFeedback" aria-live="polite"></p>
+    </div>
+
+    <div class="ap-ej-exito" id="apEjExito">
+      <div class="ic" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6 9 17-5-5"/><path d="M20 6 9 17l-5-5"/></svg></div>
+      <h3>Encontraste el peligro</h3>
+      <p>Una válvula sin candado puede abrirse sola o por error — por eso siempre va con candado Y etiqueta con tu nombre.</p>
+      <button type="button" class="ap-boton" id="apEjContinuar" style="margin-top: 18px;">Continuar</button>
+    </div>
+  </div>
+</div>
+
+<div class="ap-toast" id="apToast" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  var qs = new URLSearchParams(location.search);
+  var estadoForzado = qs.get('estado'); // empty | error | offline
+  var RACHA_INICIAL = 12;
+  var rachaActual = RACHA_INICIAL;
+
+  var skeleton = document.getElementById('apSkeleton');
+  var contenido = document.getElementById('apContenido');
+  var vacio = document.getElementById('apVacio');
+  var error = document.getElementById('apError');
+  var offlineBanner = document.getElementById('apOffline');
+  var toast = document.getElementById('apToast');
+
+  function mostrarToast(msg, ms) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    window.clearTimeout(mostrarToast._t);
+    mostrarToast._t = window.setTimeout(function () { toast.classList.remove('show'); }, ms || 2600);
+  }
+
+  function contarHasta(el, destino, ms) {
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      var inicio = 0;
+      var t0 = performance.now();
+      function paso(ahora) {
+        var p = Math.min(1, (ahora - t0) / ms);
+        var valor = Math.round(inicio + (destino - inicio) * p);
+        el.innerHTML = valor + ' <small>días</small>';
+        if (p < 1) requestAnimationFrame(paso);
+      }
+      requestAnimationFrame(paso);
+    } else {
+      el.innerHTML = destino + ' <small>días</small>';
+    }
+  }
+
+  function revelarStagger() {
+    var nodos = contenido.querySelectorAll('.ap-reveal');
+    nodos.forEach(function (n, i) {
+      window.setTimeout(function () { n.classList.add('in'); }, i * 70);
+    });
+  }
+
+  function cargar() {
+    window.setTimeout(function () {
+      skeleton.classList.remove('show');
+      if (!navigator.onLine || estadoForzado === 'offline') {
+        offlineBanner.classList.add('show');
+      }
+      if (estadoForzado === 'error') {
+        error.classList.add('show');
+        return;
+      }
+      if (estadoForzado === 'empty') {
+        vacio.classList.add('show');
+        return;
+      }
+      contenido.classList.add('show');
+      revelarStagger();
+      contarHasta(document.getElementById('apRachaNum'), rachaActual, 700);
+    }, 650); // >100ms: skeleton con shimmer, nunca spinner de página completa
+  }
+
+  document.getElementById('apReintentar').addEventListener('click', function () {
+    error.classList.remove('show');
+    skeleton.classList.add('show');
+    estadoForzado = null;
+    cargar();
+  });
+  document.getElementById('apVerProgreso').addEventListener('click', function () {
+    location.href = 'progreso.html';
+  });
+
+  var boton = document.getElementById('apBoton');
+  var retoIcono = document.getElementById('apRetoIcono');
+  var anuncio = document.getElementById('apAnuncio');
+  var heroe = document.getElementById('apHeroe');
+  var ejercicio = document.getElementById('apEjercicio');
+  var ejPregunta = document.getElementById('apEjPregunta');
+  var ejExito = document.getElementById('apEjExito');
+  var ejFeedback = document.getElementById('apEjFeedback');
+  var ejResuelto = false;
+
+  var retoYaCompletado = false;
+
+  function abrirEjercicio() {
+    ejResuelto = false;
+    ejExito.classList.remove('show');
+    ejPregunta.style.display = '';
+    ejFeedback.className = 'ap-ej-feedback';
+    ejFeedback.textContent = '';
+    Array.prototype.forEach.call(document.querySelectorAll('.ap-ej-item'), function (btn) {
+      btn.classList.remove('correcto', 'incorrecto');
+    });
+    ejercicio.classList.add('show');
+    boton.disabled = true; // nunca queda clickeable detrás del modal
+    document.body.style.overflow = 'hidden'; // evita que el fondo se desplace/renderice mal en móviles
+    document.getElementById('apEjSalir').focus();
+  }
+  function cerrarEjercicio() {
+    ejercicio.classList.remove('show');
+    document.body.style.overflow = '';
+    if (!retoYaCompletado) boton.disabled = false;
+    boton.focus();
+  }
+
+  document.getElementById('apEjSalir').addEventListener('click', cerrarEjercicio);
+  ejercicio.addEventListener('click', function (ev) {
+    if (ev.target === ejercicio) cerrarEjercicio(); // tap en el fondo = cerrar, igual que Escape
+  });
+  document.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Escape' && ejercicio.classList.contains('show')) cerrarEjercicio();
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll('.ap-ej-item'), function (item) {
+    item.addEventListener('click', function () {
+      if (ejResuelto) return;
+      var esPeligro = item.getAttribute('data-peligro') === 'true';
+      if (esPeligro) {
+        ejResuelto = true;
+        item.classList.add('correcto');
+        navigator.vibrate && navigator.vibrate(20);
+        window.setTimeout(function () {
+          ejPregunta.style.display = 'none';
+          ejExito.classList.add('show');
+        }, 450);
+      } else {
+        item.classList.add('incorrecto');
+        window.setTimeout(function () { item.classList.remove('incorrecto'); }, 500);
+        ejFeedback.textContent = 'Ese ya está asegurado. Busca el que puede energizarse solo.';
+        ejFeedback.className = 'ap-ej-feedback mal show';
+      }
+    });
+  });
+
+  document.getElementById('apEjContinuar').addEventListener('click', function () {
+    retoYaCompletado = true;
+    cerrarEjercicio();
+    completarReto();
+  });
+
+  function completarReto() {
+    boton.querySelector('.txt').textContent = 'Reto completado hoy';
+    boton.disabled = true;
+    retoIcono.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--verde-sombra)" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6 9 17-5-5"/><path d="M20 6 9 17l-5-5"/></svg>';
+    document.getElementById('apRetoTitulo').textContent = 'Completaste el reto de hoy';
+    document.getElementById('apRetoSub').textContent = 'Vuelve mañana para seguir tu racha';
+    rachaActual += 1;
+    contarHasta(document.getElementById('apRachaNum'), rachaActual, 500);
+    var diaHoy = document.getElementById('apDiaHoy');
+    diaHoy.classList.remove('hoy');
+    diaHoy.classList.add('hecho');
+    diaHoy.querySelector('.c').innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+    heroe.classList.add('pulso');
+    window.setTimeout(function () { heroe.classList.remove('pulso'); }, 450);
+    navigator.vibrate && navigator.vibrate(20);
+    anuncio.textContent = 'Reto completado. Tu racha de seguridad ahora es de ' + rachaActual + ' días.';
+  }
+
+  boton.addEventListener('click', function () {
+    if (boton.disabled) return;
+    boton.classList.add('cargando');
+    boton.disabled = true;
+    window.setTimeout(function () {
+      boton.classList.remove('cargando');
+      boton.disabled = false;
+      abrirEjercicio();
+    }, 400); // 100ms-1s: spinner inline + bloquea doble-tap mientras "carga" el ejercicio
+  });
+
+  document.getElementById('apAyudaPase').addEventListener('click', function () {
+    mostrarToast('El Pase: el mecanismo de tu app que revisa el historial de tu cuadrilla y te avisa de patrones de riesgo', 5000);
+  });
+
+  cargar();
+})();
+</script>
+</body>
+</html>
