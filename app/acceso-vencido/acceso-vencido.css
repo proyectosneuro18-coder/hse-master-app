@@ -1,0 +1,20 @@
+.av-page {
+  min-height: 100dvh; display: flex; flex-direction: column; background: var(--hse-bg); color: var(--hse-ink);
+  font-family: var(--hse-font-body);
+}
+.av-wrap {
+  max-width: 400px; width: 100%; margin: 0 auto; padding: 0 24px; flex: 1;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+}
+.av-icono {
+  width: 72px; height: 72px; border-radius: 22px; background: var(--hse-rojo); border: 3px solid var(--hse-ink);
+  display: flex; align-items: center; justify-content: center; color: var(--hse-rojo-texto);
+}
+.av-titulo { margin-top: 20px; font-family: var(--hse-font-display); font-size: 22px; font-weight: 800; line-height: 1.25; }
+.av-texto { margin-top: 10px; font-size: 14px; color: var(--hse-ink-2); line-height: 1.5; }
+.av-boton {
+  margin-top: 28px; height: 52px; padding: 0 28px; border-radius: 16px; border: 3px solid var(--hse-ink);
+  background: var(--hse-surface); color: var(--hse-ink); font-family: var(--hse-font-body); font-weight: 700;
+  font-size: 14px; cursor: pointer;
+}
+.av-boton:disabled { opacity: 0.6; cursor: default; }

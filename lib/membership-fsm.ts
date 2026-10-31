@@ -28,7 +28,6 @@ const EVENT_TO_STATUS: Record<string, SubscriptionStatus> = {
 export const PLAN_CHANGE_EVENT = "SWITCH_PLAN";
 
 const TERMINAL_NEGATIVE: SubscriptionStatus[] = ["refunded", "chargeback"];
-const FULL_ACCESS: SubscriptionStatus[] = ["trialing", "active"];
 
 export function statusForEvent(event: string): SubscriptionStatus | null {
   return EVENT_TO_STATUS[event] ?? null;
@@ -41,14 +40,31 @@ export function canTransition(from: SubscriptionStatus | null, to: SubscriptionS
   return true;
 }
 
-export function hasFullAccess(
+export type MotivoSinAcceso = "trial_vencido" | "pago_fallido" | "cancelado" | "otro";
+
+export type AccesoInfo = { tieneAcceso: true } | { tieneAcceso: false; motivo: MotivoSinAcceso };
+
+// Único punto de verdad para decidir si una organización puede USAR la app hoy. `trialing`
+// NO es acceso incondicional: expira en `trialEndsAt` igual que cualquier otro estado expira
+// en su propia fecha — antes de esta función, nada en el código leía `trial_ends_at` para
+// cortar el acceso (ver ESTADO.md → Sesión 7, punto 3).
+export function evaluarAcceso(
   status: SubscriptionStatus,
   now: Date,
-  accessUntil?: Date | null,
-  graceEndsAt?: Date | null,
-): boolean {
-  if (FULL_ACCESS.includes(status)) return true;
-  if (status === "cancelled") return !!accessUntil && now < accessUntil;
-  if (status === "past_due") return !!graceEndsAt && now < graceEndsAt;
-  return false;
+  fechas: { trialEndsAt?: Date | null; accessUntil?: Date | null; graceEndsAt?: Date | null },
+): AccesoInfo {
+  if (status === "active") return { tieneAcceso: true };
+  if (status === "trialing") {
+    if (!fechas.trialEndsAt || now < fechas.trialEndsAt) return { tieneAcceso: true };
+    return { tieneAcceso: false, motivo: "trial_vencido" };
+  }
+  if (status === "past_due") {
+    if (fechas.graceEndsAt && now < fechas.graceEndsAt) return { tieneAcceso: true };
+    return { tieneAcceso: false, motivo: "pago_fallido" };
+  }
+  if (status === "cancelled") {
+    if (fechas.accessUntil && now < fechas.accessUntil) return { tieneAcceso: true };
+    return { tieneAcceso: false, motivo: "cancelado" };
+  }
+  return { tieneAcceso: false, motivo: "otro" }; // expired, refunded, chargeback
 }

@@ -103,7 +103,16 @@ function BannerEstado({
     );
   }
   if (estado === "trialing") {
+    const vencida = !!trialEndsAt && new Date() >= new Date(trialEndsAt);
     const fecha = formatearFecha(trialEndsAt);
+    if (vencida) {
+      return (
+        <div className="flex items-start gap-2 rounded-[var(--hse-radius-chip)] border-2 border-[var(--hse-rojo-sombra)] bg-[var(--hse-rojo)]/10 px-4 py-2.5 text-sm font-medium text-[var(--hse-rojo-texto)]">
+          <AlertTriangle className="mt-0.5 size-4 shrink-0" strokeWidth={2.5} />
+          Tu prueba gratis terminó{fecha ? ` el ${fecha}` : ""} — tu cuadrilla ya no puede entrenar hasta que actives un plan.
+        </div>
+      );
+    }
     return (
       <div className="flex items-center gap-2 rounded-[var(--hse-radius-chip)] border-2 border-[var(--hse-azul-sombra)] bg-[var(--hse-azul)]/10 px-4 py-2.5 text-sm font-medium text-[var(--hse-azul-texto)]">
         <Flame className="size-4 shrink-0" strokeWidth={2.5} />
