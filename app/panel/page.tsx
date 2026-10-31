@@ -38,12 +38,20 @@ export default async function PanelPage() {
       plan_name: string | null;
     }>();
 
-  const { data: crews } = await supabase
-    .from("crews")
-    .select("id, name, code, workers(user_id, full_name, active, streaks(current_streak, last_completed_date))")
-    .eq("org_id", membership.org_id)
-    .eq("archived", false)
-    .order("name");
+  // Filtra por `archived` (migración 0004); si esa columna aún no existe en esta base de
+  // datos, reintenta sin el filtro — así el panel sigue funcionando mientras el usuario corre
+  // la migración, en vez de mostrarse vacío por un error silencioso de columna inexistente.
+  const consultaCrews = () =>
+    supabase
+      .from("crews")
+      .select("id, name, code, workers(user_id, full_name, active, streaks(current_streak, last_completed_date))")
+      .eq("org_id", membership.org_id)
+      .order("name");
+
+  let { data: crews, error: crewsErr } = await consultaCrews().eq("archived", false);
+  if (crewsErr) {
+    ({ data: crews } = await consultaCrews());
+  }
 
   const crewsConDatos = (crews ?? []) as unknown as CrewConDatos[];
 

@@ -150,7 +150,7 @@ function ChipCodigo({ code }: { code: string }) {
         setCopiado(true);
         setTimeout(() => setCopiado(false), 1500);
       }}
-      className="flex items-center gap-1.5 rounded-[var(--hse-radius-chip)] border-2 border-[var(--hse-ink)] bg-[var(--hse-neutro-antes)] px-3 py-1.5 font-mono text-sm font-bold tracking-wider text-[var(--hse-ink)] transition active:scale-95"
+      className="flex items-center gap-1.5 rounded-[var(--hse-radius-chip)] border-2 border-[var(--hse-ink)] bg-[var(--hse-neutro-antes)] shadow-[inset_0_2px_4px_rgba(26,26,26,0.12)] px-3 py-1.5 font-mono text-sm font-bold tracking-wider text-[var(--hse-ink)] transition active:scale-95"
       aria-label={`Copiar código de cuadrilla ${code}`}
     >
       {code}
@@ -424,7 +424,7 @@ function ModalAgregarTrabajador({
                 <select
                   value={crewId}
                   onChange={(e) => setCrewId(e.target.value)}
-                  className="rounded-[var(--hse-radius-boton)] border-2 border-[var(--hse-ink)] bg-[var(--hse-surface)] px-3 py-2.5 text-base font-normal text-[var(--hse-ink)]"
+                  className="rounded-[var(--hse-radius-boton)] border-2 border-[var(--hse-ink)] bg-[var(--hse-neutro-antes)] shadow-[inset_0_2px_4px_rgba(26,26,26,0.12)] px-3 py-2.5 text-base font-normal text-[var(--hse-ink)]"
                 >
                   {crews.map((c) => (
                     <option key={c.id} value={c.id}>
@@ -440,7 +440,7 @@ function ModalAgregarTrabajador({
                   value={nuevaCuadrilla}
                   onChange={(e) => setNuevaCuadrilla(e.target.value)}
                   placeholder="Ej. Turno A — Pozo 4"
-                  className="rounded-[var(--hse-radius-boton)] border-2 border-[var(--hse-ink)] bg-[var(--hse-surface)] px-3 py-2.5 text-base font-normal text-[var(--hse-ink)] placeholder:text-[var(--hse-ink-2)]"
+                  className="rounded-[var(--hse-radius-boton)] border-2 border-[var(--hse-ink)] bg-[var(--hse-neutro-antes)] shadow-[inset_0_2px_4px_rgba(26,26,26,0.12)] px-3 py-2.5 text-base font-normal text-[var(--hse-ink)] placeholder:text-[var(--hse-ink-2)]"
                 />
               </label>
             )}
@@ -452,7 +452,7 @@ function ModalAgregarTrabajador({
                 onChange={(e) => setFullName(e.target.value)}
                 placeholder="Ej. Carlos Pérez"
                 autoFocus
-                className="rounded-[var(--hse-radius-boton)] border-2 border-[var(--hse-ink)] bg-[var(--hse-surface)] px-3 py-2.5 text-base font-normal text-[var(--hse-ink)] placeholder:text-[var(--hse-ink-2)]"
+                className="rounded-[var(--hse-radius-boton)] border-2 border-[var(--hse-ink)] bg-[var(--hse-neutro-antes)] shadow-[inset_0_2px_4px_rgba(26,26,26,0.12)] px-3 py-2.5 text-base font-normal text-[var(--hse-ink)] placeholder:text-[var(--hse-ink-2)]"
               />
             </label>
 
@@ -463,7 +463,7 @@ function ModalAgregarTrabajador({
                 onChange={(e) => setPin(e.target.value.replace(/\D/g, "").slice(0, 4))}
                 inputMode="numeric"
                 placeholder="0000"
-                className="rounded-[var(--hse-radius-boton)] border-2 border-[var(--hse-ink)] bg-[var(--hse-surface)] px-3 py-2.5 text-center font-mono text-lg tracking-[0.5em] text-[var(--hse-ink)] placeholder:tracking-[0.5em] placeholder:text-[var(--hse-ink-2)]"
+                className="rounded-[var(--hse-radius-boton)] border-2 border-[var(--hse-ink)] bg-[var(--hse-neutro-antes)] shadow-[inset_0_2px_4px_rgba(26,26,26,0.12)] px-3 py-2.5 text-center font-mono text-lg tracking-[0.5em] text-[var(--hse-ink)] placeholder:tracking-[0.5em] placeholder:text-[var(--hse-ink-2)]"
               />
               <span className="text-xs font-normal text-[var(--hse-ink-2)]">
                 {pin.length === 4 ? (
@@ -584,7 +584,7 @@ function ModalEditarTrabajador({
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               autoFocus
-              className="rounded-[var(--hse-radius-boton)] border-2 border-[var(--hse-ink)] bg-[var(--hse-surface)] px-3 py-2.5 text-base font-normal text-[var(--hse-ink)]"
+              className="rounded-[var(--hse-radius-boton)] border-2 border-[var(--hse-ink)] bg-[var(--hse-neutro-antes)] shadow-[inset_0_2px_4px_rgba(26,26,26,0.12)] px-3 py-2.5 text-base font-normal text-[var(--hse-ink)]"
             />
           </label>
 
@@ -595,7 +595,7 @@ function ModalEditarTrabajador({
               onChange={(e) => setPin(e.target.value.replace(/\D/g, "").slice(0, 4))}
               inputMode="numeric"
               placeholder="0000"
-              className="rounded-[var(--hse-radius-boton)] border-2 border-[var(--hse-ink)] bg-[var(--hse-surface)] px-3 py-2.5 text-center font-mono text-lg tracking-[0.5em] text-[var(--hse-ink)] placeholder:tracking-[0.5em] placeholder:text-[var(--hse-ink-2)]"
+              className="rounded-[var(--hse-radius-boton)] border-2 border-[var(--hse-ink)] bg-[var(--hse-neutro-antes)] shadow-[inset_0_2px_4px_rgba(26,26,26,0.12)] px-3 py-2.5 text-center font-mono text-lg tracking-[0.5em] text-[var(--hse-ink)] placeholder:tracking-[0.5em] placeholder:text-[var(--hse-ink-2)]"
             />
           </label>
 
@@ -738,7 +738,7 @@ function ModalRenombrarCuadrilla({
               value={nombre}
               onChange={(e) => setNombre(e.target.value)}
               autoFocus
-              className="rounded-[var(--hse-radius-boton)] border-2 border-[var(--hse-ink)] bg-[var(--hse-surface)] px-3 py-2.5 text-base font-normal text-[var(--hse-ink)]"
+              className="rounded-[var(--hse-radius-boton)] border-2 border-[var(--hse-ink)] bg-[var(--hse-neutro-antes)] shadow-[inset_0_2px_4px_rgba(26,26,26,0.12)] px-3 py-2.5 text-base font-normal text-[var(--hse-ink)]"
             />
           </label>
           {error && (
@@ -850,9 +850,9 @@ export function PanelClient({
       className="min-h-dvh font-[family-name:var(--hse-font-body)] text-[var(--hse-ink)]"
       style={{
         background:
-          "radial-gradient(ellipse 600px 320px at 50% -10%, color-mix(in srgb, var(--hse-amarillo) 32%, transparent), transparent), " +
-          "radial-gradient(ellipse 500px 380px at 85% 70%, color-mix(in srgb, var(--hse-azul) 10%, transparent), transparent), " +
-          "radial-gradient(ellipse 500px 380px at 10% 95%, color-mix(in srgb, var(--hse-verde) 10%, transparent), transparent), var(--hse-bg)",
+          "radial-gradient(ellipse 650px 420px at 50% -10%, color-mix(in srgb, var(--hse-amarillo) 45%, transparent), transparent), " +
+          "radial-gradient(ellipse 550px 450px at 90% 60%, color-mix(in srgb, var(--hse-azul) 18%, transparent), transparent), " +
+          "radial-gradient(ellipse 550px 450px at 5% 100%, color-mix(in srgb, var(--hse-verde) 18%, transparent), transparent), var(--hse-neutro-antes)",
       }}
     >
       <div className="mx-auto flex max-w-xl flex-col gap-4 px-4 pt-6 pb-16">
