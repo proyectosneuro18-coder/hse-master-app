@@ -158,6 +158,11 @@ export default function LoginPage() {
               </svg>
               Sin contraseñas: te llegará un enlace de un solo uso
             </p>
+            <p className={cls("lg-caption")}>
+              <a href="/login/trabajador" className="lg-link-trabajador">
+                ¿Eres trabajador de campo? Entra con el código de tu cuadrilla
+              </a>
+            </p>
           </div>
         )}
 

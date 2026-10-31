@@ -1,0 +1,23 @@
+/* Login del trabajador de campo — reusa los tokens/clases .lg-* de app/login/login.css
+   (mismo sistema "Casco de Oro", FICHA-ARTE.md) y solo agrega lo propio de este flujo. */
+.lt-volver {
+  background: none; border: none; color: var(--hse-ink-2); font-family: var(--hse-font-body);
+  font-weight: 700; font-size: 13px; cursor: pointer; padding: 0; margin-bottom: 20px;
+}
+.lt-link { color: var(--hse-azul-sombra); font-weight: 700; text-decoration: none; }
+
+.lt-lista { margin-top: 24px; display: flex; flex-direction: column; gap: 10px; }
+.lt-nombre {
+  width: 100%; min-height: 64px; border-radius: 16px; border: 3px solid var(--hse-ink); background: var(--hse-surface);
+  display: flex; align-items: center; gap: 12px; padding: 10px 16px; cursor: pointer;
+  font-family: var(--hse-font-body); font-weight: 700; font-size: 15px; color: var(--hse-ink); text-align: left;
+}
+.lg-page.js-motion .lt-nombre { transition: transform 120ms ease, background 150ms ease; }
+.lt-nombre:active { transform: scale(0.98); }
+.lt-avatar {
+  width: 40px; height: 40px; min-width: 40px; border-radius: 12px; background: var(--hse-amarillo);
+  border: 2.5px solid var(--hse-ink); display: flex; align-items: center; justify-content: center;
+  font-family: var(--hse-font-display); font-weight: 800; font-size: 16px; color: var(--hse-ink);
+}
+
+.lt-pin { letter-spacing: 0.6em; }
