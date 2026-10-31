@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
 import { APP_HOME_HTML } from "./markup";
 import "./page.css";
 
@@ -15,6 +16,27 @@ import "./page.css";
 export default function AppHomePage() {
   const rootRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+
+  // Esta pantalla es el ritual diario del TRABAJADOR. El Gerente de HSE (owner/admin) también
+  // cae aquí tras su magic link (ver app/login/page.tsx, redirige siempre a /app) — se le manda
+  // a su propio panel (app/panel) en vez de mostrarle el reto diario, que no es para él.
+  useEffect(() => {
+    let cancelado = false;
+    const supabase = createClient();
+    supabase.auth.getUser().then(async ({ data: { user } }) => {
+      if (!user || cancelado) return;
+      const { data } = await supabase
+        .from("memberships")
+        .select("role")
+        .eq("user_id", user.id)
+        .in("role", ["owner", "admin"])
+        .maybeSingle();
+      if (!cancelado && data) router.replace("/panel");
+    });
+    return () => {
+      cancelado = true;
+    };
+  }, [router]);
 
   useEffect(() => {
     const root = rootRef.current;
