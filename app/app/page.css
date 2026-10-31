@@ -154,12 +154,16 @@ body {
 .ap.js-motion .ap-ejercicio.show .ap-ej-card { transform: scale(1); }
 .ap .ap-ej-salir { width: 40px; height: 40px; border-radius: 12px; border: 2.5px solid var(--ink); background: var(--surface);
                  display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--ink); }
-.ap .ap-ej-tit { font-family: var(--font-display); font-size: 19px; font-weight: 800; margin-top: 14px; line-height: 1.25; }
+.ap .ap-ej-intro { font-size: 13px; color: var(--ink-2); font-weight: 600; line-height: 1.5; }
+.ap .ap-ej-tit { font-family: var(--font-display); font-size: 19px; font-weight: 800; margin-top: 8px; line-height: 1.25; }
 .ap .ap-ej-sub { font-size: 13px; color: var(--ink-2); margin-top: 4px; font-weight: 600; }
 .ap .ap-ej-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
 .ap .ap-ej-item { height: 86px; border-radius: 16px; border: 2.5px solid var(--ink); background: var(--surface);
                 display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; cursor: pointer;
                 font-family: var(--font-body); font-size: 11px; font-weight: 700; color: var(--ink); padding: 4px; text-align: center; }
+.ap .ap-ej-grid.texto { grid-template-columns: 1fr; gap: 12px; }
+.ap .ap-ej-grid.texto .ap-ej-item { height: auto; min-height: 56px; flex-direction: row; justify-content: flex-start;
+                text-align: left; font-size: 13px; padding: 12px 16px; line-height: 1.35; }
 .ap.js-motion .ap-ej-item { transition: transform 120ms ease, background 150ms ease, border-color 150ms ease; }
 .ap .ap-ej-item:active { transform: scale(0.96); }
 .ap .ap-ej-item.correcto { background: var(--verde); color: var(--hse-blanco); }
