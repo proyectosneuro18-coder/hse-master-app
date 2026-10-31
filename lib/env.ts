@@ -1,14 +1,22 @@
 import { z } from "zod";
 
+// Variable opcional vacía ("") en .env.local (placeholder del scaffold) cuenta como "no
+// configurada todavía", no como un valor inválido — si no, tsc/build truenan localmente
+// aunque la variable requerida real solo falte en producción.
+const optionalString = () =>
+  z.preprocess((v) => (v === "" ? undefined : v), z.string().min(1).optional());
+const optionalEmail = () =>
+  z.preprocess((v) => (v === "" ? undefined : v), z.string().email().optional());
+
 const envSchema = z.object({
   NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: z.string().min(1),
   SUPABASE_URL: z.string().url(),
   SUPABASE_SECRET_KEY: z.string().min(1),
-  RESEND_API_KEY: z.string().min(1).optional(),
-  EMAIL_FROM: z.string().email().optional(),
-  HOTMART_HOTTOK: z.string().min(1).optional(),
-  HOTMART_PRODUCT_ID: z.string().min(1).optional(),
+  RESEND_API_KEY: optionalString(),
+  EMAIL_FROM: optionalEmail(),
+  HOTMART_HOTTOK: optionalString(),
+  HOTMART_PRODUCT_ID: optionalString(),
 });
 
 // Falla al arrancar si falta una variable requerida — nunca correr con un valor de juguete (09-SEGURIDAD.md).

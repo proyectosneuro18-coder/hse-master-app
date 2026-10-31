@@ -3,6 +3,7 @@ import crypto from "node:crypto";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { verifyHotmart } from "@/lib/hotmart-verify";
 import { statusForEvent, PLAN_CHANGE_EVENT } from "@/lib/membership-fsm";
+import { sendPaymentConfirmedEmail, sendPaymentFailedEmail, sendCancellationEmail } from "@/lib/email";
 
 // Endpoint que Hotmart llama cuando pasa algo con un pago. Patrón de seguridad completo en
 // docs/sistema/18-VENTA-HOTMART.md → "SEGURIDAD DEL WEBHOOK DE HOTMART (implementación real)".
@@ -136,6 +137,15 @@ export async function POST(req: NextRequest) {
     // un comprador que pagó en Hotmart antes de registrarse en la app. 200 para que Hotmart no
     // reintente indefinidamente; el soporte lo reconcilia a mano (ver "RUTA DE RESCATE DE ACCESO").
     return NextResponse.json({ received: true, matched: false });
+  }
+
+  // Email transaccional SOLO en la primera vez que el evento se aplica (nunca en un reintento
+  // duplicado) — si falla el envío no tumba el webhook, ya se le avisó al Gerente de HSE por
+  // el propio email de Hotmart (ver docs/sistema/18-VENTA-HOTMART.md → "el cliente recibe DOS").
+  if (result === "applied" && email) {
+    if (newStatus === "active") await sendPaymentConfirmedEmail(email, planName);
+    else if (newStatus === "past_due") await sendPaymentFailedEmail(email);
+    else if (newStatus === "cancelled") await sendCancellationEmail(email, accessUntil);
   }
 
   return NextResponse.json({ received: true, result });
