@@ -2,9 +2,9 @@ import "../legal.css";
 import { LegalHeader, LegalNav, LegalWrap } from "../LegalChrome";
 
 // ⚠️ El plazo de abajo (7 días) es el mínimo legal que Hotmart aplica por defecto
-// (derecho de retracto). Antes de vender en serio, el dueño debe VERIFICAR en su panel de
-// Hotmart (Producto → Garantía) que el plazo configurado coincide con este texto — si lo sube,
-// hay que subir este número también (ver docs/sistema/18-VENTA-HOTMART.md y ESTADO.md →
+// (derecho de retracto). Antes de vender en serio, el dueño debe VERIFICAR en el panel de
+// Hotmart (sección del producto donde se configura ese plazo) que coincide con este texto — si
+// lo sube, hay que subir este número también (ver docs/sistema/18-VENTA-HOTMART.md y ESTADO.md →
 // Problemas conocidos → `plazo-reembolso-sin-verificar-en-hotmart`).
 export default function ReembolsosPage() {
   return (

@@ -98,11 +98,11 @@ body {
               box-shadow: 0 8px 20px -6px color-mix(in oklab, var(--verde) 55%, transparent); }
 .pw.js-motion .pw-boton { transition: transform 120ms ease, border-bottom-width 120ms ease; }
 .pw .pw-boton:active { border-bottom-width: 3px; transform: translateY(3px); }
-.pw .pw-garantia { margin-top: 12px; padding: 16px; border: 2px solid var(--ink); border-radius: 20px;
+.pw .pw-compromiso { margin-top: 12px; padding: 16px; border: 2px solid var(--ink); border-radius: 20px;
                  background: color-mix(in oklab, var(--amarillo) 18%, var(--surface)); text-align: center; }
 .pw .pw-reversibilidad { font-size: 14px; color: var(--ink); font-weight: 800; }
-.pw .pw-garantia-txt { margin-top: 4px; font-size: 13px; font-weight: 500; color: var(--ink-2); }
-.pw .pw-garantia-txt b { color: var(--ink); }
+.pw .pw-compromiso-txt { margin-top: 4px; font-size: 13px; font-weight: 500; color: var(--ink-2); }
+.pw .pw-compromiso-txt b { color: var(--ink); }
 .pw .pw-trust { margin-top: 12px; padding-top: 12px; border-top: 1px solid color-mix(in oklab, var(--ink) 12%, transparent);
               text-align: left; font-size: 13px; color: var(--ink-2); font-weight: 500;
               display: flex; align-items: center; justify-content: center; gap: 8px; }

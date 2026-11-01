@@ -25,7 +25,7 @@ body {
 .lnd #inicio,
 .lnd #oferta,
 .lnd #preguntas,
-.lnd #garantia { scroll-margin-top: 80px; }
+.lnd #compromiso { scroll-margin-top: 80px; }
 .lnd h1,
 .lnd h2,
 .lnd h3 { font-family: var(--font-display); font-weight: 800; letter-spacing: -0.01em; }
@@ -294,16 +294,16 @@ body {
 .lnd .copiar-correo:hover { color: var(--ink); }
 .lnd .copiar-correo.copiado { color: var(--ink); text-decoration: none; }
 .lnd .copiar-correo.fallo { color: var(--rojo-sombra); text-decoration: underline; }
-/* ===== 7. GARANTÍA ===== */
-.lnd .garantia { background: var(--bg); }
-.lnd .garantia .wrap { max-width: 720px; text-align: center; }
-.lnd .garantia .escudo { width: 64px; height: 64px; margin: 0 auto; border-radius: 14px; background: var(--azul);
+/* ===== 7. COMPROMISO ===== */
+.lnd .compromiso { background: var(--bg); }
+.lnd .compromiso .wrap { max-width: 720px; text-align: center; }
+.lnd .compromiso .escudo { width: 64px; height: 64px; margin: 0 auto; border-radius: 14px; background: var(--azul);
                        border: 3px solid var(--ink); display: flex; align-items: center; justify-content: center; }
-.lnd .garantia h2 { margin-top: 16px; font-size: 26px; }
+.lnd .compromiso h2 { margin-top: 16px; font-size: 26px; }
 @media (min-width: 700px) {
-.lnd .garantia h2 { font-size: 32px; }
+.lnd .compromiso h2 { font-size: 32px; }
 }
-.lnd .garantia p { margin-top: 12px; font-size: 14px; color: var(--ink-2); font-weight: 400; line-height: 1.7; }
+.lnd .compromiso p { margin-top: 12px; font-size: 14px; color: var(--ink-2); font-weight: 400; line-height: 1.7; }
 /* ===== 8. FAQ ===== */
 .lnd .faq { background: var(--surface);
          border-top: 3px solid var(--ink); border-bottom: 3px solid var(--ink); }
