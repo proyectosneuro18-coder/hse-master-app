@@ -964,6 +964,12 @@ export function PanelClient({
             {planName ? `Plan ${planName}` : "Plan de prueba"} · la suscripción se gestiona y cobra desde
             Hotmart con el correo con el que compraste.
           </p>
+          <a
+            href="/legal/reembolsos"
+            className="mt-2 inline-block text-sm font-bold text-[var(--hse-azul-sombra)] underline"
+          >
+            Cómo cancelar o pedir un reembolso
+          </a>
         </div>
       </div>
 

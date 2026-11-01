@@ -203,7 +203,7 @@ export default function LandingPage() {
       if (!estado || !estado.classList.contains("mailto-status")) return [];
       const handler = () => {
         estado.innerHTML =
-          '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Tu correo debería haberse abierto. Si no, escríbenos a <a href="mailto:ventas@hsemasterapp.com" class="link-correo">ventas@hsemasterapp.com</a> o cópialo aquí abajo.';
+          '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Tu correo debería haberse abierto. Si no, escríbenos a <a href="mailto:ventas@hse-master-app.com" class="link-correo">ventas@hse-master-app.com</a> o cópialo aquí abajo.';
         estado.classList.add("show");
       };
       boton.addEventListener("click", handler);

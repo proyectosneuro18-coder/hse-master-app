@@ -352,6 +352,8 @@ body {
 .lnd footer.legal .links a,
 .lnd footer.legal .links span { color: var(--hse-footer-texto); text-decoration: none; }
 .lnd footer.legal .link-soporte { color: var(--amarillo) !important; text-decoration: underline !important; font-weight: 700; }
+.lnd footer.legal .link-legal:hover,
+.lnd footer.legal .link-legal:focus-visible { text-decoration: underline; }
 .lnd footer.legal .pendiente { font-size: 12px; color: var(--hse-footer-muted); margin-left: 4px; }
 .lnd footer.legal .copy { margin-top: 24px; font-size: 11px; color: var(--hse-footer-muted); border-top: 1px solid var(--hse-footer-borde); padding-top: 16px; }
 /* sticky CTA mobile */
