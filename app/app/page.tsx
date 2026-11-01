@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { evaluarAcceso, type SubscriptionStatus } from "@/lib/membership-fsm";
+import { crearOrganizacionParaNuevoUsuario } from "@/lib/activar-organizacion";
 import { AppHomeClient, type RetoHoy } from "./AppHomeClient";
 
 // Lee cookies() de la sesión real del trabajador — nunca se puede prerenderizar ni cachear
@@ -47,7 +48,15 @@ export default async function AppHomePage() {
     .select("full_name, org_id")
     .eq("user_id", user.id)
     .maybeSingle<{ full_name: string; org_id: string }>();
-  if (!worker) redirect("/login");
+
+  if (!worker) {
+    // Autenticado, sin membresía de owner/admin y sin fila en `workers`: la única forma de
+    // llegar aquí así es haber iniciado sesión por primera vez como Gerente de HSE (un
+    // trabajador siempre llega con su fila de `workers` ya creada por worker-login). Le nace
+    // su organización con la prueba de 14 días ya activa (ver lib/activar-organizacion.ts).
+    await crearOrganizacionParaNuevoUsuario(user.id, user.email);
+    redirect("/panel");
+  }
 
   // RLS de `organizations` solo deja leer a quien tiene una fila en `memberships` (owner/admin);
   // un trabajador no la tiene (ver ESTADO.md → Decisiones técnicas → Modelo de datos), así que
