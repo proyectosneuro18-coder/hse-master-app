@@ -58,6 +58,7 @@ export default async function PanelPage() {
   return (
     <PanelClient
       orgName={org?.name ?? "Tu empresa"}
+      ownerEmail={user.email ?? ""}
       estado={org?.subscription_status ?? "trialing"}
       trialEndsAt={org?.trial_ends_at ?? null}
       accessUntil={org?.access_until ?? null}

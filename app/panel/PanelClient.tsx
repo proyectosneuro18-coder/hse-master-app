@@ -33,6 +33,12 @@ export type EstadoSuscripcion =
   | "refunded"
   | "chargeback";
 
+// Link de pago real del producto en Hotmart (ID 8821424, copiado del panel por el usuario el
+// 2026-11-01). El checkout deja elegir el plan mensual/anual; se pre-llena el email del Gerente
+// de HSE para que el webhook lo relacione con esta cuenta sin crear una segunda (ver
+// ESTADO.md → Sesión 9 y 18-VENTA-HOTMART.md → "el bug a evitar").
+const HOTMART_CHECKOUT_URL = "https://pay.hotmart.com/D108216311I";
+
 type Worker = {
   user_id: string;
   full_name: string;
@@ -789,6 +795,7 @@ function ModalRenombrarCuadrilla({
 
 export function PanelClient({
   orgName,
+  ownerEmail,
   estado,
   trialEndsAt,
   accessUntil,
@@ -797,6 +804,7 @@ export function PanelClient({
   crews,
 }: {
   orgName: string;
+  ownerEmail: string;
   estado: EstadoSuscripcion;
   trialEndsAt: string | null;
   accessUntil: string | null;
@@ -964,6 +972,16 @@ export function PanelClient({
             {planName ? `Plan ${planName}` : "Plan de prueba"} · la suscripción se gestiona y cobra desde
             Hotmart con el correo con el que compraste.
           </p>
+          {estado !== "active" && (
+            <a
+              href={`${HOTMART_CHECKOUT_URL}?email=${encodeURIComponent(ownerEmail)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-3 flex items-center justify-center rounded-[var(--hse-radius-boton)] border-2 border-[var(--hse-ink)] bg-[var(--hse-verde)] py-3 text-sm font-bold text-[var(--hse-ink)] shadow-[0_4px_0_var(--hse-verde-sombra)] transition active:translate-y-[4px] active:shadow-none"
+            >
+              Suscribirme ahora
+            </a>
+          )}
           <a
             href="/legal/reembolsos"
             className="mt-2 inline-block text-sm font-bold text-[var(--hse-azul-sombra)] underline"
