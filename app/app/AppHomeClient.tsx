@@ -23,16 +23,17 @@ type Props = {
   modulosAprobados: number;
   totalModulos: number;
   reto: RetoHoy;
+  posicionRanking: number | null;
+  totalCuadrillas: number;
 };
 
 const FECHA_HOY = new Intl.DateTimeFormat("es", { weekday: "long", day: "numeric", month: "long" }).format(new Date());
 
 // Pantalla principal del trabajador (M0, el ritual diario) — ver ESTADO.md → veredicto:app-principal.
-// Conectada a datos reales desde la Sesión 7 (ver "Sesión en progreso" en ESTADO.md): la racha, el
-// reto del día (pregunta/opciones/explicación de la lección real) y el conteo de módulos vienen de
-// Supabase. El bloque "Vidas"/"Ranking" y el insight de "El Pase" siguen siendo ilustrativos — esas
-// 2 mecánicas (vidas, posición de ranking cruzada entre cuadrillas) todavía no existen en el esquema
-// de datos, documentado como deliberadamente fuera de alcance de esta conexión.
+// Conectada a datos reales desde la Sesión 7: la racha, el reto del día (pregunta/opciones/
+// explicación de la lección real), el conteo de módulos y (desde `chips-ilustrativos-app-principal`)
+// la posición real de ranking vienen de Supabase. El chip "Vidas" y el insight de "El Pase" siguen
+// siendo ilustrativos — "vidas" es una mecánica que nunca se definió en el esquema de datos.
 export function AppHomeClient({
   nombreTrabajador,
   rachaInicial,
@@ -40,6 +41,8 @@ export function AppHomeClient({
   modulosAprobados,
   totalModulos,
   reto,
+  posicionRanking,
+  totalCuadrillas,
 }: Props) {
   const rootRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
@@ -70,6 +73,8 @@ export function AppHomeClient({
     if (fecha) fecha.textContent = FECHA_HOY.charAt(0).toUpperCase() + FECHA_HOY.slice(1);
     const chipModulos = root.querySelector<HTMLElement>("#apChipModulos");
     if (chipModulos) chipModulos.textContent = `${modulosAprobados}/${totalModulos}`;
+    const chipRanking = root.querySelector<HTMLElement>("#apChipRanking");
+    if (chipRanking) chipRanking.textContent = posicionRanking && totalCuadrillas > 1 ? `${posicionRanking}°` : "—";
 
     let toastTimer: number | undefined;
     function mostrarToast(msg: string, ms?: number) {

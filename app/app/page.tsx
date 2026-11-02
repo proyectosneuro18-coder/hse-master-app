@@ -120,6 +120,10 @@ export default async function AppHomePage() {
     explicacion: contenido.explicacion ?? "",
   };
 
+  const { data: ranking } = await supabase.rpc("obtener_ranking_cuadrillas", { p_periodo: "semana" });
+  const filasRanking = (ranking ?? []) as { o_crew_id: string; o_es_mia: boolean }[];
+  const posicionRanking = filasRanking.findIndex((f) => f.o_es_mia) + 1 || null;
+
   return (
     <AppHomeClient
       nombreTrabajador={worker.full_name}
@@ -128,6 +132,8 @@ export default async function AppHomePage() {
       modulosAprobados={modulosAprobados}
       totalModulos={totalModulos}
       reto={reto}
+      posicionRanking={posicionRanking}
+      totalCuadrillas={filasRanking.length}
     />
   );
 }
