@@ -32,8 +32,9 @@ const FECHA_HOY = new Intl.DateTimeFormat("es", { weekday: "long", day: "numeric
 // Pantalla principal del trabajador (M0, el ritual diario) — ver ESTADO.md → veredicto:app-principal.
 // Conectada a datos reales desde la Sesión 7: la racha, el reto del día (pregunta/opciones/
 // explicación de la lección real), el conteo de módulos y (desde `chips-ilustrativos-app-principal`)
-// la posición real de ranking vienen de Supabase. El chip "Vidas" y el insight de "El Pase" siguen
-// siendo ilustrativos — "vidas" es una mecánica que nunca se definió en el esquema de datos.
+// la posición real de ranking y las "vidas" (cascos, mecánica real por intento del día — nunca
+// bloquea el reto obligatorio, mandato de FICHA-MODELO.md §5) vienen de Supabase/estado local.
+// El insight de "El Pase" sigue siendo ilustrativo (sin motor real detrás todavía).
 export function AppHomeClient({
   nombreTrabajador,
   rachaInicial,
@@ -183,6 +184,17 @@ export function AppHomeClient({
     let retoYaCompletado = yaCompletadoHoy;
     let enviandoIntento = false;
 
+    // "Vidas" (cascos): mecánica visible y predecible, NUNCA una barrera para completar la
+    // capacitación obligatoria del día — mandato de FICHA-MODELO.md §5 (lo opuesto al sistema
+    // de "energía" de Duolingo que frustra a quien ya pagó). Bajan con cada respuesta
+    // incorrecta del reto de hoy, se reinician a 3 en cada reto nuevo, y en 0 se sigue
+    // pudiendo responder las veces que haga falta.
+    const chipVidas = root.querySelector<HTMLElement>("#apChipVidas");
+    let vidasRestantes = 3;
+    function actualizarVidas() {
+      if (chipVidas) chipVidas.textContent = String(vidasRestantes);
+    }
+
     function pintarPregunta() {
       if (ejIntro) ejIntro.textContent = reto.intro;
       if (ejTit) ejTit.textContent = reto.pregunta;
@@ -204,6 +216,8 @@ export function AppHomeClient({
         return;
       }
       ejResuelto = false;
+      vidasRestantes = 3;
+      actualizarVidas();
       ejExito?.classList.remove("show");
       if (ejPregunta) ejPregunta.style.display = "";
       if (ejFeedback) {
@@ -240,8 +254,13 @@ export function AppHomeClient({
       if (!esCorrecta) {
         item.classList.add("incorrecto");
         window.setTimeout(() => item.classList.remove("incorrecto"), 500);
+        vidasRestantes = Math.max(0, vidasRestantes - 1);
+        actualizarVidas();
         if (ejFeedback) {
-          ejFeedback.textContent = "Esa no es — vuelve a intentarlo.";
+          ejFeedback.textContent =
+            vidasRestantes > 0
+              ? "Esa no es — vuelve a intentarlo."
+              : "Esa no es — sigue intentando, el reto de hoy no se bloquea.";
           ejFeedback.className = "ap-ej-feedback mal show";
         }
         return;
