@@ -25,10 +25,11 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      - name: Typecheck
-        run: npx tsc --noEmit
-
-      - name: Build
+      # El build de Next ya corre su propio chequeo de tipos ("Running TypeScript...") y además
+      # GENERA tipos ambientales propios (p. ej. LayoutProps) en .next/types que el código usa —
+      # un `tsc --noEmit` suelto ANTES del build falla porque esos tipos todavía no existen. El
+      # build es la única fuente real de verdad de tipos en este proyecto.
+      - name: Build (incluye el chequeo de tipos real)
         run: npm run build
         env:
           # Valores públicos/no sensibles para que el build compile — nunca el secreto real.

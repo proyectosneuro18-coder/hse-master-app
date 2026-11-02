@@ -209,6 +209,14 @@ Bloqueantes reales que quedan pendientes (requieren decisión/acción del dueño
 3. Sin job de reconciliación de entitlements, sin autoservicio de exportar/borrar datos, sin
    analítica instalada, sin piloto cerrado con compradores reales del ICP.
 
+⚠️ La primera corrida real de CI en GitHub FALLÓ (verificado abriendo el run en el navegador):
+`tsc --noEmit` suelto, corrido ANTES del build, no encontraba `LayoutProps` (un tipo ambiental
+que Next 16 genera DENTRO de `.next/types` solo durante `npm run build` — localmente no se vio
+el error porque ya había un `.next` generado de sesiones anteriores). Corregido de raíz: se quitó
+el paso de typecheck suelto — `npm run build` ya corre su propio chequeo de tipos real ("Running
+TypeScript..."), confirmado reproduciendo el fallo con un `.next` limpio y placeholders de env,
+igual que lo hace GitHub.
+
 **CI RESUELTO (2026-11-02):** `.github/workflows/ci.yml` corre en cada push/PR a `master` —
 `npm ci` → lint → `tsc --noEmit` → build → `npm audit --omit=dev --audit-level=high`. El build
 usa variables públicas de placeholder cuando no hay secretos del repo configurados (seguro,
