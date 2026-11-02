@@ -1,21 +1,19 @@
 import "../legal.css";
 import { LegalHeader, LegalNav, LegalWrap } from "../LegalChrome";
 
-// ⚠️ El plazo de abajo (7 días) es el mínimo legal que Hotmart aplica por defecto
-// (derecho de retracto). Antes de vender en serio, el dueño debe VERIFICAR en el panel de
-// Hotmart (sección del producto donde se configura ese plazo) que coincide con este texto — si
-// lo sube, hay que subir este número también (ver docs/sistema/18-VENTA-HOTMART.md y ESTADO.md →
-// Problemas conocidos → `plazo-reembolso-sin-verificar-en-hotmart`).
+// Plazo de 21 días VERIFICADO en el panel de Hotmart (sección "Fijación de precios" del
+// producto) el 2026-11-02 — ver FICHA-MERCADO.md §4. Si el dueño cambia ese número en Hotmart,
+// hay que subir este texto también.
 export default function ReembolsosPage() {
   return (
     <div className="lx-page">
       <LegalHeader />
       <LegalWrap>
-        <p className="lx-fecha">Última actualización: 1 de noviembre de 2026</p>
+        <p className="lx-fecha">Última actualización: 2 de noviembre de 2026</p>
         <h1 className="lx-titulo">Política de Reembolsos y Cancelación</h1>
         <p className="lx-resumen">
           En simple: la prueba de 14 días es gratis, así que no hay nada que cobrarte hasta que tú
-          decides seguir. Si ya pagaste y te arrepientes, tienes 7 días para pedir que te
+          decides seguir. Si ya pagaste y te arrepientes, tienes 21 días para pedir que te
           devolvamos tu dinero. Y cancelar tu suscripción toma menos de 2 minutos, sin llamarnos.
         </p>
 
@@ -27,11 +25,10 @@ export default function ReembolsosPage() {
 
         <h2>2. Si ya pagaste</h2>
         <p>
-          Una vez que activas un plan pago, tienes <strong>7 días corridos desde la fecha de
+          Una vez que activas un plan pago, tienes <strong>21 días corridos desde la fecha de
           compra</strong> para pedir el reembolso completo de tu primer pago, sin tener que dar
           explicaciones. Este plazo lo administra y lo garantiza directamente{" "}
-          <strong>Hotmart</strong>, nuestro procesador de pagos, como parte de su derecho de
-          retracto para todos los productos que vende.
+          <strong>Hotmart</strong>, nuestro procesador de pagos.
         </p>
         <p>
           Para pedirlo: ingresa a tu cuenta de comprador en{" "}
@@ -41,7 +38,7 @@ export default function ReembolsosPage() {
           te ayudamos con el trámite.
         </p>
         <p>
-          Pasados los 7 días, los cobros ya realizados no son reembolsables, pero puedes cancelar
+          Pasados los 21 días, los cobros ya realizados no son reembolsables, pero puedes cancelar
           la renovación cuando quieras para que no se te vuelva a cobrar (ver abajo).
         </p>
 
