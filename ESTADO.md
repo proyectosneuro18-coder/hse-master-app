@@ -172,6 +172,34 @@ Cuentas ya confirmadas por el usuario: GitHub, Supabase, Vercel (conectado 2026-
 
 ## Próximas sesiones 📋
 
+## Sesión 10 — Integridad de lanzamiento (2026-11-02)
+
+Corrí la auditoría completa de `61-INTEGRIDAD-DE-LANZAMIENTO.md` (10 gates) a pedido del usuario.
+Artefactos completos en `docs/release/` (CLAIMS-LEDGER, PAYMENT-CERTIFICATION, ECONOMICS-CERTIFICATION,
+PRIVACY-DATA-MAP, RELEASE-MANIFEST.json, PUBLICATION-CERTIFICATE) con evidencia real, sin inventar
+nada verificado. **VEREDICTO: NO APTO** — ver `PUBLICATION-CERTIFICATE.md` para la lista completa.
+
+Corregido en esta sesión (sin tocar dinero): `search_path` endurecido en `registrar_intento`
+(migración `0009_search_path_hardening.sql`, pendiente de correr por el usuario en Supabase).
+
+Corregido además (2026-11-02, sin costo): el usuario agregó `HOTMART_PRODUCT_ID=8821424` en
+Vercel (Production) y redesplegó (commit `b013d3a` confirmado como "Actualidad" en Producción) —
+el webhook ya solo acepta eventos del producto real de esta app, ya no de cualquier producto de
+la cuenta Hotmart del dueño. `PAYMENT-CERTIFICATION.md` queda desactualizado en ese punto — se
+corrige en la próxima pasada de auditoría.
+
+Bloqueantes reales que quedan pendientes (requieren decisión/acción del dueño):
+1. **"El Pase"** (la promesa central de venta: pase QR que un supervisor verifica en el pozo) NO
+   existe en código — es solo un texto fijo con un botón de ayuda. Decisión de negocio pendiente:
+   construirlo de verdad o suavizar la promesa en landing/onboarding.
+2. Un solo proyecto Supabase para dev y producción (ya documentado desde Sesión 6).
+3. Cero CI (lint/typecheck/test/build no corren automático en cada push).
+4. La matriz de pago real (Gate 2: trial→cobro, cancelación, reembolso, chargeback) nunca se
+   probó de punta a punta contra Hotmart real — probarla implica una compra de prueba real
+   (dinero), pendiente de autorización del dueño.
+5. Sin job de reconciliación de entitlements, sin autoservicio de exportar/borrar datos, sin
+   analítica instalada, sin piloto cerrado con compradores reales del ICP.
+
 ## Problemas conocidos ⚠️
 - falta-renombrar-organizacion — RESUELTO (2026-11-02): el Gerente de HSE ahora puede tocar el nombre de su empresa en `/panel` (encabezado, con lápiz) y editarlo en un modal — mismo patrón que "Renombrar cuadrilla". Nuevo endpoint `app/api/admin/organization/route.ts` (PATCH, valida membership owner/admin antes de escribir) y migración `supabase/migrations/0007_organization_rename.sql` (agrega el UPDATE policy que faltaba en `organizations` — la tabla solo tenía SELECT desde 0001_init.sql). Verificado con una cuenta QA temporal a 375px: abre el modal, guarda el nuevo nombre, muestra el aviso con "Deshacer". El usuario corrió la migración 0007 en su panel de Supabase el 2026-11-02 ("Éxito").
 - plazo-reembolso-sin-verificar-en-hotmart — RESUELTO (2026-11-02): el producto ya fue aprobado por Hotmart y se abrió el checkout real (`https://pay.hotmart.com/D108216311I`) a 375px — precio US$8/mes (se muestra en COP según el país del comprador), prueba de 14 días funcionando, métodos de pago Débito/Crédito, Efecty y PayPal. En el panel (Fijación de precios) el plazo de reembolso estaba en 7 días por defecto, violando la regla dura (garantía > prueba); el dueño lo subió a **21 días** en el propio panel de Hotmart. Se actualizó `app/legal/reembolsos/page.tsx` (7→21 días en las 3 menciones) y `FICHA-MERCADO.md` §3/§4 con los datos verificados. `checkout-real-pendiente` también queda resuelto por esta verificación.
