@@ -341,7 +341,7 @@ export function AppHomeClient({
     cargar();
 
     return () => document.removeEventListener("keydown", onKeydown);
-  }, [router, nombreTrabajador, rachaInicial, yaCompletadoHoy, modulosAprobados, totalModulos, reto]);
+  }, [router, nombreTrabajador, rachaInicial, yaCompletadoHoy, modulosAprobados, totalModulos, reto, posicionRanking, totalCuadrillas]);
 
   return (
     <div

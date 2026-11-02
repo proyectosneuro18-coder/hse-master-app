@@ -1,0 +1,42 @@
+name: CI
+
+# Corre en cada push y en cada pull request a master — revisa que el código compile, pase los
+# tipos y el linter, y que no tenga vulnerabilidades críticas conocidas antes de llegar a
+# producción (Gate 9 de docs/sistema/61-INTEGRIDAD-DE-LANZAMIENTO.md).
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build-and-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npx tsc --noEmit
+
+      - name: Build
+        run: npm run build
+        env:
+          # Valores públicos/no sensibles para que el build compile — nunca el secreto real.
+          # El proyecto real de Supabase se configura como secreto del repositorio (ver abajo).
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co' }}
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || 'sb_publishable_placeholder' }}
+          SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co' }}
+          SUPABASE_SECRET_KEY: "sb_secret_placeholder"
+
+      - name: Vulnerabilidades críticas/altas en dependencias de producción
+        run: npm audit --omit=dev --audit-level=high

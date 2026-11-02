@@ -19,6 +19,23 @@ const GRACE_DAYS = 5; // días de gracia en pago atrasado antes de cortar el acc
 // falsas) pero no distingue "tu producto" de otro producto de la misma cuenta Hotmart.
 const EXPECTED_PRODUCT_ID = process.env.HOTMART_PRODUCT_ID;
 
+// Forma mínima que este endpoint lee del payload real de Hotmart — todos los campos son
+// opcionales porque distintos tipos de evento traen distintos subconjuntos.
+type HotmartWebhookPayload = {
+  event?: string;
+  id?: string;
+  event_id?: string;
+  creation_date?: number;
+  email?: string;
+  data?: {
+    purchase?: { approved_date?: number; transaction?: string; price?: { value?: number; currency_value?: string } };
+    buyer?: { email?: string };
+    subscription?: { subscriber?: { code?: string }; plan?: { name?: string }; date_next_charge?: string };
+    plans?: { name?: string }[];
+    product?: { id?: number | string };
+  };
+};
+
 async function logResult(
   admin: ReturnType<typeof createAdminClient>,
   result: "applied" | "duplicate" | "illegal" | "unauthorized" | "not_found" | "error",
@@ -43,7 +60,7 @@ export async function POST(req: NextRequest) {
   }
 
   // 3) Parsear SOLO después de verificar.
-  let payload: any;
+  let payload: HotmartWebhookPayload;
   try {
     payload = JSON.parse(rawBody);
   } catch {
@@ -56,7 +73,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "stale" }, { status: 400 });
   }
 
-  const event: string = payload.event;
+  const event: string = payload.event ?? "";
   const eventId: string =
     payload.id ??
     payload.event_id ??
@@ -129,8 +146,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "internal" }, { status: 500 });
   }
 
-  const result = data as string; // 'applied' | 'duplicate' | 'illegal' | 'not_found'
-  await logResult(admin, result as any, eventId, event);
+  const result = data as "applied" | "duplicate" | "illegal" | "not_found";
+  await logResult(admin, result, eventId, event);
 
   if (result === "not_found") {
     // No existe (todavía) una organización con ese email/código — no es un ataque, puede ser

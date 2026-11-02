@@ -48,8 +48,9 @@ export default async function PanelPage() {
       .eq("org_id", membership.org_id)
       .order("name");
 
-  let { data: crews, error: crewsErr } = await consultaCrews().eq("archived", false);
-  if (crewsErr) {
+  const primerIntento = await consultaCrews().eq("archived", false);
+  let crews = primerIntento.data;
+  if (primerIntento.error) {
     ({ data: crews } = await consultaCrews());
   }
 

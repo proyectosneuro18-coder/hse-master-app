@@ -1,11 +1,12 @@
 import type { ReactNode } from "react";
+import Link from "next/link";
 
 export function LegalHeader() {
   return (
     <div className="lx-header">
-      <a href="/" className="lx-logo" aria-label="Ir al inicio">
+      <Link href="/" className="lx-logo" aria-label="Ir al inicio">
         <span className="dot" />HSE Master App
-      </a>
+      </Link>
     </div>
   );
 }

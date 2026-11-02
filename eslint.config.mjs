@@ -12,6 +12,11 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Material de referencia del SO, nunca importado por la app real (no es parte del build
+    // de producción): el kit de plantillas que se copia a mano a otros proyectos, y los
+    // scripts de mantenimiento interno del propio SO.
+    "plantillas-codigo/**",
+    "scripts/**",
   ]),
 ]);
 

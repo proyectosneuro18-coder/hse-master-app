@@ -203,12 +203,28 @@ inválido muestra "Pase no válido" sin filtrar nada. Datos de prueba borrados d
 
 Bloqueantes reales que quedan pendientes (requieren decisión/acción del dueño):
 1. Un solo proyecto Supabase para dev y producción (ya documentado desde Sesión 6).
-2. Cero CI (lint/typecheck/test/build no corren automático en cada push).
-3. La matriz de pago real (Gate 2: trial→cobro, cancelación, reembolso, chargeback) nunca se
+2. La matriz de pago real (Gate 2: trial→cobro, cancelación, reembolso, chargeback) nunca se
    probó de punta a punta contra Hotmart real — probarla implica una compra de prueba real
    (dinero), pendiente de autorización del dueño.
-4. Sin job de reconciliación de entitlements, sin autoservicio de exportar/borrar datos, sin
+3. Sin job de reconciliación de entitlements, sin autoservicio de exportar/borrar datos, sin
    analítica instalada, sin piloto cerrado con compradores reales del ICP.
+
+**CI RESUELTO (2026-11-02):** `.github/workflows/ci.yml` corre en cada push/PR a `master` —
+`npm ci` → lint → `tsc --noEmit` → build → `npm audit --omit=dev --audit-level=high`. El build
+usa variables públicas de placeholder cuando no hay secretos del repo configurados (seguro,
+nunca el secreto real; el repo todavía no tiene `NEXT_PUBLIC_SUPABASE_URL`/`_PUBLISHABLE_KEY`
+como GitHub Secrets — opcional, solo mejora que el build de CI use los valores reales). De paso
+se corrigieron 11 errores reales de lint que ya existían (no inventados para "pasar el gate"):
+2 `any` sin tipar en el webhook de Hotmart (se tipó el payload real), 3 `<a href="/">` que debían
+ser `<Link>` de Next, un `let` que debía ser `const`, una importación sin usar, y 4 casos de
+`setState` síncrono dentro de un efecto en `app/panel/PanelClient.tsx` — resueltos de raíz: el
+contador animado ahora calcula el valor sin animación directo en el render (sin pasar por
+estado), y los 3 modales de edición (organización/trabajador/cuadrilla) ahora se remontan con
+una `key` ligada a qué se está editando, patrón recomendado por React para "resetear estado
+cuando cambia una prop" en vez de un efecto. Verificado en navegador: los 3 modales siguen
+abriendo con sus campos precargados igual que antes. `plantillas-codigo/` y `scripts/` se
+excluyeron del alcance del linter (nunca se importan desde la app real, son material de
+referencia/herramientas internas, no parte del build de producción).
 
 ## Problemas conocidos ⚠️
 - falta-renombrar-organizacion — RESUELTO (2026-11-02): el Gerente de HSE ahora puede tocar el nombre de su empresa en `/panel` (encabezado, con lápiz) y editarlo en un modal — mismo patrón que "Renombrar cuadrilla". Nuevo endpoint `app/api/admin/organization/route.ts` (PATCH, valida membership owner/admin antes de escribir) y migración `supabase/migrations/0007_organization_rename.sql` (agrega el UPDATE policy que faltaba en `organizations` — la tabla solo tenía SELECT desde 0001_init.sql). Verificado con una cuenta QA temporal a 375px: abre el modal, guarda el nuevo nombre, muestra el aviso con "Deshacer". El usuario corrió la migración 0007 en su panel de Supabase el 2026-11-02 ("Éxito").

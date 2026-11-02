@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import "./login.css";
 
@@ -112,9 +113,9 @@ export default function LoginPage() {
   return (
     <div className="lg-page js-motion">
       <div className="lg-header">
-        <a href="/" className="lg-logo" aria-label="Ir al inicio">
+        <Link href="/" className="lg-logo" aria-label="Ir al inicio">
           <span className="dot" />HSE Master App
-        </a>
+        </Link>
       </div>
 
       <main className="wrap">

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import {
@@ -67,12 +67,9 @@ function formatearFecha(iso: string | null) {
 }
 
 function useConteo(destino: number, sinMovimiento: boolean) {
-  const [valor, setValor] = useState(sinMovimiento ? destino : 0);
+  const [valor, setValor] = useState(destino);
   useEffect(() => {
-    if (sinMovimiento) {
-      setValor(destino);
-      return;
-    }
+    if (sinMovimiento) return; // sin animación: el valor ya se calcula directo al renderizar, no hace falta un efecto
     let raf = 0;
     const inicio = performance.now();
     const duracion = 600;
@@ -84,7 +81,7 @@ function useConteo(destino: number, sinMovimiento: boolean) {
     raf = requestAnimationFrame(paso);
     return () => cancelAnimationFrame(raf);
   }, [destino, sinMovimiento]);
-  return valor;
+  return sinMovimiento ? destino : valor;
 }
 
 function BannerEstado({
@@ -536,15 +533,6 @@ function ModalEditarTrabajador({
   const [enviando, setEnviando] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (worker) {
-      setFullName(worker.full_name);
-      setActivo(worker.active);
-      setPin("");
-      setError(null);
-    }
-  }, [worker]);
-
   async function enviar(e: React.FormEvent) {
     e.preventDefault();
     if (!worker) return;
@@ -676,13 +664,6 @@ function ModalRenombrarCuadrilla({
   const [archivando, setArchivando] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (crew) {
-      setNombre(crew.name);
-      setError(null);
-    }
-  }, [crew]);
-
   async function enviar(e: React.FormEvent) {
     e.preventDefault();
     if (!crew) return;
@@ -808,13 +789,6 @@ function ModalRenombrarOrganizacion({
   const [nombre, setNombre] = useState(nombreActual);
   const [enviando, setEnviando] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (abierto) {
-      setNombre(nombreActual);
-      setError(null);
-    }
-  }, [abierto, nombreActual]);
 
   async function enviar(e: React.FormEvent) {
     e.preventDefault();
@@ -1102,6 +1076,7 @@ export function PanelClient({
       {interactuado && (
         <>
           <ModalRenombrarOrganizacion
+            key={renombrandoOrg ? "abierto" : "cerrado"}
             abierto={renombrandoOrg}
             nombreActual={nombreOrg}
             onOpenChange={setRenombrandoOrg}
@@ -1121,11 +1096,13 @@ export function PanelClient({
             crews={crews}
           />
           <ModalEditarTrabajador
+            key={workerEditando?.user_id ?? "cerrado"}
             worker={workerEditando}
             onOpenChange={(v) => !v && setWorkerEditando(null)}
             onGuardado={(deshacer) => mostrarToastDeshacer("Cambios guardados", deshacer)}
           />
           <ModalRenombrarCuadrilla
+            key={crewRenombrando?.id ?? "cerrado"}
             crew={crewRenombrando}
             onOpenChange={(v) => !v && setCrewRenombrando(null)}
             onGuardado={(deshacer) => mostrarToastDeshacer("Cuadrilla renombrada", deshacer)}
