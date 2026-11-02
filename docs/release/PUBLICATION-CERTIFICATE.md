@@ -125,16 +125,16 @@ recertification_triggers_documented: false
 VEREDICTO: NO APTO
 
 Bloqueantes:
-1. Un solo proyecto Supabase para desarrollo y producción (sin aislar ambientes).
-2. Matriz de pago real (Gate 2) sin probar de punta a punta contra Hotmart en producción.
-3. Sin job de reconciliación de entitlements, sin autoservicio de exportación/borrado de datos,
+1. Matriz de pago real (Gate 2) sin probar de punta a punta contra Hotmart en producción.
+2. Sin job de reconciliación de entitlements, sin autoservicio de exportación/borrado de datos,
    sin analítica instalada, sin piloto cerrado con compradores reales.
 
 Resuelto durante esta auditoría (2026-11-02): allowlist de producto Hotmart (HOTMART_PRODUCT_ID)
 activa en Production; confirmado que el deployment en Vercel coincide con el commit del repo;
 "El Pase" construido de verdad (QR real + verificación pública, ver CLAIMS-LEDGER.md); CI real
 en `.github/workflows/ci.yml` (lint + typecheck + build + npm audit en cada push/PR), que de
-paso destapó y corrigió 11 errores reales de lint preexistentes en el código.
+paso destapó y corrigió 11 errores reales de lint preexistentes en el código; proyecto Supabase
+separado para desarrollo ("HSE Master App - Dev") — Production queda solo en "Principal".
 
 Riesgos residuales (no bloqueantes, aceptables para seguir operando a bajo volumen):
 - Reconciliación manual de pagos y de consentimiento (aceptable mientras el volumen sea bajo).

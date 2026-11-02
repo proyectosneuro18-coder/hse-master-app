@@ -202,12 +202,24 @@ inválido muestra "Pase no válido" sin filtrar nada. Datos de prueba borrados d
 `CLAIMS-LEDGER.md`/`PUBLICATION-CERTIFICATE.md` se actualizan en la próxima pasada de auditoría.
 
 Bloqueantes reales que quedan pendientes (requieren decisión/acción del dueño):
-1. Un solo proyecto Supabase para dev y producción (ya documentado desde Sesión 6).
-2. La matriz de pago real (Gate 2: trial→cobro, cancelación, reembolso, chargeback) nunca se
+1. La matriz de pago real (Gate 2: trial→cobro, cancelación, reembolso, chargeback) nunca se
    probó de punta a punta contra Hotmart real — probarla implica una compra de prueba real
    (dinero), pendiente de autorización del dueño.
-3. Sin job de reconciliación de entitlements, sin autoservicio de exportar/borrar datos, sin
+2. Sin job de reconciliación de entitlements, sin autoservicio de exportar/borrar datos, sin
    analítica instalada, sin piloto cerrado con compradores reales del ICP.
+
+**AMBIENTES SEPARADOS, RESUELTO (2026-11-02):** proyecto nuevo de Supabase **"HSE Master App -
+Dev"** (URL distinta, project-ref propio) creado solo para desarrollo/pruebas — el proyecto
+"Principal" queda SOLO para producción (Vercel sigue apuntando ahí, sin tocar). Se corrió el
+archivo combinado de las 10 migraciones en el proyecto nuevo: falló 2 veces en la primera pasada
+(ver `migraciones-combinadas-registrar-intento` abajo — causa raíz real encontrada y corregida
+en `0009_search_path_hardening.sql`), se borró el proyecto a medio construir y se recreó de
+cero; la tercera corrida (ya con el fix) dio "Success" de un tirón. El dueño actualizó su
+`.env.local` local con la URL/clave publishable/clave secreta del proyecto nuevo — nunca me dijo
+los valores, los puso él mismo. Verificado con una ruta QA temporal: escritura y borrado reales
+contra la base de desarrollo, confirmando que las 3 variables (incluida la secreta) apuntan bien
+al proyecto nuevo. A partir de ahora, correr migraciones nuevas DOS VECES — una en "Dev" (donde
+se prueban) y otra en "Principal" (cuando el dueño confirme que está probado).
 
 ⚠️ La primera corrida real de CI en GitHub FALLÓ (verificado abriendo el run en el navegador):
 `tsc --noEmit` suelto, corrido ANTES del build, no encontraba `LayoutProps` (un tipo ambiental
@@ -235,6 +247,17 @@ excluyeron del alcance del linter (nunca se importan desde la app real, son mate
 referencia/herramientas internas, no parte del build de producción).
 
 ## Problemas conocidos ⚠️
+- migraciones-combinadas-registrar-intento — RESUELTO (2026-11-02): al correr las 10
+  migraciones de un tirón en una base de datos 100% nueva, `0009_search_path_hardening.sql`
+  fallaba con `42P13: cannot change return type of existing function` sobre `registrar_intento`.
+  Causa raíz: 0009 hacía `create or replace function` sin un `drop function if exists` previo
+  (a diferencia de 0006, que sí lo tenía) — cuando el estado anterior de la función no calzaba
+  exactamente, Postgres lo rechaza. Se agregó el `drop function if exists` defensivo en 0009
+  (no hace falta re-correrlo en el proyecto "Principal", donde 0009 ya se había aplicado bien
+  antes de descubrir este bug). Lección: toda migración que reemplace una función con
+  `create or replace` debería llevar su propio `drop function if exists` defensivo, no asumir
+  que el estado previo siempre calza — esto solo se destapó al correr TODAS las migraciones
+  juntas contra una base nueva (nunca se había probado ese camino hasta separar ambientes).
 - falta-renombrar-organizacion — RESUELTO (2026-11-02): el Gerente de HSE ahora puede tocar el nombre de su empresa en `/panel` (encabezado, con lápiz) y editarlo en un modal — mismo patrón que "Renombrar cuadrilla". Nuevo endpoint `app/api/admin/organization/route.ts` (PATCH, valida membership owner/admin antes de escribir) y migración `supabase/migrations/0007_organization_rename.sql` (agrega el UPDATE policy que faltaba en `organizations` — la tabla solo tenía SELECT desde 0001_init.sql). Verificado con una cuenta QA temporal a 375px: abre el modal, guarda el nuevo nombre, muestra el aviso con "Deshacer". El usuario corrió la migración 0007 en su panel de Supabase el 2026-11-02 ("Éxito").
 - plazo-reembolso-sin-verificar-en-hotmart — RESUELTO (2026-11-02): el producto ya fue aprobado por Hotmart y se abrió el checkout real (`https://pay.hotmart.com/D108216311I`) a 375px — precio US$8/mes (se muestra en COP según el país del comprador), prueba de 14 días funcionando, métodos de pago Débito/Crédito, Efecty y PayPal. En el panel (Fijación de precios) el plazo de reembolso estaba en 7 días por defecto, violando la regla dura (garantía > prueba); el dueño lo subió a **21 días** en el propio panel de Hotmart. Se actualizó `app/legal/reembolsos/page.tsx` (7→21 días en las 3 menciones) y `FICHA-MERCADO.md` §3/§4 con los datos verificados. `checkout-real-pendiente` también queda resuelto por esta verificación.
 - falta-checkbox-consentimiento-registro — RESUELTO (2026-11-02): se agregó a `/login` (Gerente de HSE, el único punto real de alta con datos personales — crea cuenta vía magic link/Google) un checkbox "Acepto los Términos y la Política de Privacidad" (`app/login/page.tsx` + `app/login/login.css`), sin premarcar, con enlaces reales a `/legal/terminos` y `/legal/privacidad`, que bloquea tanto el envío del enlace mágico como "Continuar con Google" hasta marcarse. Verificado en navegador a 375px: sin marcar bloquea con mensaje de error, al marcar lo deja avanzar. `/login/trabajador` no recibe este checkbox a propósito: ahí el trabajador no ingresa datos personales nuevos — solo elige su nombre y PIN ya dados de alta por su Gerente de HSE desde `/panel`, el consentimiento de ese trabajador se cubre en el alta que hace el Gerente, no en este login.

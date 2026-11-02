@@ -4,6 +4,12 @@
 -- Todas las referencias dentro de la función ya estaban completamente calificadas
 -- (`public.workers`, `public.attempts`, `public.streaks`, `auth.uid()`), así que el cambio no
 -- afecta el comportamiento — solo cierra la ruta teórica de inyección de esquema.
+-- El DROP explícito es defensivo: en una base de datos que corre TODAS las migraciones de
+-- un tirón (p. ej. un proyecto de Supabase nuevo para desarrollo), Postgres puede rechazar un
+-- `create or replace` si la firma de salida no calza exactamente con la versión previa en esa
+-- misma transacción — el DROP elimina esa ambigüedad sin importar el estado anterior.
+drop function if exists public.registrar_intento(uuid, int, boolean);
+
 create or replace function public.registrar_intento(
   p_lesson_id uuid,
   p_score int,
