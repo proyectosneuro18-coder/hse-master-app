@@ -793,6 +793,102 @@ function ModalRenombrarCuadrilla({
   );
 }
 
+function ModalRenombrarOrganizacion({
+  abierto,
+  nombreActual,
+  onOpenChange,
+  onGuardado,
+}: {
+  abierto: boolean;
+  nombreActual: string;
+  onOpenChange: (v: boolean) => void;
+  onGuardado: (nuevoNombre: string, deshacer: () => Promise<void>) => void;
+}) {
+  const router = useRouter();
+  const [nombre, setNombre] = useState(nombreActual);
+  const [enviando, setEnviando] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (abierto) {
+      setNombre(nombreActual);
+      setError(null);
+    }
+  }, [abierto, nombreActual]);
+
+  async function enviar(e: React.FormEvent) {
+    e.preventDefault();
+    if (!nombre.trim()) return setError("El nombre no puede quedar vacío.");
+    setEnviando(true);
+    try {
+      const res = await fetch("/api/admin/organization", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: nombre.trim() }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data?.error ?? "Algo falló. Intenta de nuevo.");
+        return;
+      }
+      const nombreAnterior = nombreActual;
+      onGuardado(nombre.trim(), async () => {
+        await fetch("/api/admin/organization", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: nombreAnterior }),
+        });
+        router.refresh();
+      });
+      onOpenChange(false);
+      router.refresh();
+    } catch {
+      setError("No pudimos conectar con el servidor. Revisa tu conexión.");
+    } finally {
+      setEnviando(false);
+    }
+  }
+
+  return (
+    <Dialog open={abierto} onOpenChange={onOpenChange}>
+      <CascaronModal titulo="Nombre de tu empresa" onCerrar={() => onOpenChange(false)}>
+        <form onSubmit={enviar} className="flex flex-col gap-3.5 px-5 py-5">
+          <label className="flex flex-col gap-1 text-sm font-semibold text-[var(--hse-ink)]">
+            Así se ve en tu panel
+            <input
+              value={nombre}
+              onChange={(e) => setNombre(e.target.value)}
+              autoFocus
+              className="rounded-[var(--hse-radius-boton)] border-2 border-[var(--hse-ink)] bg-[var(--hse-neutro-antes)] shadow-[inset_0_2px_4px_rgba(26,26,26,0.12)] px-3 py-2.5 text-base font-normal text-[var(--hse-ink)]"
+            />
+          </label>
+          {error && (
+            <p role="alert" className="rounded-[var(--hse-radius-chip)] bg-[var(--hse-rojo)]/10 px-3 py-2 text-sm font-medium text-[var(--hse-rojo-texto)]">
+              {error}
+            </p>
+          )}
+          <div className="mt-1 flex gap-2">
+            <button
+              type="button"
+              onClick={() => onOpenChange(false)}
+              className="rounded-[var(--hse-radius-boton)] border-2 border-[var(--hse-ink)] bg-[var(--hse-surface)] px-4 py-2.5 text-sm font-bold text-[var(--hse-ink)] transition active:scale-[0.98]"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              disabled={enviando}
+              className="flex-1 rounded-[var(--hse-radius-boton)] border-2 border-[var(--hse-ink)] bg-[var(--hse-amarillo)] py-2.5 text-sm font-bold text-[var(--hse-ink)] shadow-[0_4px_0_var(--hse-amarillo-sombra)] transition active:translate-y-[4px] active:shadow-none disabled:opacity-60"
+            >
+              {enviando ? "Guardando..." : "Guardar"}
+            </button>
+          </div>
+        </form>
+      </CascaronModal>
+    </Dialog>
+  );
+}
+
 export function PanelClient({
   orgName,
   ownerEmail,
@@ -814,6 +910,8 @@ export function PanelClient({
 }) {
   const router = useRouter();
   const sinMovimiento = useReducedMotion();
+  const [nombreOrg, setNombreOrg] = useState(orgName);
+  const [renombrandoOrg, setRenombrandoOrg] = useState(false);
   const [modalAbierto, setModalAbierto] = useState(false);
   const [crewPreseleccionada, setCrewPreseleccionada] = useState<{ id: string; name: string } | null>(null);
   const [workerEditando, setWorkerEditando] = useState<Worker | null>(null);
@@ -878,9 +976,19 @@ export function PanelClient({
             <p className="text-xs font-semibold tracking-wide text-[var(--hse-ink-2)] uppercase">
               Panel del Gerente de HSE
             </p>
-            <h1 className="font-[family-name:var(--hse-font-display)] text-2xl font-bold text-[var(--hse-ink)]">
-              {orgName}
-            </h1>
+            <button
+              type="button"
+              onClick={() => {
+                setInteractuado(true);
+                setRenombrandoOrg(true);
+              }}
+              className="group flex items-center gap-1.5 text-left"
+            >
+              <h1 className="font-[family-name:var(--hse-font-display)] text-2xl font-bold text-[var(--hse-ink)]">
+                {nombreOrg}
+              </h1>
+              <Pencil className="size-3.5 shrink-0 text-[var(--hse-ink-2)]" strokeWidth={2.25} />
+            </button>
           </div>
           <button
             type="button"
@@ -993,6 +1101,19 @@ export function PanelClient({
 
       {interactuado && (
         <>
+          <ModalRenombrarOrganizacion
+            abierto={renombrandoOrg}
+            nombreActual={nombreOrg}
+            onOpenChange={setRenombrandoOrg}
+            onGuardado={(nuevoNombre, deshacer) => {
+              const nombrePrevio = nombreOrg;
+              setNombreOrg(nuevoNombre);
+              mostrarToastDeshacer("Nombre de tu empresa actualizado", async () => {
+                await deshacer();
+                setNombreOrg(nombrePrevio);
+              });
+            }}
+          />
           <ModalAgregarTrabajador
             abierto={modalAbierto}
             onOpenChange={setModalAbierto}
