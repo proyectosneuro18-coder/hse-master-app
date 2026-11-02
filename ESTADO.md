@@ -180,7 +180,8 @@ PRIVACY-DATA-MAP, RELEASE-MANIFEST.json, PUBLICATION-CERTIFICATE) con evidencia 
 nada verificado. **VEREDICTO: NO APTO** — ver `PUBLICATION-CERTIFICATE.md` para la lista completa.
 
 Corregido en esta sesión (sin tocar dinero): `search_path` endurecido en `registrar_intento`
-(migración `0009_search_path_hardening.sql`, pendiente de correr por el usuario en Supabase).
+(migración `0009_search_path_hardening.sql`, corrida por el usuario en Supabase el 2026-11-02 —
+"Éxito").
 
 Corregido además (2026-11-02, sin costo): el usuario agregó `HOTMART_PRODUCT_ID=8821424` en
 Vercel (Production) y redesplegó (commit `b013d3a` confirmado como "Actualidad" en Producción) —
