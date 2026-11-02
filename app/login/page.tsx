@@ -16,6 +16,7 @@ export default function LoginPage() {
   const [codigo, setCodigo] = useState("");
   const [error, setError] = useState("");
   const [errorCodigo, setErrorCodigo] = useState("");
+  const [aceptaTerminos, setAceptaTerminos] = useState(false);
   const [reveal, setReveal] = useState(false);
   const [segundosReenvio, setSegundosReenvio] = useState(60);
 
@@ -40,6 +41,10 @@ export default function LoginPage() {
     const correo = email.trim();
     if (!emailValido(correo)) {
       setError("Escribe un correo válido para poder enviarte el enlace.");
+      return;
+    }
+    if (!aceptaTerminos) {
+      setError("Acepta los Términos y la Política de Privacidad para continuar.");
       return;
     }
     setEstado("enviando");
@@ -92,6 +97,10 @@ export default function LoginPage() {
   }
 
   async function continuarConGoogle() {
+    if (!aceptaTerminos) {
+      setError("Acepta los Términos y la Política de Privacidad para continuar.");
+      return;
+    }
     await supabase.auth.signInWithOAuth({
       provider: "google",
       options: { redirectTo: `${window.location.origin}/auth/confirm?next=/app` },
@@ -128,6 +137,22 @@ export default function LoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={estado === "enviando"}
               />
+              <label className={cls("lg-consentimiento")}>
+                <input
+                  type="checkbox"
+                  checked={aceptaTerminos}
+                  onChange={(e) => {
+                    setAceptaTerminos(e.target.checked);
+                    if (e.target.checked) setError("");
+                  }}
+                />
+                <span>
+                  Acepto los{" "}
+                  <a href="/legal/terminos" target="_blank" rel="noopener noreferrer">Términos</a>{" "}
+                  y la{" "}
+                  <a href="/legal/privacidad" target="_blank" rel="noopener noreferrer">Política de Privacidad</a>
+                </span>
+              </label>
               <p className={`lg-error${error ? " show" : ""}`}>{error}</p>
               <button
                 type="submit"

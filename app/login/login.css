@@ -51,6 +51,15 @@
 @keyframes lg-girar { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) { .lg-page .lg-spinner { animation: none; } }
 
+.lg-page .lg-consentimiento {
+  margin-top: 14px; display: flex; align-items: flex-start; gap: 10px; cursor: pointer; user-select: none;
+}
+.lg-page .lg-consentimiento input {
+  margin-top: 2px; width: 20px; height: 20px; flex-shrink: 0; accent-color: var(--verde); cursor: pointer;
+}
+.lg-page .lg-consentimiento span { font-size: 13px; color: var(--ink-2); line-height: 1.4; }
+.lg-page .lg-consentimiento a { color: var(--ink); font-weight: 700; text-decoration: underline; }
+
 .lg-page .lg-separador { margin: 8px 0; display: flex; align-items: center; gap: 12px; color: var(--ink-2); font-size: 12px; font-weight: 700; text-transform: uppercase; }
 .lg-page .lg-separador::before, .lg-page .lg-separador::after { content: ''; flex: 1; height: 1px; background: var(--neutro-track); }
 
