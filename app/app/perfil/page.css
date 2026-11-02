@@ -57,17 +57,17 @@ body {
 .pf .pf-pase { margin-top: 18px; background: var(--surface); border: 3px solid var(--ink); border-radius: 18px; padding: 20px;
              text-align: center; box-shadow: 0 6px 0 -2px rgb(26 26 26/0.08), 0 10px 20px rgb(26 26 26/0.1); }
 .pf .pf-pase-tit { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-2); text-align: left; }
-.pf .pf-qr { width: 128px; height: 128px; margin: 14px auto 0; border-radius: 12px; border: 3px solid var(--ink);
-           background:
-             repeating-linear-gradient(0deg, var(--ink) 0 7px, transparent 7px 14px),
-             repeating-linear-gradient(90deg, var(--ink) 0 7px, transparent 7px 14px);
-           background-blend-mode: multiply; background-color: var(--amarillo); }
+.pf .pf-qr { width: 128px; height: 128px; margin: 14px auto 0; padding: 8px; border-radius: 12px; border: 3px solid var(--ink);
+           background-color: var(--amarillo); box-sizing: border-box; }
 .pf .pf-pase-nombre { margin-top: 14px; font-family: var(--font-display); font-size: 18px; font-weight: 800; }
 .pf .pf-pase-cuadrilla { font-size: 12px; color: var(--ink-2); margin-top: 2px; font-weight: 600; }
 .pf .pf-pase-vigente { display: inline-flex; align-items: center; gap: 5px; margin-top: 10px; background: color-mix(in oklab, var(--verde) 16%, var(--surface));
                       border: 1.5px solid var(--verde-sombra); color: var(--verde-sombra); font-size: 11px; font-weight: 800;
                       padding: 4px 10px; border-radius: 999px; }
 .pf .pf-pase-vigente .punto { width: 7px; height: 7px; border-radius: 999px; background: var(--verde); }
+.pf .pf-pase-vigente.vencido { background: color-mix(in oklab, var(--rojo) 16%, var(--surface)); border-color: var(--rojo-texto); color: var(--rojo-texto); }
+.pf .pf-pase-vigente.vencido .punto { background: var(--rojo-texto); }
+.pf .pf-qr svg, .pf .pf-full-qr svg { width: 100%; height: 100%; display: block; }
 .pf .pf-competencias { margin-top: 16px; display: flex; flex-direction: column; gap: 8px; text-align: left; }
 .pf .pf-competencias .item { display: flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 700; }
 .pf .pf-competencias .punto2 { width: 18px; height: 18px; border-radius: 999px; background: var(--verde); flex-shrink: 0;
@@ -148,11 +148,8 @@ body {
 .pf.js-motion .pf-full.show .pf-full-card { transform: scale(1); }
 .pf .pf-full-salir { width: 40px; height: 40px; border-radius: 12px; border: 2.5px solid var(--ink); background: var(--surface);
                    display: flex; align-items: center; justify-content: center; cursor: pointer; margin: 0 0 16px auto; color: var(--ink); }
-.pf .pf-full-qr { width: 220px; height: 220px; margin: 0 auto; border-radius: 16px; border: 4px solid var(--ink);
-                background:
-                  repeating-linear-gradient(0deg, var(--ink) 0 11px, transparent 11px 22px),
-                  repeating-linear-gradient(90deg, var(--ink) 0 11px, transparent 11px 22px);
-                background-blend-mode: multiply; background-color: var(--hse-blanco); }
+.pf .pf-full-qr { width: 220px; height: 220px; margin: 0 auto; padding: 14px; border-radius: 16px; border: 4px solid var(--ink);
+                background-color: var(--hse-blanco); box-sizing: border-box; }
 .pf .pf-full-nombre { margin-top: 18px; font-family: var(--font-display); font-size: 22px; font-weight: 800; }
 .pf .pf-full-cuadrilla { font-size: 13px; font-weight: 700; margin-top: 2px; }
 /* ===== TOAST ===== */

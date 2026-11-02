@@ -125,15 +125,15 @@ recertification_triggers_documented: false
 VEREDICTO: NO APTO
 
 Bloqueantes:
-1. "El Pase" se vende como mecanismo central y no existe su implementación real (CLAIMS-LEDGER.md).
-2. Un solo proyecto Supabase para desarrollo y producción (sin aislar ambientes).
-3. Cero CI configurado (lint/typecheck/test/build/Playwright no corren automáticamente en cada push).
-4. Matriz de pago real (Gate 2) sin probar de punta a punta contra Hotmart en producción.
-5. Sin job de reconciliación de entitlements, sin autoservicio de exportación/borrado de datos,
+1. Un solo proyecto Supabase para desarrollo y producción (sin aislar ambientes).
+2. Cero CI configurado (lint/typecheck/test/build/Playwright no corren automáticamente en cada push).
+3. Matriz de pago real (Gate 2) sin probar de punta a punta contra Hotmart en producción.
+4. Sin job de reconciliación de entitlements, sin autoservicio de exportación/borrado de datos,
    sin analítica instalada, sin piloto cerrado con compradores reales.
 
 Resuelto durante esta auditoría (2026-11-02): allowlist de producto Hotmart (HOTMART_PRODUCT_ID)
-activa en Production; confirmado que el deployment en Vercel coincide con el commit del repo.
+activa en Production; confirmado que el deployment en Vercel coincide con el commit del repo;
+"El Pase" construido de verdad (QR real + verificación pública, ver CLAIMS-LEDGER.md).
 
 Riesgos residuales (no bloqueantes, aceptables para seguir operando a bajo volumen):
 - Reconciliación manual de pagos y de consentimiento (aceptable mientras el volumen sea bajo).

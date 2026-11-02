@@ -189,16 +189,25 @@ el webhook ya solo acepta eventos del producto real de esta app, ya no de cualqu
 la cuenta Hotmart del dueño. `PAYMENT-CERTIFICATION.md` queda desactualizado en ese punto — se
 corrige en la próxima pasada de auditoría.
 
+**"El Pase" RESUELTO (2026-11-02):** el usuario eligió construirlo de verdad. Cada trabajador
+tiene un `pase_token` opaco (UUID random, migración `0010_pase_digital.sql`, corrida por el
+usuario — "Éxito") que su QR real codifica (librería `qrcode`, generado en `/app/perfil`, ya
+conectado a datos reales: nombre, cuadrilla, racha, vigencia y competencias — antes TODO
+hardcodeado "Luis Fernández"/QR vacío). Un supervisor sin cuenta escanea el QR y llega a
+`/pase/[token]` (página pública nueva, sin login), que llama al RPC `verificar_pase`
+(`security definer`, habilitado para `anon` — expone solo nombre/cuadrilla/vigencia/racha/
+competencias, NUNCA email ni PIN). Verificado con una cuadrilla de prueba a 375px: el QR se
+genera, la verificación pública muestra "Capacitación vigente hoy" con datos reales, y un token
+inválido muestra "Pase no válido" sin filtrar nada. Datos de prueba borrados después.
+`CLAIMS-LEDGER.md`/`PUBLICATION-CERTIFICATE.md` se actualizan en la próxima pasada de auditoría.
+
 Bloqueantes reales que quedan pendientes (requieren decisión/acción del dueño):
-1. **"El Pase"** (la promesa central de venta: pase QR que un supervisor verifica en el pozo) NO
-   existe en código — es solo un texto fijo con un botón de ayuda. Decisión de negocio pendiente:
-   construirlo de verdad o suavizar la promesa en landing/onboarding.
-2. Un solo proyecto Supabase para dev y producción (ya documentado desde Sesión 6).
-3. Cero CI (lint/typecheck/test/build no corren automático en cada push).
-4. La matriz de pago real (Gate 2: trial→cobro, cancelación, reembolso, chargeback) nunca se
+1. Un solo proyecto Supabase para dev y producción (ya documentado desde Sesión 6).
+2. Cero CI (lint/typecheck/test/build no corren automático en cada push).
+3. La matriz de pago real (Gate 2: trial→cobro, cancelación, reembolso, chargeback) nunca se
    probó de punta a punta contra Hotmart real — probarla implica una compra de prueba real
    (dinero), pendiente de autorización del dueño.
-5. Sin job de reconciliación de entitlements, sin autoservicio de exportar/borrar datos, sin
+4. Sin job de reconciliación de entitlements, sin autoservicio de exportar/borrar datos, sin
    analítica instalada, sin piloto cerrado con compradores reales del ICP.
 
 ## Problemas conocidos ⚠️

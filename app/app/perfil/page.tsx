@@ -1,163 +1,70 @@
-"use client";
+import { redirect } from "next/navigation";
+import { createClient } from "@/lib/supabase/server";
+import { PerfilClient } from "./PerfilClient";
 
-import { useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
-import { PERFIL_HTML } from "./markup";
-import "./page.css";
+// Lee cookies() de la sesión real del trabajador — nunca se puede prerenderizar ni cachear
+// entre visitantes (Next 16 + cacheComponents exige este opt-in explícito o falla el build).
+export const instant = false;
 
-// Migrada desde perfil.html (ACEPTADA CON OBSERVACIONES, ronda 3 — ver ESTADO.md
-// → veredicto:perfil). ⚠️ Racha/nivel/vidas y el Pasaporte QR siguen siendo DATO DE
-// DEMOSTRACIÓN — ver la misma nota de app/app/page.tsx. "Cerrar sesión" SÍ quedó
-// conectado a Supabase Auth real (supabase.auth.signOut()) — no depende de contenido
-// pendiente, así que no tenía sentido dejarlo simulado como el resto.
-export default function PerfilPage() {
-  const rootRef = useRef<HTMLDivElement>(null);
-  const router = useRouter();
+type ModuloConLeccion = { title: string; lessons: { id: string }[] | null };
 
-  useEffect(() => {
-    const root = rootRef.current;
-    if (!root) return;
-    if (root.dataset.wired === "1") return;
-    root.dataset.wired = "1";
-    root.classList.add("js-motion");
+// Migrada desde perfil.html (ACEPTADA CON OBSERVACIONES, ronda 3 — ver ESTADO.md →
+// veredicto:perfil). Desde la auditoría de integridad de lanzamiento (2026-11-02,
+// docs/release/CLAIMS-LEDGER.md) "El Pase" dejó de ser dato de demostración: nombre, cuadrilla,
+// racha, vigencia y competencias (módulos aprobados) vienen de Supabase, y el QR codifica el
+// `pase_token` real del trabajador (migración 0010_pase_digital.sql) hacia la página pública de
+// verificación `/pase/[token]`. "Nivel" y "Vidas" en esta pantalla siguen siendo ilustrativos
+// (mismas mecánicas sin definir en el esquema que en la pantalla principal).
+export default async function PerfilPage() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/login");
 
-    const supabase = createClient();
-    const qs = new URLSearchParams(window.location.search);
-    const estadoForzado = qs.get("estado");
+  const { data: worker } = await supabase
+    .from("workers")
+    .select("full_name, pase_token, crews(name)")
+    .eq("user_id", user.id)
+    .maybeSingle<{ full_name: string; pase_token: string; crews: { name: string } | null }>();
+  if (!worker) redirect("/panel"); // es el Gerente de HSE, no un trabajador
 
-    const skeleton = root.querySelector<HTMLElement>("#apSkeleton");
-    const contenido = root.querySelector<HTMLElement>("#apContenido");
-    const error = root.querySelector<HTMLElement>("#apError");
-    const offlineBanner = root.querySelector<HTMLElement>("#apOffline");
-    const toast = root.querySelector<HTMLElement>("#apToast");
+  const { data: streak } = await supabase
+    .from("streaks")
+    .select("current_streak, last_completed_date")
+    .eq("worker_user_id", user.id)
+    .maybeSingle<{ current_streak: number; last_completed_date: string | null }>();
 
-    let toastTimer: number | undefined;
-    function mostrarToast(msg: string, ms?: number) {
-      if (!toast) return;
-      toast.textContent = msg;
-      toast.classList.add("show");
-      window.clearTimeout(toastTimer);
-      toastTimer = window.setTimeout(() => toast.classList.remove("show"), ms || 2600);
-    }
+  const hoy = new Date();
+  const ayer = new Date(hoy);
+  ayer.setDate(hoy.getDate() - 1);
+  const fechasVigentes = [hoy.toISOString().slice(0, 10), ayer.toISOString().slice(0, 10)];
+  const estaVigente = !!streak?.last_completed_date && fechasVigentes.includes(streak.last_completed_date);
 
-    function revelarStagger() {
-      contenido!.querySelectorAll<HTMLElement>(".ap-reveal").forEach((n, i) => {
-        window.setTimeout(() => n.classList.add("in"), i * 70);
-      });
-    }
+  const { data: modulos } = await supabase
+    .from("modules")
+    .select("title, lessons(id)")
+    .order("order_index");
+  const modulosTyped = (modulos ?? []) as unknown as ModuloConLeccion[];
 
-    function contarNumero(el: HTMLElement | null, destino: number, ms: number) {
-      if (!el) return;
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        el.textContent = String(destino);
-        return;
-      }
-      const t0 = performance.now();
-      function paso(ahora: number) {
-        const p = Math.min(1, (ahora - t0) / ms);
-        el!.textContent = String(Math.round(destino * p));
-        if (p < 1) requestAnimationFrame(paso);
-      }
-      requestAnimationFrame(paso);
-    }
-    function animarChips() {
-      contarNumero(root!.querySelector("#pfNumRacha"), 12, 650);
-      contarNumero(root!.querySelector("#pfNumNivel"), 4, 500);
-      contarNumero(root!.querySelector("#pfNumVidas"), 3, 450);
-    }
-
-    function aplicarEmpty() {
-      const competencias = root!.querySelector("#pfCompetencias");
-      if (competencias)
-        competencias.innerHTML =
-          '<p class="pf-pase-vacio">Todavía no tienes competencias vigentes — tu pase se activa en cuanto completes tu primer reto.</p>';
-      const btn = root!.querySelector<HTMLElement>("#apMostrarPase");
-      if (btn) {
-        btn.classList.add("secundario");
-        const txt = btn.querySelector(".txt");
-        if (txt) txt.textContent = "Ir a mi primer reto";
-      }
-    }
-
-    function cargar() {
-      window.setTimeout(() => {
-        skeleton?.classList.remove("show");
-        if (!navigator.onLine || estadoForzado === "offline") {
-          offlineBanner?.classList.add("show");
-        }
-        if (estadoForzado === "error") {
-          error?.classList.add("show");
-          return;
-        }
-        contenido?.classList.add("show");
-        if (estadoForzado === "empty") aplicarEmpty();
-        revelarStagger();
-        animarChips();
-      }, 600);
-    }
-
-    root.querySelector("#apReintentar")?.addEventListener("click", () => {
-      error?.classList.remove("show");
-      skeleton?.classList.add("show");
-      cargar();
-    });
-
-    root.querySelectorAll<HTMLElement>(".pf-fila[data-proximo]").forEach((fila) => {
-      fila.addEventListener("click", () => {
-        mostrarToast(`"${fila.getAttribute("data-proximo")}" llega muy pronto`);
-      });
-    });
-
-    function cerrarSesion(boton: HTMLButtonElement) {
-      boton.disabled = true;
-      boton.classList.add("cargando");
-      supabase.auth.signOut().finally(() => router.push("/login"));
-    }
-    root.querySelector<HTMLButtonElement>("#apSalirHeader")?.addEventListener("click", function () {
-      cerrarSesion(this);
-    });
-    root.querySelector<HTMLButtonElement>("#apSalirFila")?.addEventListener("click", function () {
-      cerrarSesion(this);
-    });
-
-    const pfFull = root.querySelector<HTMLElement>("#pfFull");
-    function abrirPaseCompleto() {
-      pfFull?.classList.add("show");
-      document.body.style.overflow = "hidden";
-      root!.querySelector<HTMLElement>("#pfFullSalir")?.focus();
-    }
-    function cerrarPaseCompleto() {
-      pfFull?.classList.remove("show");
-      document.body.style.overflow = "";
-    }
-    root.querySelector("#apMostrarPase")?.addEventListener("click", (ev) => {
-      ev.stopPropagation();
-      if (estadoForzado === "empty") {
-        router.push("/app");
-        return;
-      }
-      abrirPaseCompleto();
-    });
-    root.querySelector("#pfFullSalir")?.addEventListener("click", cerrarPaseCompleto);
-    pfFull?.addEventListener("click", (ev) => {
-      if (ev.target === pfFull) cerrarPaseCompleto();
-    });
-    const onKeydown = (ev: KeyboardEvent) => {
-      if (ev.key === "Escape" && pfFull?.classList.contains("show")) cerrarPaseCompleto();
-    };
-    document.addEventListener("keydown", onKeydown);
-
-    cargar();
-
-    return () => document.removeEventListener("keydown", onKeydown);
-  }, [router]);
+  const { data: intentos } = await supabase
+    .from("attempts")
+    .select("lesson_id")
+    .eq("worker_user_id", user.id)
+    .eq("passed", true);
+  const aprobadas = new Set((intentos ?? []).map((a) => a.lesson_id as string));
+  const competencias = modulosTyped
+    .filter((m) => m.lessons?.[0] && aprobadas.has(m.lessons[0].id))
+    .map((m) => m.title);
 
   return (
-    <div
-      ref={rootRef}
-      className="pf"
-      dangerouslySetInnerHTML={{ __html: PERFIL_HTML }}
+    <PerfilClient
+      nombreCompleto={worker.full_name}
+      cuadrillaNombre={worker.crews?.name ?? "Tu cuadrilla"}
+      paseToken={worker.pase_token}
+      currentStreak={streak?.current_streak ?? 0}
+      estaVigente={estaVigente}
+      competencias={competencias}
     />
   );
 }
