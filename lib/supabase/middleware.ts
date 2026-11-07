@@ -4,7 +4,9 @@ import { NextResponse, type NextRequest } from "next/server";
 // Rutas públicas del funnel (modelo trial-first, ver ESTADO.md → Estrategia de monetización):
 // landing → onboarding → paywall → login, SIN sesión. Solo /app (worker) y /panel (Gerente de
 // HSE) + sus API privadas exigen sesión.
-const PUBLIC_PATHS = ["/", "/onboarding", "/paywall", "/login", "/auth", "/api/auth", "/api/webhooks", "/legal", "/pase"];
+// "/sw.js": el service worker del modo sin señal (public/sw.js) — el navegador lo vuelve a pedir
+// para buscar actualizaciones aunque la sesión haya vencido; redirigirlo al login lo rompería.
+const PUBLIC_PATHS = ["/", "/onboarding", "/paywall", "/login", "/auth", "/api/auth", "/api/webhooks", "/legal", "/pase", "/sw.js"];
 
 function isPublicPath(path: string) {
   return PUBLIC_PATHS.some(

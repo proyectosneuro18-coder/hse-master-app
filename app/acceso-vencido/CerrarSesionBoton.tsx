@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { limpiarCopiasSinSenal } from "@/components/RegistrarServiceWorker";
 
 export function CerrarSesionBoton() {
   const router = useRouter();
@@ -11,7 +12,7 @@ export function CerrarSesionBoton() {
   async function salir() {
     setSaliendo(true);
     const supabase = createClient();
-    await supabase.auth.signOut();
+    await Promise.allSettled([supabase.auth.signOut(), limpiarCopiasSinSenal()]);
     router.push("/login/trabajador");
   }
 

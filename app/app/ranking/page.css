@@ -7,6 +7,9 @@
     --rojo: var(--hse-rojo); --rojo-sombra: var(--hse-rojo-sombra); --rojo-texto: var(--hse-rojo-texto);
     --neutro-track: var(--hse-neutro-track);
     --font-display: var(--hse-font-display); --font-body: var(--hse-font-body);
+    /* Las variables viven en este contenedor, no en <body>: la tipografía base se fija aquí
+       (en body quedaba sin valor y el texto caía a la letra por defecto del navegador). */
+    font-family: var(--font-body); color: var(--ink); line-height: 1.5;
   }
 html,
 body { overflow-x: hidden; }

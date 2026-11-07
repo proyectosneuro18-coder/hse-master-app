@@ -87,8 +87,8 @@ export default async function AppHomePage() {
     .eq("worker_user_id", user.id)
     .maybeSingle<{ current_streak: number; last_completed_date: string | null }>();
 
-  const hoy = new Date().toISOString().slice(0, 10);
-  const yaCompletadoHoy = streak?.last_completed_date === hoy;
+  // "¿Ya lo hizo hoy?" se decide en el celular con su fecha LOCAL (AppHomeClient), no aquí: el
+  // servidor corre en UTC y en Colombia (UTC-5) un reto de las 8 p. m. caía en "mañana".
 
   const { data: modulos } = await supabase
     .from("modules")
@@ -127,8 +127,9 @@ export default async function AppHomePage() {
   return (
     <AppHomeClient
       nombreTrabajador={worker.full_name}
+      userId={user.id}
       rachaInicial={streak?.current_streak ?? 0}
-      yaCompletadoHoy={yaCompletadoHoy}
+      ultimaFechaCompletada={streak?.last_completed_date ?? null}
       modulosAprobados={modulosAprobados}
       totalModulos={totalModulos}
       reto={reto}

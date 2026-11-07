@@ -246,7 +246,58 @@ abriendo con sus campos precargados igual que antes. `plantillas-codigo/` y `scr
 excluyeron del alcance del linter (nunca se importan desde la app real, son material de
 referencia/herramientas internas, no parte del build de producción).
 
+## Sesión 11 — Modo sin señal de la app del trabajador (2026-11-07, EN CURSO)
+La landing promete "Sin señal, sin excusa" + FAQ "funciona sin conexión", pero NO existía nada
+offline (sin service worker, el reto fallaba sin red). Construido (sin commitear todavía):
+1. [x] `public/sw.js` + `components/RegistrarServiceWorker.tsx` (montado en `app/app/layout.tsx`,
+   solo en producción): las 4 pantallas del trabajador se guardan en el celular (primero red,
+   si no hay, la copia) + archivos del build y fuentes. `/sw.js` agregado a PUBLIC_PATHS. Al
+   cerrar sesión (perfil y acceso-vencido) se borra la copia de páginas.
+2. [x] `lib/offline/cola-retos.ts`: reto respondido sin señal (o con falla del servidor) se
+   guarda en localStorage y se envía solo al volver la red / al abrir / cada 60 s. Solo se
+   descarta si el servidor lo rechaza a propósito (P0001/22023). "¿Ya lo hizo hoy?" ahora se
+   calcula con la fecha LOCAL del celular (antes UTC del servidor: en Colombia un reto después
+   de las 7 p. m. contaba para "mañana").
+3. [x] Bug de tipografía corregido: el texto base de /app, /app/progreso, /app/ranking,
+   /app/perfil caía a Times New Roman (la variable --font-body vivía en el contenedor y se usaba
+   en <body>). Ahora la fuente se fija en el contenedor de cada pantalla.
+4. 🐛 [CRÍTICO] `registrar_intento` ROTA EN PRODUCCIÓN desde 0009 (2026-11-02): se declaró
+   `stable` y Postgres rechaza el INSERT ("0A000: INSERT is not allowed in a non-volatile
+   function") — ningún trabajador puede guardar su reto. Confirmado contra Dev con un trabajador
+   temporal. Corrección: `supabase/migrations/0011_registrar_intento_offline.sql` (vuelve a ser
+   volátil + parámetro opcional `p_fecha` = día local, aceptado solo en los últimos 3 días).
+   Compatible con el código ya publicado (parámetro con default).
+   [x] Corrida en Dev (2026-11-07, el chequeo final mostró `registrar_intento(uuid,integer,boolean,date)`
+       con volatil = v). Casos probados con trabajador temporal: hace 2 días→1, ayer→2, hoy→3,
+       hoy repetido y ayer tardío no cambian la racha, sin fecha (código viejo) funciona, fechas
+       de hace 10 días o futuras → rechazo 22023.
+   [ ] Pendiente del usuario: correrla en PRINCIPAL (`vutlmf…`) — arregla de inmediato el guardado
+       de retos en la app publicada (compatible con el código actual). Hacerlo ANTES de publicar
+       el código nuevo (que llama con p_fecha y sin la migración recibiría PGRST202 — no perdería
+       el reto, quedaría en cola, pero no se guardaría).
+Verificado en navegador (Playwright, 375px, next-prod) DE PUNTA A PUNTA: abre sin red (las 4
+pantallas, incluido el Pase QR "Vigente hoy"), reto sin red queda guardado y al reabrir recuerda
+la racha, con la función rota el reto NO se pierde, y tras correr 0011 en Dev el reto en cola se
+envió solo al abrir con red ("Listo: tu reto hecho sin señal ya quedó guardado.") — confirmado en
+la base: 1 intento + racha 1 con fecha 2026-11-07. tsc + lint + build limpios.
+Evidencia: docs/revisiones/app-sin-senal-375.png · app-sin-senal-reto-375.png · app-sin-senal-hecho-375.png
+· app-sin-senal-sincronizado-375.png · perfil-sin-senal-375.png. Trabajador QA temporal ya borrado.
+Límite conocido (offline-perfil-desactualizado): si el trabajador hace el reto SIN señal, el
+perfil abierto sin señal muestra la copia guardada antes del reto (no refleja la racha nueva hasta
+volver a tener red). La pantalla principal sí lo refleja. Aceptable: el Pase se vuelve a guardar
+apenas hay señal.
+Falta: correr 0011 en Principal, commit, publicar.
+
 ## Problemas conocidos ⚠️
+- supabase-traductor-chrome — el usuario tiene el traductor automático de Chrome activo y rompe
+  el panel de Supabase (error "removeChild… no es hijo de este nodo"); probable causa de que la
+  0011 "corrida" no se aplicara. Al pedirle correr SQL: primero desactivar la traducción
+  ("Nunca traducir este sitio") y darle el link directo
+  `supabase.com/dashboard/project/<ref>/sql/new`. Su login de Supabase es con GitHub.
+- offline-sin-revisor — los cambios del modo sin señal NO alteran el diseño aprobado de la
+  pantalla principal (solo comportamiento + la corrección de tipografía base); no se relanza
+  revisor-visual por esto. Los veredictos de landing/onboarding/paywall/pantalla-principal siguen
+  como están documentados abajo (aceptados con observaciones por el usuario).
 - migraciones-combinadas-registrar-intento — RESUELTO (2026-11-02): al correr las 10
   migraciones de un tirón en una base de datos 100% nueva, `0009_search_path_hardening.sql`
   fallaba con `42P13: cannot change return type of existing function` sobre `registrar_intento`.

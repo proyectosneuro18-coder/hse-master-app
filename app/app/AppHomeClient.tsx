@@ -2,7 +2,16 @@
 
 import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
+import {
+  agregarPendiente,
+  enviarIntento,
+  fechaLocal,
+  fechaLocalAyer,
+  guardarUltimo,
+  leerPendientes,
+  leerUltimo,
+  sincronizarPendientes,
+} from "@/lib/offline/cola-retos";
 import { APP_HOME_HTML } from "./markup";
 import "./page.css";
 
@@ -18,8 +27,9 @@ export type RetoHoy = {
 
 type Props = {
   nombreTrabajador: string;
+  userId: string;
   rachaInicial: number;
-  yaCompletadoHoy: boolean;
+  ultimaFechaCompletada: string | null;
   modulosAprobados: number;
   totalModulos: number;
   reto: RetoHoy;
@@ -37,8 +47,9 @@ const FECHA_HOY = new Intl.DateTimeFormat("es", { weekday: "long", day: "numeric
 // El insight de "El Pase" sigue siendo ilustrativo (sin motor real detrás todavía).
 export function AppHomeClient({
   nombreTrabajador,
+  userId,
   rachaInicial,
-  yaCompletadoHoy,
+  ultimaFechaCompletada,
   modulosAprobados,
   totalModulos,
   reto,
@@ -58,7 +69,25 @@ export function AppHomeClient({
     const qs = new URLSearchParams(window.location.search);
     let estadoForzado = qs.get("estado"); // empty | error | offline
     if (!reto.leccionId && !estadoForzado) estadoForzado = "empty";
+
+    // Modo sin señal: la página pudo abrirse desde la copia guardada en el celular (public/sw.js),
+    // así que el dato del servidor puede estar atrasado. Manda lo más reciente entre lo que dice
+    // el servidor y lo que el celular sabe (un reto hecho sin señal, aún sin enviar).
+    const hoy = fechaLocal();
+    const ultimoLocal = leerUltimo(userId);
+    let ultimaFecha = ultimaFechaCompletada;
     let rachaActual = rachaInicial;
+    if (ultimoLocal && (!ultimaFecha || ultimoLocal.fecha > ultimaFecha)) {
+      ultimaFecha = ultimoLocal.fecha;
+      rachaActual = ultimoLocal.racha;
+    }
+    const yaCompletadoHoy = ultimaFecha === hoy || leerPendientes(userId).some((p) => p.fecha === hoy);
+
+    function rachaSiCompletaHoy() {
+      if (ultimaFecha === hoy) return rachaActual;
+      if (ultimaFecha === fechaLocalAyer()) return rachaActual + 1;
+      return 1;
+    }
 
     const skeleton = root.querySelector<HTMLElement>("#apSkeleton");
     const contenido = root.querySelector<HTMLElement>("#apContenido");
@@ -280,23 +309,37 @@ export function AppHomeClient({
       }
 
       enviandoIntento = true;
-      const supabase = createClient();
-      const { data, error: rpcError } = await supabase.rpc("registrar_intento", {
-        p_lesson_id: reto.leccionId,
-        p_score: 100,
-        p_passed: true,
-      });
+      const envio = await enviarIntento(reto.leccionId, hoy);
       enviandoIntento = false;
 
-      if (rpcError) {
+      if (envio.tipo === "guardado") {
+        rachaActual = envio.racha ?? rachaSiCompletaHoy();
+        // El reto de mañana ya es otro: se actualiza la copia sin señal de una vez.
+        navigator.serviceWorker?.controller?.postMessage({ tipo: "precargar" });
+      } else if (
+        (envio.tipo === "sin-red" || !envio.rechazadoAPropósito) &&
+        agregarPendiente(userId, { leccionId: reto.leccionId, fecha: hoy })
+      ) {
+        // Sin señal (o el servidor falló por su cuenta): el trabajador NO pierde su reto.
+        rachaActual = rachaSiCompletaHoy();
+        mostrarToast(
+          envio.tipo === "sin-red"
+            ? "Sin señal: tu reto quedó guardado en el celular y se enviará solo cuando vuelva la señal."
+            : "Tu reto quedó guardado en el celular y se enviará solo en unos minutos.",
+          5000,
+        );
+      } else {
         item.classList.remove("correcto");
         ejResuelto = false;
-        mostrarToast("No pudimos guardar tu respuesta — revisa tu conexión e intenta de nuevo.");
+        mostrarToast(
+          envio.tipo === "sin-red"
+            ? "No pudimos guardar tu respuesta en este celular — libera espacio e intenta de nuevo."
+            : "No pudimos guardar tu respuesta — intenta de nuevo en un momento.",
+        );
         return;
       }
-
-      const nuevaRacha = data?.[0]?.o_current_streak ?? rachaActual;
-      rachaActual = nuevaRacha;
+      ultimaFecha = hoy;
+      guardarUltimo(userId, { fecha: hoy, racha: rachaActual });
 
       window.setTimeout(() => {
         if (ejPregunta) ejPregunta.style.display = "none";
@@ -340,8 +383,36 @@ export function AppHomeClient({
 
     cargar();
 
-    return () => document.removeEventListener("keydown", onKeydown);
-  }, [router, nombreTrabajador, rachaInicial, yaCompletadoHoy, modulosAprobados, totalModulos, reto, posicionRanking, totalCuadrillas]);
+    // Al volver la señal (o al abrir la app con red): envía los retos hechos sin señal.
+    async function enviarLoPendiente() {
+      if (!navigator.onLine || leerPendientes(userId).length === 0) return;
+      const { enviados, racha } = await sincronizarPendientes(userId);
+      if (enviados === 0) return;
+      if (racha !== null) {
+        rachaActual = racha;
+        guardarUltimo(userId, { fecha: ultimaFecha ?? hoy, racha });
+      }
+      mostrarToast("Listo: tu reto hecho sin señal ya quedó guardado.", 4000);
+      navigator.serviceWorker?.controller?.postMessage({ tipo: "precargar" });
+    }
+    const alVolverLaSenal = () => {
+      offlineBanner?.classList.remove("show");
+      void enviarLoPendiente();
+    };
+    const alPerderLaSenal = () => offlineBanner?.classList.add("show");
+    window.addEventListener("online", alVolverLaSenal);
+    window.addEventListener("offline", alPerderLaSenal);
+    void enviarLoPendiente();
+    // Si hay señal pero el servidor falló, se reintenta solo cada minuto mientras la app esté abierta.
+    const reintento = window.setInterval(() => void enviarLoPendiente(), 60_000);
+
+    return () => {
+      window.clearInterval(reintento);
+      document.removeEventListener("keydown", onKeydown);
+      window.removeEventListener("online", alVolverLaSenal);
+      window.removeEventListener("offline", alPerderLaSenal);
+    };
+  }, [router, nombreTrabajador, userId, rachaInicial, ultimaFechaCompletada, modulosAprobados, totalModulos, reto, posicionRanking, totalCuadrillas]);
 
   return (
     <div

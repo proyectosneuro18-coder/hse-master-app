@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import QRCode from "qrcode";
 import { createClient } from "@/lib/supabase/client";
+import { limpiarCopiasSinSenal } from "@/components/RegistrarServiceWorker";
 import { PERFIL_HTML } from "./markup";
 import "./page.css";
 
@@ -193,7 +194,8 @@ export function PerfilClient({
     function cerrarSesion(boton: HTMLButtonElement) {
       boton.disabled = true;
       boton.classList.add("cargando");
-      supabase.auth.signOut().finally(() => router.push("/login"));
+      // Además borra del celular la copia sin señal de las pantallas (datos del trabajador).
+      Promise.allSettled([supabase.auth.signOut(), limpiarCopiasSinSenal()]).finally(() => router.push("/login"));
     }
     root.querySelector<HTMLButtonElement>("#apSalirHeader")?.addEventListener("click", function () {
       cerrarSesion(this);
