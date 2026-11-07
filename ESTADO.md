@@ -246,7 +246,7 @@ abriendo con sus campos precargados igual que antes. `plantillas-codigo/` y `scr
 excluyeron del alcance del linter (nunca se importan desde la app real, son material de
 referencia/herramientas internas, no parte del build de producción).
 
-## Sesión 11 — Modo sin señal de la app del trabajador (2026-11-07, EN CURSO)
+## Sesión 11 — Modo sin señal de la app del trabajador (2026-11-07, CERRADA)
 La landing promete "Sin señal, sin excusa" + FAQ "funciona sin conexión", pero NO existía nada
 offline (sin service worker, el reto fallaba sin red). Construido (sin commitear todavía):
 1. [x] `public/sw.js` + `components/RegistrarServiceWorker.tsx` (montado en `app/app/layout.tsx`,
@@ -286,7 +286,11 @@ Límite conocido (offline-perfil-desactualizado): si el trabajador hace el reto 
 perfil abierto sin señal muestra la copia guardada antes del reto (no refleja la racha nueva hasta
 volver a tener red). La pantalla principal sí lo refleja. Aceptable: el Pase se vuelve a guardar
 apenas hay señal.
-Falta: correr 0011 en Principal, commit, publicar.
+✅ CERRADA: el usuario corrió 0011 en Principal (2026-11-07, según su confirmación — el agente no
+tiene acceso para verificarlo desde afuera). Commit `264c887` publicado: Vercel "Deployment has
+completed", CI en verde, `https://www.hse-master-app.com/sw.js` responde 200 con el código nuevo
+y `/app` sin sesión sigue redirigiendo a `/login`. (El dominio sin www redirige 308 a www.)
+Pendiente sugerido: una prueba real en un celular Android con modo avión, con un trabajador real.
 
 ## Problemas conocidos ⚠️
 - supabase-traductor-chrome — el usuario tiene el traductor automático de Chrome activo y rompe
