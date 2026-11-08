@@ -271,7 +271,7 @@ offline (sin service worker, el reto fallaba sin red). Construido (sin commitear
        con volatil = v). Casos probados con trabajador temporal: hace 2 días→1, ayer→2, hoy→3,
        hoy repetido y ayer tardío no cambian la racha, sin fecha (código viejo) funciona, fechas
        de hace 10 días o futuras → rechazo 22023.
-   [ ] Pendiente del usuario: correrla en PRINCIPAL (`vutlmf…`) — arregla de inmediato el guardado
+   [x] APLICADA DE VERDAD 2026-11-08 (la del 07 no había quedado: seguía (uuid,integer,boolean) volatil=s). Captura del usuario tras correrla: registrar_intento(uuid,integer,boolean,date) volatil=v: correrla en PRINCIPAL (`vutlmf…`) — arregla de inmediato el guardado
        de retos en la app publicada (compatible con el código actual). Hacerlo ANTES de publicar
        el código nuevo (que llama con p_fecha y sin la migración recibiría PGRST202 — no perdería
        el reto, quedaría en cola, pero no se guardaría).
