@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createClient as createServerClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { olvidarEnAnalitica } from "@/lib/analytics-server";
 
 // Derechos del titular (Ley 1581 de 2012 / 47-LEGAL-FISCAL-Y-PRIVACIDAD.md): el Gerente de HSE
 // puede DESCARGAR todos los datos de su empresa (GET) y ELIMINAR su cuenta con todo lo que
@@ -202,7 +203,13 @@ export async function DELETE(request: NextRequest) {
     );
   }
 
+  // 4) Sus mediciones en PostHog (solo códigos internos, nunca nombre ni correo).
+  const ids = [user.id, ...(workers ?? []).map((w) => w.user_id as string)];
+  const analitica = await olvidarEnAnalitica(ids);
+
   // Registro de auditoría sin datos personales (47-LEGAL → Derecho a eliminación).
-  console.info(`[cuenta-eliminada] org=${orgId} trabajadores=${workers?.length ?? 0} at=${new Date().toISOString()}`);
+  console.info(
+    `[cuenta-eliminada] org=${orgId} trabajadores=${workers?.length ?? 0} analitica=${analitica.pendiente ? "pendiente" : analitica.borrados} at=${new Date().toISOString()}`,
+  );
   return NextResponse.json({ ok: true });
 }

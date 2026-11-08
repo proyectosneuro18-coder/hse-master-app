@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import {
@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/dialog";
 import { createClient } from "@/lib/supabase/client";
 import { limpiarCopiasSinSenal } from "@/components/RegistrarServiceWorker";
+import { identificar, olvidarIdentidad, origenActual, track, trackDiaActivo } from "@/lib/analytics";
 
 export type EstadoSuscripcion =
   | "trialing"
@@ -356,6 +357,8 @@ function ModalAgregarTrabajador({
         return;
       }
       setExito({ crewCode: data.crew.code, crewName: data.crew.name, fullName: data.worker.fullName });
+      if (modo === "nueva") track("cuadrilla_creada");
+      track("trabajador_agregado", { cuadrilla_nueva: modo === "nueva" });
       router.refresh();
     } catch {
       setError("No pudimos conectar con el servidor. Revisa tu conexión.");
@@ -558,6 +561,7 @@ function ModalEditarTrabajador({
         setError(data?.error ?? "No pudimos eliminar al trabajador. Intenta de nuevo.");
         return;
       }
+      track("trabajador_eliminado");
       onEliminado(worker.full_name);
       onOpenChange(false);
       router.refresh();
@@ -762,6 +766,7 @@ function ModalEliminarCuenta({
         setError(data?.error ?? "No pudimos eliminar tu cuenta. Intenta de nuevo.");
         return;
       }
+      track("cuenta_eliminada", { estado });
       setEliminada(true);
     } catch {
       setError("No pudimos conectar con el servidor. Revisa tu conexión.");
@@ -772,6 +777,7 @@ function ModalEliminarCuenta({
 
   async function salir() {
     await Promise.allSettled([createClient().auth.signOut(), limpiarCopiasSinSenal()]);
+    olvidarIdentidad();
     router.push("/");
   }
 
@@ -1090,6 +1096,7 @@ function ModalRenombrarOrganizacion({
 }
 
 export function PanelClient({
+  userId,
   orgName,
   ownerEmail,
   estado,
@@ -1099,6 +1106,7 @@ export function PanelClient({
   planName,
   crews,
 }: {
+  userId: string;
   orgName: string;
   ownerEmail: string;
   estado: EstadoSuscripcion;
@@ -1126,6 +1134,21 @@ export function PanelClient({
   // inicial de la página, que es lo único que debe quedar predecible para Next).
   const [interactuado, setInteractuado] = useState(false);
 
+  // Analítica (36): identidad sin datos personales (solo el código interno) + día activo. Una
+  // sola vez al entrar al panel (el ref evita repetirlo cuando cambian los datos de la página).
+  const medidoRef = useRef(false);
+  useEffect(() => {
+    if (medidoRef.current) return;
+    medidoRef.current = true;
+    identificar(userId, { rol: "gerente", plan: estado });
+    trackDiaActivo({
+      rol: "gerente",
+      plan: estado,
+      cuadrillas: crews.length,
+      trabajadores: crews.reduce((acc, c) => acc + c.workers.length, 0),
+    });
+  }, [userId, estado, crews]);
+
   function mostrarToastDeshacer(mensaje: string, deshacer?: () => Promise<void>) {
     setToast({ mensaje, deshacer });
     setTimeout(() => setToast((t) => (t?.mensaje === mensaje ? null : t)), 6000);
@@ -1149,6 +1172,7 @@ export function PanelClient({
       a.click();
       a.remove();
       URL.revokeObjectURL(url);
+      track("datos_descargados");
       mostrarToastDeshacer("Listo: tus datos se descargaron");
     } catch {
       mostrarToastDeshacer("No pudimos descargar tus datos. Revisa tu conexión e intenta de nuevo.");
@@ -1183,6 +1207,7 @@ export function PanelClient({
 
   function cerrarSesion() {
     setCerrandoSesion(true);
+    olvidarIdentidad();
     createClient()
       .auth.signOut()
       .finally(() => router.push("/login"));
@@ -1313,6 +1338,14 @@ export function PanelClient({
               href={`${HOTMART_CHECKOUT_URL}?email=${encodeURIComponent(ownerEmail)}`}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={(e) => {
+                // Atribución (36/60): el canal de origen viaja al checkout como `src` (reportes de
+                // Hotmart) y `sck` (llega en el webhook). Se arma al hacer clic, no al renderizar:
+                // el origen vive en el navegador y no debe causar desajustes de hidratación.
+                const origen = encodeURIComponent(origenActual());
+                e.currentTarget.href = `${HOTMART_CHECKOUT_URL}?email=${encodeURIComponent(ownerEmail)}&src=${origen}&sck=${origen}`;
+                track("checkout_iniciado", { estado });
+              }}
               className="mt-3 flex items-center justify-center rounded-[var(--hse-radius-boton)] border-2 border-[var(--hse-ink)] bg-[var(--hse-verde)] py-3 text-sm font-bold text-[var(--hse-ink)] shadow-[0_4px_0_var(--hse-verde-sombra)] transition active:translate-y-[4px] active:shadow-none"
             >
               Suscribirme ahora

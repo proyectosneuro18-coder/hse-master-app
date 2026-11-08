@@ -314,7 +314,48 @@ Límites conocidos: (a) si un administrador invitado (no dueño) existe, su cuen
 borra al eliminar la empresa (solo su membresía); (b) el nombre del archivo descargado usa la fecha
 UTC del servidor (de noche en Colombia sale con la fecha de mañana) — cosmético.
 
+## Sesión 13 — Medición (analítica de producto) (2026-11-07, CÓDIGO LISTO — falta la clave)
+Decisión técnica: PostHog (36), región US, sin pageviews ni autocapture (solo eventos con nombre),
+sin grabación de sesiones. Wrapper único `lib/analytics.ts` (cliente) + `lib/analytics-server.ts`
+(servidor). Sin `NEXT_PUBLIC_POSTHOG_KEY` todo es no-op (la app nunca se rompe).
+- Consentimiento (Ley 1581): `components/Analitica.tsx` (aviso Aceptar/Rechazar en todo el sitio).
+  Antes de aceptar y si rechaza: PostHog en memoria, nada guardado en el navegador. Al aceptar:
+  persistencia normal. `/legal/privacidad` actualizada (PostHog en la tabla + sección "Cookies y medición").
+- Propiedades comunes: `source` (primer `src`/`utm_source`, 30 días), `session_id` (30 min),
+  `is_qa` (`?qa=1`). Identidad = user_id (uuid), nunca nombre/correo (verificado en las peticiones).
+- Eventos: landing_vista · oferta_vista · cta_oferta_clicado · contacto_ventas_clicado ·
+  onboarding_iniciado/retomado/paso_completado/completado/abandonado (restaurar NO re-emite) ·
+  paywall_renderizado/visto/plan_elegido/prueba_clicada · login_enlace_solicitado/completado ·
+  login_trabajador_completado/fallido · sesion_iniciada (1 por día y por persona) ·
+  reto_completado (sin_senal, racha, primer_reto) · retos_sin_senal_sincronizados · pase_mostrado ·
+  cuadrilla_creada · trabajador_agregado/eliminado · checkout_iniciado · datos_descargados ·
+  cuenta_eliminada. Server-side: trial_iniciado (al crear la org) · cobro_confirmado /
+  primer_cobro_confirmado / pago_fallido / suscripcion_cancelada / reembolso_confirmado /
+  contracargo_recibido (webhook de Hotmart, distinctId = dueño de la org vía hotmart_subscriber_code).
+- Atribución: el botón "Suscribirme ahora" del panel agrega `src` y `sck` al checkout de Hotmart.
+  Pendiente: leer `sck` en el webhook y guardarlo (hoy solo viaja; no hay columna `source`).
+- Borrado: eliminar cuenta/trabajador llama a `olvidarEnAnalitica` — necesita
+  `POSTHOG_PERSONAL_API_KEY` + `POSTHOG_PROJECT_ID` (secretas, opcionales); sin ellas queda
+  registrado como pendiente en el log.
+Verificado con clave falsa interceptando las peticiones (Playwright, 375px): embudo completo
+landing→onboarding→paywall con `source=linkedin_prueba` de punta a punta; trabajador (día activo,
+reto, pase); gerente (día activo, checkout con src/sck). Sin nombre, correo ni PIN en ninguna
+petición. tsc + lint + build (con y sin clave) limpios. Evidencia: docs/revisiones/aviso-cookies-375.png.
+🐛 Corregido de paso: la letra base de landing/onboarding/paywall caía a Times New Roman (mismo
+bug de migración que las pantallas del trabajador en la Sesión 11) — restaurada a DM Sans, como en
+el diseño aprobado. Evidencia: docs/revisiones/landing-tipografia-corregida-375.png.
+[ ] Pendiente del usuario: crear la cuenta de PostHog y poner `NEXT_PUBLIC_POSTHOG_KEY` (+ HOST)
+    en Vercel (Production) y redesplegar.
+
 ## Problemas conocidos ⚠️
+- landing-cta-mailto — HALLAZGO (2026-11-07): ningún botón de la página de ventas lleva al
+  recorrido de inicio (`/onboarding`). "Quiero mi prueba gratis" baja a la oferta, y ahí los
+  botones de los planes ABREN EL CORREO (`mailto:ventas@…`). Es un resto de cuando no había backend
+  (ronda 41, `checkout-real-pendiente`); hoy el camino self-service onboarding → planes → login →
+  prueba de 14 días existe y funciona, pero nadie llega a él desde la página. Contradice la ruta
+  aprobada (`/` → `/onboarding` → …). Se dejó MEDIDO (`contacto_ventas_clicado`) sin tocar el copy,
+  porque cambiar la acción principal de la página de ventas es decisión del dueño (canal de venta
+  B2B: ¿autoservicio o contacto?). Preguntado al usuario.
 - supabase-traductor-chrome — el usuario tiene el traductor automático de Chrome activo y rompe
   el panel de Supabase (error "removeChild… no es hijo de este nodo"); probable causa de que la
   0011 "corrida" no se aplicara. Al pedirle correr SQL: primero desactivar la traducción

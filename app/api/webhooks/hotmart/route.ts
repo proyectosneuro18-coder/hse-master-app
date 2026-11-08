@@ -4,6 +4,55 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { verifyHotmart } from "@/lib/hotmart-verify";
 import { statusForEvent, PLAN_CHANGE_EVENT } from "@/lib/membership-fsm";
 import { sendPaymentConfirmedEmail, sendPaymentFailedEmail, sendCancellationEmail } from "@/lib/email";
+import { trackServidor } from "@/lib/analytics-server";
+
+const EVENTO_POR_ESTADO: Record<string, string> = {
+  active: "cobro_confirmado",
+  past_due: "pago_fallido",
+  cancelled: "suscripcion_cancelada",
+  refunded: "reembolso_confirmado",
+  chargeback: "contracargo_recibido",
+};
+
+// Analítica server-side (36): el dinero se mide aquí, nunca en el navegador. El evento se asocia
+// al Gerente de HSE dueño de la organización (mismo id que usa la app), buscándolo por el código
+// de suscriptor que la RPC acaba de vincular. Nunca lanza.
+async function medirEventoDePago(
+  admin: ReturnType<typeof createAdminClient>,
+  subscriberCode: string | undefined,
+  newStatus: string,
+  firstPaidAt: string | null,
+  props: Record<string, unknown>,
+) {
+  const evento = EVENTO_POR_ESTADO[newStatus];
+  if (!evento || !subscriberCode) return;
+  try {
+    const { data: org } = await admin
+      .from("organizations")
+      .select("id, first_paid_at")
+      .eq("hotmart_subscriber_code", subscriberCode)
+      .maybeSingle<{ id: string; first_paid_at: string | null }>();
+    if (!org) return;
+    const { data: dueno } = await admin
+      .from("memberships")
+      .select("user_id")
+      .eq("org_id", org.id)
+      .eq("role", "owner")
+      .maybeSingle<{ user_id: string }>();
+    if (!dueno) return;
+    // La RPC guarda first_paid_at solo la PRIMERA vez (coalesce): si coincide con el de este
+    // evento, este es el primer cobro de la empresa.
+    const primerCobro =
+      newStatus === "active" &&
+      !!firstPaidAt &&
+      !!org.first_paid_at &&
+      new Date(org.first_paid_at).getTime() === new Date(firstPaidAt).getTime();
+    await trackServidor(dueno.user_id, evento, { ...props, primer_cobro: primerCobro });
+    if (primerCobro) await trackServidor(dueno.user_id, "primer_cobro_confirmado", props);
+  } catch (e) {
+    console.error("[analitica] webhook", e instanceof Error ? e.message : e);
+  }
+}
 
 // Endpoint que Hotmart llama cuando pasa algo con un pago. Patrón de seguridad completo en
 // docs/sistema/18-VENTA-HOTMART.md → "SEGURIDAD DEL WEBHOOK DE HOTMART (implementación real)".
@@ -163,6 +212,13 @@ export async function POST(req: NextRequest) {
     if (newStatus === "active") await sendPaymentConfirmedEmail(email, planName);
     else if (newStatus === "past_due") await sendPaymentFailedEmail(email);
     else if (newStatus === "cancelled") await sendCancellationEmail(email, accessUntil);
+  }
+  if (result === "applied" && newStatus) {
+    await medirEventoDePago(admin, subscriberCode ?? undefined, newStatus, firstPaidAt, {
+      plan: planName ?? null,
+      monto_minor: amountMinor ?? null,
+      moneda: currency ?? null,
+    });
   }
 
   return NextResponse.json({ received: true, result });

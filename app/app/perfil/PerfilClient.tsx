@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import QRCode from "qrcode";
 import { createClient } from "@/lib/supabase/client";
 import { limpiarCopiasSinSenal } from "@/components/RegistrarServiceWorker";
+import { olvidarIdentidad, track } from "@/lib/analytics";
 import { PERFIL_HTML } from "./markup";
 import "./page.css";
 
@@ -195,6 +196,7 @@ export function PerfilClient({
       boton.disabled = true;
       boton.classList.add("cargando");
       // Además borra del celular la copia sin señal de las pantallas (datos del trabajador).
+      olvidarIdentidad();
       Promise.allSettled([supabase.auth.signOut(), limpiarCopiasSinSenal()]).finally(() => router.push("/login"));
     }
     root.querySelector<HTMLButtonElement>("#apSalirHeader")?.addEventListener("click", function () {
@@ -220,6 +222,8 @@ export function PerfilClient({
         router.push("/app");
         return;
       }
+      // Uso real del mecanismo (El Pase): ¿los trabajadores lo muestran al supervisor?
+      track("pase_mostrado", { sin_senal: !navigator.onLine, competencias: competencias.length });
       abrirPaseCompleto();
     });
     root.querySelector("#pfFullSalir")?.addEventListener("click", cerrarPaseCompleto);

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { LANDING_HTML } from "./landing-markup";
+import { alVerse, track } from "@/lib/analytics";
 import "./page.css";
 
 // Migrada desde landing.html (51 rondas de revisión independiente, ver ESTADO.md
@@ -17,6 +18,21 @@ export default function LandingPage() {
 
     const sinMovimiento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const cleanups: Array<() => void> = [];
+
+    // Analítica (36/60): visita útil de la página de ventas, si la oferta se ve de verdad, y
+    // cada clic en los botones de "Quiero mi prueba gratis" (hoy abren el correo de ventas).
+    track("landing_vista");
+    cleanups.push(alVerse(root.querySelector("#oferta"), () => track("oferta_vista")));
+    const alClicCta = (ev: Event) => {
+      const a = (ev.target as HTMLElement)?.closest<HTMLAnchorElement>("a.cta-mailto, a[href='#oferta']");
+      if (!a) return;
+      const href = a.getAttribute("href") ?? "";
+      track(href === "#oferta" ? "cta_oferta_clicado" : "contacto_ventas_clicado", {
+        plan_elegido: href.includes("anual") ? "anual" : href.includes("mensual") ? "mensual" : null,
+      });
+    };
+    root.addEventListener("click", alClicCta);
+    cleanups.push(() => root.removeEventListener("click", alClicCta));
 
     if ("IntersectionObserver" in window && !sinMovimiento) {
       root.classList.add("js-reveal");

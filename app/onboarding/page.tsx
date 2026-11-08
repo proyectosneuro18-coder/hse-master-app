@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { ONBOARDING_HTML } from "./markup";
+import { track } from "@/lib/analytics";
 import "./page.css";
 
 // Migrada desde onboarding.html (LISTA, ronda 16: 38/40 usabilidad, 16/20 craft — ver
@@ -65,6 +66,7 @@ export default function OnboardingPage() {
     }
 
     let transicionando = false;
+    let restaurando = false;
     function irAPaso(num: number, direccion: "adelante" | "atras") {
       if (transicionando) return;
       const actualEl = pasos.find((p) => Number(p.dataset.paso) === pasoActual);
@@ -90,6 +92,12 @@ export default function OnboardingPage() {
         setTimeout(() => {
           actualEl.classList.remove("saliendo-izq", "entrando-der", "entrando-izq");
         }, 320);
+      }
+      // Analítica (36): solo cuando el usuario AVANZA por sí mismo — al restaurar respuestas
+      // guardadas no se re-emiten pasos ("retomar no es avanzar").
+      if (direccion === "adelante" && !restaurando) {
+        track("onboarding_paso_completado", { paso: pasoActual, total_pasos: 4 });
+        if (num === 5) track("onboarding_completado", { respuesta_cuadrilla: respuestas.cuadrilla ?? null, reto: respuestas.reto ?? null });
       }
       pasoActual = num;
       actualizarProgreso(num);
@@ -292,7 +300,10 @@ export default function OnboardingPage() {
     root.querySelector("#onbLogo")?.addEventListener("click", pedirSalir);
     root.querySelector("#onbSalir")?.addEventListener("click", pedirSalir);
     modalSeguir?.addEventListener("click", cerrarModal);
-    root.querySelector("#onbModalSalir")?.addEventListener("click", () => router.push("/"));
+    root.querySelector("#onbModalSalir")?.addEventListener("click", () => {
+      track("onboarding_abandonado", { paso: pasoActual });
+      router.push("/");
+    });
     modalFondo?.addEventListener("keydown", (e) => {
       if ((e as KeyboardEvent).key === "Escape") cerrarModal();
     });
@@ -386,7 +397,10 @@ export default function OnboardingPage() {
     }
     try {
       const guardado = JSON.parse(sessionStorage.getItem("hseOnboarding") || "null");
+      if (!guardado?.cuadrilla) track("onboarding_iniciado");
+      else track("onboarding_retomado");
       if (guardado && guardado.cuadrilla) {
+        restaurando = true;
         Object.assign(respuestas, guardado);
         marcarChipGuardado("cuadrilla", guardado.cuadrilla);
         if (!guardado.reto) {
@@ -397,7 +411,11 @@ export default function OnboardingPage() {
           if (guardado.horario) marcarChipGuardado("horario", guardado.horario);
         }
       }
-    } catch {}
+    } catch {
+      // sessionStorage no disponible: se arranca desde el paso 1, sin nada que restaurar
+    } finally {
+      restaurando = false;
+    }
   }, [router]);
 
   return (

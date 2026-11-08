@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
+import { track } from "@/lib/analytics";
 import "./login.css";
 
 type Estado = "form" | "enviando" | "enviado" | "verificando";
@@ -63,6 +64,7 @@ export default function LoginPage() {
     }
     setEstado("enviado");
     setSegundosReenvio(60);
+    track("login_enlace_solicitado", { metodo: "correo" });
   }
 
   async function reenviar() {
@@ -94,6 +96,7 @@ export default function LoginPage() {
       setErrorCodigo("Ese código no es válido o ya venció. Pide uno nuevo.");
       return;
     }
+    track("login_completado", { metodo: "codigo" });
     router.push("/app");
   }
 
@@ -102,6 +105,7 @@ export default function LoginPage() {
       setError("Acepta los Términos y la Política de Privacidad para continuar.");
       return;
     }
+    track("login_enlace_solicitado", { metodo: "google" });
     await supabase.auth.signInWithOAuth({
       provider: "google",
       options: { redirectTo: `${window.location.origin}/auth/confirm?next=/app` },

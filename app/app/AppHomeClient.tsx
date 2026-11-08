@@ -12,6 +12,7 @@ import {
   leerUltimo,
   sincronizarPendientes,
 } from "@/lib/offline/cola-retos";
+import { identificar, track, trackDiaActivo } from "@/lib/analytics";
 import { APP_HOME_HTML } from "./markup";
 import "./page.css";
 
@@ -82,6 +83,10 @@ export function AppHomeClient({
       rachaActual = ultimoLocal.racha;
     }
     const yaCompletadoHoy = ultimaFecha === hoy || leerPendientes(userId).some((p) => p.fecha === hoy);
+
+    // Analítica (36): identidad sin datos personales + un "día activo" por día (retención D1/D7).
+    identificar(userId, { rol: "trabajador" });
+    trackDiaActivo({ rol: "trabajador", sin_senal: !navigator.onLine, ya_completado_hoy: yaCompletadoHoy });
 
     function rachaSiCompletaHoy() {
       if (ultimaFecha === hoy) return rachaActual;
@@ -340,6 +345,13 @@ export function AppHomeClient({
       }
       ultimaFecha = hoy;
       guardarUltimo(userId, { fecha: hoy, racha: rachaActual });
+      // La acción central de la app. `primer_reto` marca la primera victoria del trabajador.
+      track("reto_completado", {
+        sin_senal: envio.tipo !== "guardado",
+        racha: rachaActual,
+        intentos_fallidos: 3 - vidasRestantes,
+        primer_reto: modulosAprobados === 0,
+      });
 
       window.setTimeout(() => {
         if (ejPregunta) ejPregunta.style.display = "none";
@@ -388,6 +400,7 @@ export function AppHomeClient({
       if (!navigator.onLine || leerPendientes(userId).length === 0) return;
       const { enviados, racha } = await sincronizarPendientes(userId);
       if (enviados === 0) return;
+      track("retos_sin_senal_sincronizados", { cantidad: enviados });
       if (racha !== null) {
         rachaActual = racha;
         guardarUltimo(userId, { fecha: ultimaFecha ?? hoy, racha });

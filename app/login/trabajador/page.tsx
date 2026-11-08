@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { track } from "@/lib/analytics";
 import "../login.css";
 import "./trabajador.css";
 
@@ -87,8 +88,10 @@ export default function LoginTrabajadorPage() {
       setEntrando(false);
       setPin("");
       setErrorPin(data?.error ?? "Código o PIN incorrectos.");
+      track("login_trabajador_fallido");
       return;
     }
+    track("login_trabajador_completado");
     router.push("/app");
   }
 

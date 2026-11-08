@@ -1,4 +1,5 @@
 import { createAdminClient } from "@/lib/supabase/admin";
+import { trackServidor } from "@/lib/analytics-server";
 
 const DIAS_PRUEBA = 14;
 
@@ -32,6 +33,9 @@ export async function crearOrganizacionParaNuevoUsuario(userId: string, email: s
     .from("memberships")
     .insert({ org_id: org.id, user_id: userId, role: "owner" });
   if (membershipErr) throw new Error(membershipErr.message);
+
+  // Analítica server-side (36): la prueba gratis empieza aquí, no en Hotmart (modelo trial-first).
+  await trackServidor(userId, "trial_iniciado", { dias_prueba: DIAS_PRUEBA });
 
   return org.id;
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { alVerse, track } from "@/lib/analytics";
 import { useRouter } from "next/navigation";
 import { PAYWALL_HTML } from "./markup";
 import "./page.css";
@@ -76,8 +77,13 @@ export default function PaywallPage() {
         if (cuadrillaEl) cuadrillaEl.textContent = "tu cuadrilla";
       }
 
+      // Analítica (36/60): "visto" = los planes entran de verdad en pantalla, no solo montar la página.
+      track("paywall_renderizado");
+      alVerse(root.querySelector(".pw-plan"), () => track("paywall_visto"));
+
       const planes = Array.from(root.querySelectorAll<HTMLElement>(".pw-plan"));
       function elegirPlan(plan: HTMLElement, enfocar: boolean) {
+        if (!plan.classList.contains("elegido")) track("paywall_plan_elegido", { plan_elegido: plan.dataset.plan ?? null });
         planes.forEach((p) => {
           p.classList.remove("elegido");
           p.setAttribute("aria-checked", "false");
@@ -119,6 +125,7 @@ export default function PaywallPage() {
           try {
             sessionStorage.setItem("hsePlanElegido", elegido ? elegido.dataset.plan! : "anual");
           } catch {}
+          track("paywall_prueba_clicada", { plan_elegido: elegido?.dataset.plan ?? "anual" });
           router.push("/login");
         } catch {
           if (activarBtn) {

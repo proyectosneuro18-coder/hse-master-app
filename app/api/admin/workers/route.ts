@@ -3,6 +3,7 @@ import { randomUUID } from "node:crypto";
 import bcrypt from "bcryptjs";
 import { createClient as createServerClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { olvidarEnAnalitica } from "@/lib/analytics-server";
 
 // Da de alta un trabajador desde el panel del Gerente de HSE (app/panel). Patrón de
 // ESTADO.md → Decisiones técnicas → Auth: el trabajador entra con código de cuadrilla + PIN,
@@ -201,5 +202,6 @@ export async function DELETE(request: NextRequest) {
   if (error) {
     return NextResponse.json({ error: "No pudimos eliminar al trabajador. Intenta de nuevo." }, { status: 500 });
   }
+  await olvidarEnAnalitica([workerId]);
   return NextResponse.json({ ok: true });
 }

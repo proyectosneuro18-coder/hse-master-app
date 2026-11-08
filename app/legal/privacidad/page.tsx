@@ -45,6 +45,12 @@ export default function PrivacidadPage() {
             proveedor de hosting (Vercel) para que la app funcione y no la ataquen (dirección IP,
             tipo de navegador).
           </li>
+          <li>
+            <strong>Datos de uso (medición):</strong> qué pantallas visitas y qué acciones haces (por
+            ejemplo, &ldquo;completó el reto de hoy&rdquo; o &ldquo;vio los planes&rdquo;), la fecha y de
+            qué enlace llegaste. Se asocian a un código interno, <strong>nunca a tu nombre ni a tu
+            correo</strong>. Ver la sección &ldquo;Cookies y medición&rdquo; más abajo.
+          </li>
         </ul>
         <p>
           No pedimos ni guardamos ubicación, fecha de nacimiento, ni número de teléfono. Los datos
@@ -58,6 +64,7 @@ export default function PrivacidadPage() {
           <li>Que el Gerente de HSE vea la adopción real de su cuadrilla (ese es el producto).</li>
           <li>Cobrar la suscripción (a través de Hotmart) y avisarte por correo sobre tu cuenta.</li>
           <li>Dar soporte cuando nos escribes.</li>
+          <li>Entender qué partes de la app sirven y cuáles mejorar (datos de uso, sin nombre ni correo).</li>
         </ul>
         <p>
           Hoy la app <strong>no usa inteligencia artificial</strong> para generar contenido — las
@@ -91,12 +98,27 @@ export default function PrivacidadPage() {
               <td>Hotmart</td>
               <td>Procesar el cobro de la suscripción</td>
             </tr>
+            <tr>
+              <td>PostHog</td>
+              <td>Medir el uso de la app (qué pantallas y acciones se usan), sin nombre ni correo</td>
+            </tr>
           </tbody>
         </table>
         <p>
           Algunos de estos proveedores procesan datos en servidores fuera de Colombia (por ejemplo,
           en Estados Unidos). Es lo que se llama <strong>transferencia internacional de datos</strong>,
           y al usar la app la autorizas para ese único propósito: que la aplicación funcione.
+        </p>
+
+        <h2>Cookies y medición</h2>
+        <p>
+          La primera vez que entras te preguntamos si aceptas las cookies de medición.{" "}
+          <strong>Si aceptas</strong>, guardamos en tu navegador un código interno para reconocer tus
+          visitas (por ejemplo, si vuelves al día siguiente) y de qué enlace llegaste, por hasta 30
+          días. <strong>Si rechazas</strong>, no guardamos nada en tu navegador: solo contamos la visita
+          de ese momento, sin poder reconocerte después. En los dos casos nunca guardamos tu nombre ni
+          tu correo en la medición, y la app funciona igual. Las cookies necesarias para iniciar
+          sesión no se pueden desactivar, porque sin ellas la app no funciona.
         </p>
 
         <h2>5. Cuánto tiempo guardamos tus datos</h2>
