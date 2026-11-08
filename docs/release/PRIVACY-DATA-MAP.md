@@ -6,10 +6,10 @@ Auditoría: 2026-11-02. Política pública en `/legal/privacidad` (Ley 1581 de 2
 
 | Dato | De quién | Finalidad | Base/consentimiento | Retención | Acceso | Borrado |
 |---|---|---|---|---|---|---|
-| Email | Gerente de HSE | Login (magic link/Google), facturación | Checkbox en `/login` (2026-11-02) | Mientras la cuenta exista | Solo el dueño de la fila + admin de su org (RLS) | Manual por correo, 15 días hábiles — **sin botón de autoservicio** |
-| Nombre completo | Trabajador | Identificarlo en su cuadrilla y en el ranking | Lo da de alta su Gerente de HSE (consentimiento del empleador, no auto-registro) | Mientras esté activo en la cuadrilla | Su propio registro + admin de su org (RLS) | Manual, mismo proceso |
+| Email | Gerente de HSE | Login (magic link/Google), facturación | Checkbox en `/login` (2026-11-02) | Mientras la cuenta exista | Solo el dueño de la fila + admin de su org (RLS) | Autoservicio en `/panel` → "Tus datos" (2026-11-07): descargar + eliminar cuenta |
+| Nombre completo | Trabajador | Identificarlo en su cuadrilla y en el ranking | Lo da de alta su Gerente de HSE (consentimiento del empleador, no auto-registro) | Mientras esté activo en la cuadrilla | Su propio registro + admin de su org (RLS) | El Gerente lo elimina desde `/panel` (editar trabajador → Eliminar definitivamente); el trabajador lo pide a su Gerente o a soporte |
 | PIN (hash bcrypt) | Trabajador | Autenticarlo sin contraseña visible | Asignado por el Gerente de HSE | Mientras la cuenta exista | Nunca legible, solo hash comparado server-side | Se borra al borrar el usuario |
-| Intentos de lección (`attempts`) | Trabajador | Calcular racha, módulos aprobados y ranking de cuadrilla | Parte del servicio contratado | Indefinida mientras la cuenta exista | Propio + admin de su org (RLS); el RPC de ranking agrega sin exponer el intento individual a otros trabajadores | Manual |
+| Intentos de lección (`attempts`) | Trabajador | Calcular racha, módulos aprobados y ranking de cuadrilla | Parte del servicio contratado | Indefinida mientras la cuenta exista | Propio + admin de su org (RLS); el RPC de ranking agrega sin exponer el intento individual a otros trabajadores | Se borra en cascada al eliminar al trabajador o la cuenta |
 | Dirección IP / logs de red | Todos los visitantes | Seguridad (anti-abuso), operación | Vercel (proveedor de hosting) | Según política de retención de Vercel (no configurada explícitamente por el dueño) | Vercel + el dueño del proyecto | No aplica borrado por ticket individual |
 | Pago (tarjeta, Efecty, PayPal) | Quien paga | Cobrar la suscripción | Lo procesa Hotmart directamente | Según política de Hotmart | **Nunca llega a la base de datos propia** — solo el resultado del webhook (monto, moneda, estado) | No aplica (no se guarda el dato de pago) |
 
@@ -20,10 +20,18 @@ Supabase (base de datos), Vercel (hosting), Resend (emails transaccionales), Hot
 
 ## ⚠️ Hallazgos — Gate 4
 
-1. **Sin botón de autoservicio para exportar/eliminar datos.** El proceso es 100% manual (correo
-   a soporte, 15 días hábiles) — el Gate 9/10 exige que exportación/borrado se prueben E2E desde
-   la app; hoy no existe ese flujo en la app, solo la promesa en texto legal. **BLOQUEANTE para
-   certificación plena**, aunque es un mínimo legal aceptable para operar con pocos usuarios.
+1. ~~Sin botón de autoservicio para exportar/eliminar datos.~~ **RESUELTO (2026-11-07).** En
+   `/panel` → "Tus datos": "Descargar mis datos" (`GET /api/admin/datos`, archivo JSON con
+   empresa, cuadrillas, trabajadores y retos — sin PIN ni token del Pase, leído con la sesión del
+   gerente bajo RLS) y "Eliminar mi cuenta y todos los datos" (`DELETE /api/admin/datos`: solo el
+   dueño, confirmación "ELIMINAR", bloqueado si hay cobro vigente en Hotmart; borra cuentas de
+   trabajadores → retos/rachas/Pases en cascada, empresa → cuadrillas/membresías, y la cuenta del
+   dueño). Más "Eliminar definitivamente" por trabajador (`DELETE /api/admin/workers`, exige rol
+   owner/admin + que el trabajador sea de su empresa). Probado E2E contra la base de desarrollo
+   con 2 empresas de prueba: export sin datos de la otra empresa ni PIN; borrar trabajador de
+   OTRA empresa → 404; eliminar cuenta con cobro activo → 409; tras eliminar, todo en 0 y la otra
+   empresa intacta. Se conserva `payment_transactions` (sin datos personales, obligación
+   contable) y `webhook_log` (sin datos personales). Política `/legal/privacidad` §6 actualizada.
 2. **No hay separación de buckets de Storage** porque la app todavía no sube archivos (fotos,
    documentos) — N/A por ahora; si se agrega esa función, debe nacer con buckets privados + RLS
    por carpeta desde el día uno (regla dura del Gate 4).

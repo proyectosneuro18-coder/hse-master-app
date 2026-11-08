@@ -292,6 +292,28 @@ completed", CI en verde, `https://www.hse-master-app.com/sw.js` responde 200 con
 y `/app` sin sesión sigue redirigiendo a `/login`. (El dominio sin www redirige 308 a www.)
 Pendiente sugerido: una prueba real en un celular Android con modo avión, con un trabajador real.
 
+## Sesión 12 — Descargar y eliminar datos (2026-11-07, CERRADA)
+Derechos del titular (Ley 1581 / 47 / Gate 4 del 61) en autoservicio, en `/panel` → tarjeta
+"Tus datos" (pantalla secundaria del panel, sin revisor-visual obligatorio — medición + checklist):
+1. [x] "Descargar mis datos" → `app/api/admin/datos/route.ts` (GET): JSON con empresa, cuadrillas,
+   trabajadores (racha), retos respondidos (módulo). Sin PIN ni `pase_token`. Lee con la sesión
+   del gerente (RLS), nunca con el cliente admin.
+2. [x] "Eliminar mi cuenta y todos los datos" → mismo archivo (DELETE): solo `owner`, escribir
+   "ELIMINAR" (validado también en servidor), bloqueado con 409 si `active`/`past_due` (primero
+   cancelar en Hotmart). Conserva `payment_transactions` (contable, sin datos personales).
+3. [x] "Eliminar definitivamente" a un trabajador (editar trabajador → 2 pasos) →
+   `app/api/admin/workers/route.ts` (DELETE), exige owner/admin y que sea de su empresa.
+4. [x] `/legal/privacidad` §5/§6 reescritas (autoservicio; trabajador → su Gerente o soporte).
+   `docs/release/PRIVACY-DATA-MAP.md` hallazgo 1 marcado RESUELTO.
+Verificado E2E contra Dev con 2 empresas de prueba (ver PRIVACY-DATA-MAP): export correcto y sin
+fugas, borrado cruzado → 404, cobro activo → 409, tras eliminar todo en 0 y la otra intacta. El
+botón rojo usa texto oscuro (blanco sobre #ff4e0e daba 3.3:1, bajo AA). tsc + lint + build ok.
+Evidencia: docs/revisiones/panel-tus-datos-375.png · panel-eliminar-trabajador-375.png ·
+panel-eliminar-cuenta-bloqueado-375.png · panel-eliminar-cuenta-375.png · panel-cuenta-eliminada-375.png.
+Límites conocidos: (a) si un administrador invitado (no dueño) existe, su cuenta de acceso no se
+borra al eliminar la empresa (solo su membresía); (b) el nombre del archivo descargado usa la fecha
+UTC del servidor (de noche en Colombia sale con la fecha de mañana) — cosmético.
+
 ## Problemas conocidos ⚠️
 - supabase-traductor-chrome — el usuario tiene el traductor automático de Chrome activo y rompe
   el panel de Supabase (error "removeChild… no es hijo de este nodo"); probable causa de que la

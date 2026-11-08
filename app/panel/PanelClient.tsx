@@ -14,6 +14,9 @@ import {
   LogOut,
   Pencil,
   CreditCard,
+  Download,
+  ShieldCheck,
+  Trash2,
 } from "lucide-react";
 import {
   Dialog,
@@ -23,6 +26,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { createClient } from "@/lib/supabase/client";
+import { limpiarCopiasSinSenal } from "@/components/RegistrarServiceWorker";
 
 export type EstadoSuscripcion =
   | "trialing"
@@ -521,10 +525,12 @@ function ModalEditarTrabajador({
   worker,
   onOpenChange,
   onGuardado,
+  onEliminado,
 }: {
   worker: Worker | null;
   onOpenChange: (v: boolean) => void;
   onGuardado: (deshacer: () => Promise<void>) => void;
+  onEliminado: (nombre: string) => void;
 }) {
   const router = useRouter();
   const [fullName, setFullName] = useState(worker?.full_name ?? "");
@@ -532,6 +538,35 @@ function ModalEditarTrabajador({
   const [pin, setPin] = useState("");
   const [enviando, setEnviando] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [confirmandoBorrado, setConfirmandoBorrado] = useState(false);
+  const [borrando, setBorrando] = useState(false);
+
+  // Borrado definitivo (derecho de eliminación del titular). Irreversible → confirmación en
+  // 2 pasos dentro del mismo modal, nunca un solo toque.
+  async function eliminarDefinitivamente() {
+    if (!worker) return;
+    setError(null);
+    setBorrando(true);
+    try {
+      const res = await fetch("/api/admin/workers", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ workerId: worker.user_id }),
+      });
+      const data = await res.json().catch(() => null);
+      if (!res.ok) {
+        setError(data?.error ?? "No pudimos eliminar al trabajador. Intenta de nuevo.");
+        return;
+      }
+      onEliminado(worker.full_name);
+      onOpenChange(false);
+      router.refresh();
+    } catch {
+      setError("No pudimos conectar con el servidor. Revisa tu conexión.");
+    } finally {
+      setBorrando(false);
+    }
+  }
 
   async function enviar(e: React.FormEvent) {
     e.preventDefault();
@@ -641,7 +676,198 @@ function ModalEditarTrabajador({
               {enviando ? "Guardando..." : "Guardar cambios"}
             </button>
           </div>
+
+          <div className="mt-2 border-t-2 border-[var(--hse-tab-borde)] pt-3">
+            {!confirmandoBorrado ? (
+              <button
+                type="button"
+                onClick={() => setConfirmandoBorrado(true)}
+                className="flex items-center gap-1.5 text-sm font-bold text-[var(--hse-rojo-texto)] underline-offset-2 hover:underline"
+              >
+                <Trash2 className="size-4" strokeWidth={2.25} />
+                Eliminar definitivamente
+              </button>
+            ) : (
+              <div className="flex flex-col gap-2.5 rounded-[var(--hse-radius-chip)] bg-[var(--hse-rojo)]/10 p-3">
+                <p className="text-sm text-[var(--hse-ink)]">
+                  <strong>¿Eliminar a {worker?.full_name} y todos sus datos?</strong> Se borran su progreso,
+                  su racha y su Pase QR. No se puede deshacer. Si solo quieres que no entre más, usa
+                  &ldquo;Inactivo&rdquo;.
+                </p>
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setConfirmandoBorrado(false)}
+                    disabled={borrando}
+                    className="rounded-[var(--hse-radius-boton)] border-2 border-[var(--hse-ink)] bg-[var(--hse-surface)] px-4 py-2.5 text-sm font-bold text-[var(--hse-ink)] transition active:scale-[0.98]"
+                  >
+                    No, volver
+                  </button>
+                  <button
+                    type="button"
+                    onClick={eliminarDefinitivamente}
+                    disabled={borrando}
+                    className="flex-1 rounded-[var(--hse-radius-boton)] border-2 border-[var(--hse-ink)] bg-[var(--hse-rojo)] py-2.5 text-sm font-bold text-[var(--hse-ink)] shadow-[0_4px_0_var(--hse-rojo-sombra)] transition active:translate-y-[4px] active:shadow-none disabled:opacity-60"
+                  >
+                    {borrando ? "Eliminando..." : "Sí, eliminar"}
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
         </form>
+      </CascaronModal>
+    </Dialog>
+  );
+}
+
+function ModalEliminarCuenta({
+  abierto,
+  onOpenChange,
+  estado,
+  nombreOrg,
+  totalCuadrillas,
+  totalTrabajadores,
+  onDescargar,
+}: {
+  abierto: boolean;
+  onOpenChange: (v: boolean) => void;
+  estado: EstadoSuscripcion;
+  nombreOrg: string;
+  totalCuadrillas: number;
+  totalTrabajadores: number;
+  onDescargar: () => void;
+}) {
+  const router = useRouter();
+  const [texto, setTexto] = useState("");
+  const [enviando, setEnviando] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [eliminada, setEliminada] = useState(false);
+  const conCobroVigente = estado === "active" || estado === "past_due";
+  const confirmado = texto.trim().toUpperCase() === "ELIMINAR";
+
+  async function eliminar(e: React.FormEvent) {
+    e.preventDefault();
+    if (!confirmado) return setError('Escribe "ELIMINAR" para confirmar.');
+    setError(null);
+    setEnviando(true);
+    try {
+      const res = await fetch("/api/admin/datos", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ confirmacion: texto }),
+      });
+      const data = await res.json().catch(() => null);
+      if (!res.ok) {
+        setError(data?.error ?? "No pudimos eliminar tu cuenta. Intenta de nuevo.");
+        return;
+      }
+      setEliminada(true);
+    } catch {
+      setError("No pudimos conectar con el servidor. Revisa tu conexión.");
+    } finally {
+      setEnviando(false);
+    }
+  }
+
+  async function salir() {
+    await Promise.allSettled([createClient().auth.signOut(), limpiarCopiasSinSenal()]);
+    router.push("/");
+  }
+
+  return (
+    <Dialog open={abierto} onOpenChange={(v) => (eliminada ? undefined : onOpenChange(v))}>
+      <CascaronModal titulo={eliminada ? "Cuenta eliminada" : "Eliminar mi cuenta"} onCerrar={() => (eliminada ? salir() : onOpenChange(false))}>
+        {eliminada ? (
+          <div className="flex flex-col gap-3.5 px-5 py-5">
+            <p className="text-sm text-[var(--hse-ink)]">
+              Listo. Borramos tu empresa, tus cuadrillas, tus trabajadores con todo su progreso y tu
+              acceso. Gracias por haber usado HSE Master App.
+            </p>
+            <button
+              type="button"
+              onClick={salir}
+              className="rounded-[var(--hse-radius-boton)] border-2 border-[var(--hse-ink)] bg-[var(--hse-amarillo)] py-2.5 text-sm font-bold text-[var(--hse-ink)] shadow-[0_4px_0_var(--hse-amarillo-sombra)] transition active:translate-y-[4px] active:shadow-none"
+            >
+              Ir al inicio
+            </button>
+          </div>
+        ) : (
+          <form onSubmit={eliminar} className="flex flex-col gap-3.5 px-5 py-5">
+            <p className="text-sm text-[var(--hse-ink)]">
+              Se borra <strong>para siempre</strong> todo lo de <strong>{nombreOrg}</strong>:
+            </p>
+            <ul className="flex flex-col gap-1.5 text-sm text-[var(--hse-ink)]">
+              <li className="flex gap-2">
+                <X className="mt-0.5 size-4 shrink-0 text-[var(--hse-rojo)]" strokeWidth={3} />
+                {totalCuadrillas} {totalCuadrillas === 1 ? "cuadrilla" : "cuadrillas"} y sus códigos de acceso
+              </li>
+              <li className="flex gap-2">
+                <X className="mt-0.5 size-4 shrink-0 text-[var(--hse-rojo)]" strokeWidth={3} />
+                {totalTrabajadores} {totalTrabajadores === 1 ? "trabajador" : "trabajadores"} con su progreso, rachas y Pases QR
+              </li>
+              <li className="flex gap-2">
+                <X className="mt-0.5 size-4 shrink-0 text-[var(--hse-rojo)]" strokeWidth={3} />
+                Tu acceso a este panel
+              </li>
+            </ul>
+            <button
+              type="button"
+              onClick={onDescargar}
+              className="flex items-center gap-1.5 self-start text-sm font-bold text-[var(--hse-azul-sombra)] underline"
+            >
+              <Download className="size-4" strokeWidth={2.25} />
+              Descargar una copia antes
+            </button>
+
+            {conCobroVigente ? (
+              <div role="alert" className="rounded-[var(--hse-radius-chip)] bg-[var(--hse-amarillo)]/25 px-3 py-2.5 text-sm text-[var(--hse-ink)]">
+                <strong>Primero cancela tu suscripción en Hotmart</strong>, así no te vuelven a cobrar
+                por una cuenta que ya no existe. Después vuelve aquí para eliminarla.{" "}
+                <a href="/legal/reembolsos" className="font-bold text-[var(--hse-azul-sombra)] underline">
+                  Cómo cancelar
+                </a>
+              </div>
+            ) : (
+              <>
+                <label className="flex flex-col gap-1 text-sm font-semibold text-[var(--hse-ink)]">
+                  Para confirmar, escribe ELIMINAR
+                  <input
+                    value={texto}
+                    onChange={(e) => setTexto(e.target.value)}
+                    autoComplete="off"
+                    autoCapitalize="characters"
+                    className="rounded-[var(--hse-radius-boton)] border-2 border-[var(--hse-ink)] bg-[var(--hse-neutro-antes)] shadow-[inset_0_2px_4px_rgba(26,26,26,0.12)] px-3 py-2.5 text-base font-normal text-[var(--hse-ink)]"
+                  />
+                </label>
+                {error && (
+                  <p role="alert" className="rounded-[var(--hse-radius-chip)] bg-[var(--hse-rojo)]/10 px-3 py-2 text-sm font-medium text-[var(--hse-rojo-texto)]">
+                    {error}
+                  </p>
+                )}
+              </>
+            )}
+
+            <div className="mt-1 flex gap-2">
+              <button
+                type="button"
+                onClick={() => onOpenChange(false)}
+                className="rounded-[var(--hse-radius-boton)] border-2 border-[var(--hse-ink)] bg-[var(--hse-surface)] px-4 py-2.5 text-sm font-bold text-[var(--hse-ink)] transition active:scale-[0.98]"
+              >
+                Cancelar
+              </button>
+              {!conCobroVigente && (
+                <button
+                  type="submit"
+                  disabled={enviando || !confirmado}
+                  className="flex-1 rounded-[var(--hse-radius-boton)] border-2 border-[var(--hse-ink)] bg-[var(--hse-rojo)] py-2.5 text-sm font-bold text-[var(--hse-ink)] shadow-[0_4px_0_var(--hse-rojo-sombra)] transition active:translate-y-[4px] active:shadow-none disabled:opacity-50"
+                >
+                  {enviando ? "Eliminando..." : "Eliminar para siempre"}
+                </button>
+              )}
+            </div>
+          </form>
+        )}
       </CascaronModal>
     </Dialog>
   );
@@ -891,16 +1117,44 @@ export function PanelClient({
   const [workerEditando, setWorkerEditando] = useState<Worker | null>(null);
   const [crewRenombrando, setCrewRenombrando] = useState<{ id: string; name: string; workerCount: number } | null>(null);
   const [cerrandoSesion, setCerrandoSesion] = useState(false);
-  const [toast, setToast] = useState<{ mensaje: string; deshacer: () => Promise<void> } | null>(null);
+  const [toast, setToast] = useState<{ mensaje: string; deshacer?: () => Promise<void> } | null>(null);
   const [deshaciendo, setDeshaciendo] = useState(false);
+  const [eliminandoCuenta, setEliminandoCuenta] = useState(false);
+  const [descargando, setDescargando] = useState(false);
   // Monta los diálogos secundarios solo tras la primera interacción real — así el HTML inicial
   // nunca incluye el Dialog (evita que sus listeners internos se evalúen durante el render
   // inicial de la página, que es lo único que debe quedar predecible para Next).
   const [interactuado, setInteractuado] = useState(false);
 
-  function mostrarToastDeshacer(mensaje: string, deshacer: () => Promise<void>) {
+  function mostrarToastDeshacer(mensaje: string, deshacer?: () => Promise<void>) {
     setToast({ mensaje, deshacer });
     setTimeout(() => setToast((t) => (t?.mensaje === mensaje ? null : t)), 6000);
+  }
+
+  // Derecho de acceso/portabilidad: descarga un archivo con todos los datos de la empresa.
+  async function descargarDatos() {
+    if (descargando) return;
+    setDescargando(true);
+    try {
+      const res = await fetch("/api/admin/datos", { cache: "no-store" });
+      if (!res.ok) throw new Error();
+      const blob = await res.blob();
+      const nombre =
+        res.headers.get("Content-Disposition")?.match(/filename="([^"]+)"/)?.[1] ?? "hse-master-app-mis-datos.json";
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = nombre;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      mostrarToastDeshacer("Listo: tus datos se descargaron");
+    } catch {
+      mostrarToastDeshacer("No pudimos descargar tus datos. Revisa tu conexión e intenta de nuevo.");
+    } finally {
+      setDescargando(false);
+    }
   }
 
   const totalTrabajadores = crews.reduce((acc, c) => acc + c.workers.length, 0);
@@ -1071,6 +1325,37 @@ export function PanelClient({
             Cómo cancelar o pedir un reembolso
           </a>
         </div>
+
+        <div className="rounded-[var(--hse-radius-card)] border-3 border-[var(--hse-ink)] bg-[var(--hse-neutro-antes)] p-4">
+          <div className="flex items-center gap-2">
+            <ShieldCheck className="size-5 text-[var(--hse-ink-2)]" strokeWidth={2.25} />
+            <h3 className="text-base font-bold text-[var(--hse-ink)]">Tus datos</h3>
+          </div>
+          <p className="mt-2 text-sm text-[var(--hse-ink-2)]">
+            Descarga una copia de todo lo que guardamos de tu empresa, o elimínalo por completo cuando
+            quieras.
+          </p>
+          <button
+            type="button"
+            onClick={descargarDatos}
+            disabled={descargando}
+            className="mt-3 flex w-full items-center justify-center gap-1.5 rounded-[var(--hse-radius-boton)] border-2 border-[var(--hse-ink)] bg-[var(--hse-surface)] py-3 text-sm font-bold text-[var(--hse-ink)] shadow-[0_4px_0_var(--hse-ink)] transition active:translate-y-[4px] active:shadow-none disabled:opacity-60"
+          >
+            <Download className="size-4" strokeWidth={2.5} />
+            {descargando ? "Preparando tu archivo..." : "Descargar mis datos"}
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setInteractuado(true);
+              setEliminandoCuenta(true);
+            }}
+            className="mt-3 flex items-center gap-1.5 text-sm font-bold text-[var(--hse-rojo-texto)] underline-offset-2 hover:underline"
+          >
+            <Trash2 className="size-4" strokeWidth={2.25} />
+            Eliminar mi cuenta y todos los datos
+          </button>
+        </div>
       </div>
 
       {interactuado && (
@@ -1100,6 +1385,17 @@ export function PanelClient({
             worker={workerEditando}
             onOpenChange={(v) => !v && setWorkerEditando(null)}
             onGuardado={(deshacer) => mostrarToastDeshacer("Cambios guardados", deshacer)}
+            onEliminado={(nombre) => mostrarToastDeshacer(`${nombre} y sus datos fueron eliminados`)}
+          />
+          <ModalEliminarCuenta
+            key={eliminandoCuenta ? "abierto" : "cerrado"}
+            abierto={eliminandoCuenta}
+            onOpenChange={setEliminandoCuenta}
+            estado={estado}
+            nombreOrg={nombreOrg}
+            totalCuadrillas={crews.length}
+            totalTrabajadores={totalTrabajadores}
+            onDescargar={descargarDatos}
           />
           <ModalRenombrarCuadrilla
             key={crewRenombrando?.id ?? "cerrado"}
@@ -1131,25 +1427,29 @@ export function PanelClient({
             exit={{ opacity: 0, y: 16 }}
             className="fixed inset-x-4 bottom-4 z-50 mx-auto flex max-w-xl items-center justify-between gap-3 rounded-[var(--hse-radius-boton)] border-2 border-[var(--hse-ink)] bg-[var(--hse-ink)] px-4 py-3 text-sm font-semibold text-[var(--hse-surface)]"
           >
-            <span>{deshaciendo ? "Deshaciendo..." : toast.mensaje}</span>
-            <button
-              type="button"
-              disabled={deshaciendo}
-              onClick={async () => {
-                setDeshaciendo(true);
-                try {
-                  await toast.deshacer();
-                  setToast(null);
-                } catch {
-                  setToast({ mensaje: "No pudimos deshacer el cambio. Vuelve a intentarlo.", deshacer: toast.deshacer });
-                } finally {
-                  setDeshaciendo(false);
-                }
-              }}
-              className="shrink-0 rounded-[var(--hse-radius-chip)] bg-[var(--hse-amarillo)] px-3 py-1.5 text-xs font-bold text-[var(--hse-ink)] transition active:scale-95 disabled:opacity-60"
-            >
-              Deshacer
-            </button>
+            <span role="status">{deshaciendo ? "Deshaciendo..." : toast.mensaje}</span>
+            {toast.deshacer && (
+              <button
+                type="button"
+                disabled={deshaciendo}
+                onClick={async () => {
+                  const deshacer = toast.deshacer;
+                  if (!deshacer) return;
+                  setDeshaciendo(true);
+                  try {
+                    await deshacer();
+                    setToast(null);
+                  } catch {
+                    setToast({ mensaje: "No pudimos deshacer el cambio. Vuelve a intentarlo.", deshacer });
+                  } finally {
+                    setDeshaciendo(false);
+                  }
+                }}
+                className="shrink-0 rounded-[var(--hse-radius-chip)] bg-[var(--hse-amarillo)] px-3 py-1.5 text-xs font-bold text-[var(--hse-ink)] transition active:scale-95 disabled:opacity-60"
+              >
+                Deshacer
+              </button>
+            )}
           </motion.div>
         )}
       </AnimatePresence>

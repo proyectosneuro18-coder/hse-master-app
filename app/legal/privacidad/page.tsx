@@ -10,7 +10,7 @@ export default function PrivacidadPage() {
     <div className="lx-page">
       <LegalHeader />
       <LegalWrap>
-        <p className="lx-fecha">Última actualización: 1 de noviembre de 2026</p>
+        <p className="lx-fecha">Última actualización: 7 de noviembre de 2026</p>
         <h1 className="lx-titulo">Política de Privacidad</h1>
         <p className="lx-resumen">
           En simple: guardamos solo lo necesario para que tu equipo entrene y para que tú veas su
@@ -103,20 +103,36 @@ export default function PrivacidadPage() {
         <p>
           Mientras tu empresa tenga una cuenta activa. Si cancelas o dejas de pagar, conservamos tu
           historial de progreso por si reactivas la cuenta; si prefieres que lo borremos antes,
-          solo escríbenos.
+          puedes eliminarlo tú mismo desde tu panel.
         </p>
 
         <h2>6. Tus derechos</h2>
-        <p>Puedes pedirnos en cualquier momento, escribiendo a <a href="mailto:soporte@hse-master-app.com">soporte@hse-master-app.com</a>:</p>
+        <p>Como Gerente de HSE puedes hacerlo tú mismo, al instante, desde tu panel (sección &ldquo;Tus datos&rdquo;):</p>
         <ul>
-          <li>Ver qué datos tuyos o de tu equipo tenemos guardados.</li>
-          <li>Corregir un dato equivocado (ej. un nombre mal escrito).</li>
-          <li>Que borremos tu cuenta y tus datos por completo.</li>
+          <li>
+            <strong>Descargar tus datos:</strong> un archivo con tu empresa, tus cuadrillas, tus
+            trabajadores y los retos que respondieron. No incluye los PIN, que se guardan cifrados.
+          </li>
+          <li>
+            <strong>Corregir un dato:</strong> editar el nombre de tu empresa, de una cuadrilla o de un
+            trabajador.
+          </li>
+          <li>
+            <strong>Eliminar a un trabajador</strong> con todo su progreso, si se va de tu empresa o
+            te lo pide.
+          </li>
+          <li>
+            <strong>Eliminar tu cuenta y todos los datos</strong> de tu empresa por completo. Si tienes
+            una suscripción con cobro vigente, primero debes cancelarla en Hotmart.
+          </li>
         </ul>
         <p>
-          Hoy este proceso lo hacemos manualmente al recibir tu correo, y respondemos en un máximo
-          de 15 días hábiles. Esta política se basa en la Ley 1581 de 2012 de Colombia (protección
-          de datos personales) y en los estándares equivalentes de otros países de la región.
+          Si eres trabajador de campo, pídeselo a tu Gerente de HSE o escríbenos a{" "}
+          <a href="mailto:soporte@hse-master-app.com">soporte@hse-master-app.com</a>: respondemos en un
+          máximo de 15 días hábiles. Al eliminar una cuenta conservamos solo el registro contable de
+          los pagos (monto, moneda y número de la transacción de Hotmart, sin datos personales), que la
+          ley nos obliga a guardar. Esta política se basa en la Ley 1581 de 2012 de Colombia
+          (protección de datos personales) y en los estándares equivalentes de otros países de la región.
         </p>
 
         <h2>7. Seguridad</h2>

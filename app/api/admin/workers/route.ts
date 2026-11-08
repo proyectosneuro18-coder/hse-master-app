@@ -153,3 +153,53 @@ export async function PATCH(request: NextRequest) {
   }
   return NextResponse.json({ ok: true });
 }
+
+// Elimina DEFINITIVAMENTE a un trabajador y todos sus datos (retos, racha, Pase QR) — derecho
+// de eliminación del titular (Ley 1581). Caso típico: un contratista que se fue y pide que se
+// borren sus datos. Irreversible; para "que no entre más" sigue existiendo desactivar (PATCH).
+export async function DELETE(request: NextRequest) {
+  const body = await request.json().catch(() => null);
+  const workerId: string | undefined = body?.workerId;
+  if (!workerId) {
+    return NextResponse.json({ error: "Datos inválidos." }, { status: 400 });
+  }
+
+  const supabase = await createServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
+    return NextResponse.json({ error: "No autorizado." }, { status: 401 });
+  }
+
+  // Quien borra debe ser Gerente/administrador (un trabajador puede LEER su propia fila, así que
+  // la comprobación de abajo sola no bastaría).
+  const { data: membership } = await supabase
+    .from("memberships")
+    .select("org_id")
+    .eq("user_id", user.id)
+    .in("role", ["owner", "admin"])
+    .maybeSingle<{ org_id: string }>();
+  if (!membership) {
+    return NextResponse.json({ error: "No autorizado." }, { status: 403 });
+  }
+
+  // Con la sesión del gerente + filtro por su empresa: si no aparece, no es suyo (o no existe) —
+  // nunca se borra con el cliente admin sin esta comprobación.
+  const { data: worker } = await supabase
+    .from("workers")
+    .select("user_id")
+    .eq("user_id", workerId)
+    .eq("org_id", membership.org_id)
+    .maybeSingle();
+  if (!worker) {
+    return NextResponse.json({ error: "No encontramos a ese trabajador." }, { status: 404 });
+  }
+
+  const admin = createAdminClient();
+  const { error } = await admin.auth.admin.deleteUser(workerId);
+  if (error) {
+    return NextResponse.json({ error: "No pudimos eliminar al trabajador. Intenta de nuevo." }, { status: 500 });
+  }
+  return NextResponse.json({ ok: true });
+}
