@@ -348,7 +348,17 @@ el diseño aprobado. Evidencia: docs/revisiones/landing-tipografia-corregida-375
     en Vercel (Production) y redesplegar.
 
 ## Problemas conocidos ⚠️
-- landing-cta-mailto — HALLAZGO (2026-11-07): ningún botón de la página de ventas lleva al
+- tipografia-restaurada-sin-revisor (2026-11-07) — la corrección de letra base en landing/onboarding/
+  paywall y en las 4 pantallas del trabajador NO cambia el diseño aprobado: lo RESTAURA (los HTML
+  revisados usaban DM Sans; la migración a Next lo había roto). No se relanzó revisor-visual por
+  esto; los veredictos de landing/onboarding/paywall/pantalla-principal siguen como están documentados.
+- landing-cta-mailto — RESUELTO el mismo día por decisión del dueño ("Sí, al recorrido"): los 2
+  botones de los planes ahora llevan a `/onboarding` ("Empezar mi prueba gratis" / "Empezar con el
+  plan mensual"), guardan el plan elegido y `/paywall` llega con ese plan marcado; el correo de
+  ventas queda como opción secundaria ("¿Prefieres hablar con alguien antes de empezar?").
+  Verificado a 375px: página de ventas → recorrido → planes con "mensual" marcado. Evidencia:
+  docs/revisiones/landing-oferta-botones-375.png. Copy anotado en docs/copy/landing.md §6.
+  Historial del hallazgo: ningún botón de la página de ventas llevaba al
   recorrido de inicio (`/onboarding`). "Quiero mi prueba gratis" baja a la oferta, y ahí los
   botones de los planes ABREN EL CORREO (`mailto:ventas@…`). Es un resto de cuando no había backend
   (ronda 41, `checkout-real-pendiente`); hoy el camino self-service onboarding → planes → login →

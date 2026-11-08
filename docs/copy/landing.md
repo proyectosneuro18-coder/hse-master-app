@@ -57,6 +57,12 @@ Sin testimonios (no hay 3 reales todavía — se omiten, no se inventan).
   1. Dashboard completo del Gerente de HSE desde el día 1 → mata objeción "ya pagamos un EHS, no van a comprar otro" (se posiciona como capa de adopción, no reemplazo).
   2. Plantilla de inducción para contratistas nuevos → mata "me paso la mitad del mes haciendo inducciones repetitivas".
   3. Configuración guiada de tu primera cuadrilla en minutos → mata "no tengo tiempo para implementar software complejo".
+- Botones de los planes (2026-11-07, decisión del dueño — antes abrían el correo de ventas):
+  Anual → "Empezar mi prueba gratis" · Mensual → "Empezar con el plan mensual". Ambos llevan al
+  recorrido de inicio (`/onboarding`) y la pantalla de planes llega con ese plan marcado. Deseo
+  trazado: "ver en mi pantalla en 10 segundos quién está capacitado" (FICHA-AVATAR) → empezar ya,
+  sin esperar respuesta de nadie. La línea de abajo queda para quien prefiere hablar antes:
+  "¿Prefieres hablar con alguien antes de empezar? Escríbenos a ventas@hse-master-app.com o cópialo."
 
 ## 7. GARANTÍA (reencuadrada — Hotmart aún no configurado, ver nota abajo)
 "La Garantía del Primer Pase": si tu cuadrilla no completa su primer Pase de 3 Minutos en el

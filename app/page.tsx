@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { LANDING_HTML } from "./landing-markup";
 import { alVerse, track } from "@/lib/analytics";
 import "./page.css";
@@ -11,6 +12,7 @@ import "./page.css";
 // `root` en vez de `document` donde corresponde.
 export default function LandingPage() {
   const rootRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const root = rootRef.current;
@@ -19,17 +21,14 @@ export default function LandingPage() {
     const sinMovimiento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const cleanups: Array<() => void> = [];
 
-    // Analítica (36/60): visita útil de la página de ventas, si la oferta se ve de verdad, y
-    // cada clic en los botones de "Quiero mi prueba gratis" (hoy abren el correo de ventas).
+    // Analítica (36/60): visita útil de la página de ventas, si la oferta se ve de verdad, clics
+    // en "Quiero mi prueba gratis" (baja a la oferta) y en el correo de ventas (quien prefiere hablar).
     track("landing_vista");
     cleanups.push(alVerse(root.querySelector("#oferta"), () => track("oferta_vista")));
     const alClicCta = (ev: Event) => {
-      const a = (ev.target as HTMLElement)?.closest<HTMLAnchorElement>("a.cta-mailto, a[href='#oferta']");
+      const a = (ev.target as HTMLElement)?.closest<HTMLAnchorElement>("a[href^='mailto:ventas'], a[href='#oferta']");
       if (!a) return;
-      const href = a.getAttribute("href") ?? "";
-      track(href === "#oferta" ? "cta_oferta_clicado" : "contacto_ventas_clicado", {
-        plan_elegido: href.includes("anual") ? "anual" : href.includes("mensual") ? "mensual" : null,
-      });
+      track(a.getAttribute("href") === "#oferta" ? "cta_oferta_clicado" : "contacto_ventas_clicado");
     };
     root.addEventListener("click", alClicCta);
     cleanups.push(() => root.removeEventListener("click", alClicCta));
@@ -213,19 +212,26 @@ export default function LandingPage() {
       });
     }
 
-    // Confirmación honesta tras el clic en "Escríbenos" (mailto)
-    const mailtoHandlers = Array.from(root.querySelectorAll<HTMLElement>(".cta-mailto")).flatMap((boton) => {
-      const estado = boton.nextElementSibling as HTMLElement | null;
-      if (!estado || !estado.classList.contains("mailto-status")) return [];
-      const handler = () => {
-        estado.innerHTML =
-          '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Tu correo debería haberse abierto. Si no, escríbenos a <a href="mailto:ventas@hse-master-app.com" class="link-correo">ventas@hse-master-app.com</a> o cópialo aquí abajo.';
-        estado.classList.add("show");
+    // Botones de los planes → recorrido de inicio (autoservicio: onboarding → planes → cuenta →
+    // prueba de 14 días). Guarda el plan elegido para que la pantalla de planes lo traiga marcado,
+    // y navega sin recargar (así la medición de la visita sigue siendo la misma sesión).
+    const ctaHandlers = Array.from(root.querySelectorAll<HTMLAnchorElement>("a.cta-prueba")).map((boton) => {
+      const handler = (ev: MouseEvent) => {
+        if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button !== 0) return; // abrir en otra pestaña: normal
+        ev.preventDefault();
+        const plan = boton.dataset.plan ?? "anual";
+        try {
+          sessionStorage.setItem("hsePlanElegido", plan);
+        } catch {
+          // sin sessionStorage: la pantalla de planes arranca en el plan recomendado (anual)
+        }
+        track("cta_prueba_clicada", { plan_elegido: plan });
+        router.push("/onboarding");
       };
       boton.addEventListener("click", handler);
-      return [{ boton, handler }];
+      return { boton, handler };
     });
-    cleanups.push(() => mailtoHandlers.forEach(({ boton, handler }) => boton.removeEventListener("click", handler)));
+    cleanups.push(() => ctaHandlers.forEach(({ boton, handler }) => boton.removeEventListener("click", handler)));
 
     // Copiar correo
     const copiarHandlers = Array.from(root.querySelectorAll<HTMLButtonElement>(".copiar-correo")).map((boton) => {
@@ -285,7 +291,7 @@ export default function LandingPage() {
     }
 
     return () => cleanups.forEach((fn) => fn());
-  }, []);
+  }, [router]);
 
   return (
     <div

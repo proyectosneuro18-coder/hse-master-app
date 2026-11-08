@@ -82,8 +82,10 @@ export default function PaywallPage() {
       alVerse(root.querySelector(".pw-plan"), () => track("paywall_visto"));
 
       const planes = Array.from(root.querySelectorAll<HTMLElement>(".pw-plan"));
+      let preseleccionando = false;
       function elegirPlan(plan: HTMLElement, enfocar: boolean) {
-        if (!plan.classList.contains("elegido")) track("paywall_plan_elegido", { plan_elegido: plan.dataset.plan ?? null });
+        if (!preseleccionando && !plan.classList.contains("elegido"))
+          track("paywall_plan_elegido", { plan_elegido: plan.dataset.plan ?? null });
         planes.forEach((p) => {
           p.classList.remove("elegido");
           p.setAttribute("aria-checked", "false");
@@ -111,6 +113,19 @@ export default function PaywallPage() {
           elegirPlan(siguiente, true);
         });
       });
+
+      // Si eligió un plan en la página de ventas, llega ya marcado (sin contarlo como elección nueva).
+      try {
+        const guardado = sessionStorage.getItem("hsePlanElegido");
+        const plan = planes.find((p) => p.dataset.plan === guardado);
+        if (plan && !plan.classList.contains("elegido")) {
+          preseleccionando = true;
+          elegirPlan(plan, false);
+          preseleccionando = false;
+        }
+      } catch {
+        // sin sessionStorage: queda el plan recomendado (anual)
+      }
 
       const activarBtn = root.querySelector<HTMLButtonElement>("#pwActivar");
       const errorMsg = root.querySelector<HTMLElement>("#pwError");
