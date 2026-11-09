@@ -314,7 +314,7 @@ export function AppHomeClient({
       }
 
       enviandoIntento = true;
-      const envio = await enviarIntento(reto.leccionId, hoy);
+      const envio = await enviarIntento(reto.leccionId, idx, hoy);
       enviandoIntento = false;
 
       if (envio.tipo === "guardado") {
@@ -323,7 +323,7 @@ export function AppHomeClient({
         navigator.serviceWorker?.controller?.postMessage({ tipo: "precargar" });
       } else if (
         (envio.tipo === "sin-red" || !envio.rechazadoAPropósito) &&
-        agregarPendiente(userId, { leccionId: reto.leccionId, fecha: hoy })
+        agregarPendiente(userId, { leccionId: reto.leccionId, fecha: hoy, respuesta: idx })
       ) {
         // Sin señal (o el servidor falló por su cuenta): el trabajador NO pierde su reto.
         rachaActual = rachaSiCompletaHoy();
@@ -398,7 +398,10 @@ export function AppHomeClient({
     // Al volver la señal (o al abrir la app con red): envía los retos hechos sin señal.
     async function enviarLoPendiente() {
       if (!navigator.onLine || leerPendientes(userId).length === 0) return;
-      const { enviados, racha } = await sincronizarPendientes(userId);
+      const { enviados, racha } = await sincronizarPendientes(userId, {
+        leccionId: reto.leccionId,
+        respuestaCorrecta: reto.respuestaCorrecta,
+      });
       if (enviados === 0) return;
       track("retos_sin_senal_sincronizados", { cantidad: enviados });
       if (racha !== null) {

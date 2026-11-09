@@ -11,6 +11,9 @@ import { createClient } from "@/lib/supabase/client";
 export type RetoPendiente = {
   leccionId: string;
   fecha: string; // día LOCAL del celular en que se completó (YYYY-MM-DD)
+  // Índice de la opción elegida: el SERVIDOR califica (0013). Los retos guardados antes de ese
+  // cambio no lo traen; ver `sincronizarPendientes`.
+  respuesta?: number;
 };
 
 export type UltimoReto = {
@@ -86,18 +89,18 @@ export type ResultadoEnvio =
   | { tipo: "sin-red" }
   | { tipo: "error"; rechazadoAPropósito: boolean };
 
-// Rechazos deliberados de `registrar_intento` (0011): reintentarlos nunca va a funcionar.
-// P0001 = no autenticado / ya no es trabajador activo · 22023 = fecha fuera del rango de 3 días.
+// Rechazos deliberados de `registrar_intento` (0013): reintentarlos nunca va a funcionar.
+// P0001 = no autenticado / ya no es trabajador activo · 22023 = fecha fuera del rango de 3 días,
+// lección fuera de orden o ya completó un reto ese día.
 const RECHAZOS_DEFINITIVOS = new Set(["P0001", "22023"]);
 
-export async function enviarIntento(leccionId: string, fecha: string): Promise<ResultadoEnvio> {
+export async function enviarIntento(leccionId: string, respuesta: number, fecha: string): Promise<ResultadoEnvio> {
   if (typeof navigator !== "undefined" && !navigator.onLine) return { tipo: "sin-red" };
   try {
     const supabase = createClient();
     const { data, error } = await supabase.rpc("registrar_intento", {
       p_lesson_id: leccionId,
-      p_score: 100,
-      p_passed: true,
+      p_respuesta: respuesta,
       p_fecha: fecha,
     });
     if (error) {
@@ -117,7 +120,14 @@ let sincronizando = false;
 // falla del servidor queda para el próximo intento (nunca se pierde un reto por un error ajeno al
 // trabajador); solo lo que el servidor rechaza A PROPÓSITO (p. ej. fecha fuera del rango de 3
 // días) se descarta, para no reintentarlo para siempre.
-export async function sincronizarPendientes(uid: string): Promise<{ enviados: number; racha: number | null }> {
+// `respaldo`: el reto que la app muestra hoy y su respuesta correcta. Sirve para los retos que
+// quedaron en cola ANTES de que el servidor calificara (0013) y no traen `respuesta`: la versión
+// vieja solo encolaba retos respondidos BIEN, así que su respuesta era la correcta. Si la lección
+// no coincide, no hay forma honesta de calificarlo y se descarta.
+export async function sincronizarPendientes(
+  uid: string,
+  respaldo?: { leccionId: string | null; respuestaCorrecta: number },
+): Promise<{ enviados: number; racha: number | null }> {
   if (sincronizando) return { enviados: 0, racha: null };
   sincronizando = true;
   let enviados = 0;
@@ -127,7 +137,10 @@ export async function sincronizarPendientes(uid: string): Promise<{ enviados: nu
     const quedan: RetoPendiente[] = [];
     for (let i = 0; i < pendientes.length; i++) {
       const p = pendientes[i];
-      const r = await enviarIntento(p.leccionId, p.fecha);
+      const respuesta =
+        p.respuesta ?? (respaldo && respaldo.leccionId === p.leccionId ? respaldo.respuestaCorrecta : undefined);
+      if (respuesta === undefined) continue;
+      const r = await enviarIntento(p.leccionId, respuesta, p.fecha);
       if (r.tipo === "guardado") {
         enviados++;
         racha = r.racha ?? racha;
