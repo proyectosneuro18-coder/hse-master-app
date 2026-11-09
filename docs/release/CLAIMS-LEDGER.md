@@ -41,3 +41,4 @@ separado de esta promesa — no se vende como capacidad propia, es un botón de 
 | "El Pase" — competencias verificables por el supervisor | **PARCIAL** | Desde 0012 nadie puede insertar intentos directo, pero `registrar_intento` todavía recibe `p_passed` del celular: alguien con conocimientos técnicos puede marcar lecciones aprobadas sin responderlas. Hasta calificar en el servidor, el Pase prueba "hizo su reto diario", no "domina las 9 reglas". |
 | "Racha de seguridad" | real | 0011 corrida de verdad en Principal (2026-11-08); antes los retos no se guardaban en producción. |
 | Medición/analítica | real | PostHog activo en producción (2026-11-09). |
+| "El Pase" — competencias (actualización 2026-11-09, `728ce74`) | **real** | Calificación en servidor + orden + 1 por día (0013). El Pase certifica "completó en orden N retos diarios respondidos bien". |

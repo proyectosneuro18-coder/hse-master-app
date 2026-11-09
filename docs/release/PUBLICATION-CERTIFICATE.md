@@ -193,3 +193,22 @@ Bloqueantes:
 
 Avance real vs. 2026-11-02: ambientes separados, analítica, export/borrado, 5 huecos de
 seguridad cerrados y verificados en producción.
+
+## Actualización 2026-11-09 (tarde) — commit `728ce74`: Gate 5 RESUELTO
+
+`0013_calificar_en_servidor.sql` corrida en Dev y en Principal (chequeo:
+`registrar_intento(uuid,integer,date)` volatil=v en ambas). Publicado: GitHub status "Vercel —
+Deployment has completed" para `728ce74`.
+- El servidor califica: la RPC recibe la opción elegida, no "aprobado".
+- Solo la siguiente lección pendiente (o repaso) y una aprobada por día local.
+- QA en Dev 11/11 (incorrecta no aprueba; saltarse → 22023; 2º del día → 22023; firma vieja →
+  PGRST202; 9 intentos de trampa → 3 aprobados; el Pase muestra exactamente esas 3) + reto jugado
+  en pantalla a 375px (`docs/revisiones/reto-calificado-servidor-375.png`), datos QA borrados.
+- Límite residual documentado: la respuesta correcta viaja al celular (feedback sin señal); con
+  orden + 1 por día, la trampa no adelanta al trabajador.
+
+```text
+VEREDICTO: NO APTO — 1 bloqueante restante:
+Gate 2: matriz de pago real contra Hotmart (compra de prueba autorizada por el dueño) + job
+semanal de reconciliación de suscripciones.
+```
