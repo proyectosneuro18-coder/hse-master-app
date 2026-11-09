@@ -148,9 +148,18 @@ export async function PATCH(request: NextRequest) {
 
   // RLS ("admin de la org actualiza trabajadores") rechaza esto solo si el gerente intenta
   // editar un trabajador de otra organización — nunca hace falta validar el org_id a mano aquí.
-  const { error } = await supabase.from("workers").update(cambios).eq("user_id", workerId);
+  const { data: actualizados, error } = await supabase
+    .from("workers")
+    .update(cambios)
+    .eq("user_id", workerId)
+    .select("user_id");
   if (error) {
     return NextResponse.json({ error: "No pudimos guardar los cambios." }, { status: 500 });
+  }
+  // PIN nuevo = borrón y cuenta nueva del límite de intentos (0012). Solo si RLS SÍ dejó
+  // actualizar la fila (es decir, el gerente es admin de ese trabajador).
+  if (pin && actualizados && actualizados.length > 0) {
+    await createAdminClient().from("worker_login_failures").delete().eq("worker_user_id", workerId);
   }
   return NextResponse.json({ ok: true });
 }

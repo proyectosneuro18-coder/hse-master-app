@@ -7,7 +7,10 @@ export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url);
   const token_hash = searchParams.get("token_hash");
   const type = searchParams.get("type") as EmailOtpType | null;
-  const next = searchParams.get("next") ?? "/app";
+  // Solo rutas internas ("/algo"): un `next` como "@otro-sitio.com" o "//otro-sitio.com"
+  // convertiría este redirect en una puerta hacia un sitio ajeno (open redirect).
+  const nextCrudo = searchParams.get("next") ?? "/app";
+  const next = /^\/(?![/\\])[^@]*$/.test(nextCrudo) ? nextCrudo : "/app";
 
   if (token_hash && type) {
     const supabase = await createClient();

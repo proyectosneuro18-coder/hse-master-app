@@ -6,7 +6,8 @@ import { NextResponse, type NextRequest } from "next/server";
 // HSE) + sus API privadas exigen sesión.
 // "/sw.js": el service worker del modo sin señal (public/sw.js) — el navegador lo vuelve a pedir
 // para buscar actualizaciones aunque la sesión haya vencido; redirigirlo al login lo rompería.
-const PUBLIC_PATHS = ["/", "/onboarding", "/paywall", "/login", "/auth", "/api/auth", "/api/webhooks", "/legal", "/pase", "/sw.js"];
+// "/robots.txt" y "/sitemap.xml": los buscadores los piden sin sesión (antes caían al login).
+const PUBLIC_PATHS = ["/", "/onboarding", "/paywall", "/login", "/auth", "/api/auth", "/api/webhooks", "/legal", "/pase", "/sw.js", "/robots.txt", "/sitemap.xml"];
 
 function isPublicPath(path: string) {
   return PUBLIC_PATHS.some(

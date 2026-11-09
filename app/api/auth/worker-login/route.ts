@@ -68,10 +68,36 @@ export async function POST(request: NextRequest) {
     return credencialesInvalidas();
   }
 
+  // Límite de intentos (migración 0012): 5 PIN fallidos seguidos bloquean 15 minutos a ESE
+  // trabajador. Sin esto, con el código de cuadrilla se podían probar los 10.000 PIN posibles.
+  // Si no se puede consultar el bloqueo, NO se deja pasar (fail-closed, 26-AUTH-MODERNO.md).
+  const bloqueado = () =>
+    NextResponse.json(
+      { error: "Demasiados intentos. Espera 15 minutos o pide a tu gerente que te cambie el PIN." },
+      { status: 429 },
+    );
+  const { data: bloqueo, error: bloqueoErr } = await admin
+    .from("worker_login_failures")
+    .select("locked_until")
+    .eq("worker_user_id", worker.user_id)
+    .maybeSingle<{ locked_until: string | null }>();
+  if (bloqueoErr) {
+    return NextResponse.json({ error: "No pudimos iniciar tu sesión. Intenta de nuevo." }, { status: 503 });
+  }
+  if (bloqueo?.locked_until && new Date(bloqueo.locked_until) > new Date()) {
+    return bloqueado();
+  }
+
   const pinValido = await bcrypt.compare(pin, worker.pin_hash);
   if (!pinValido) {
+    const { data: bloqueadoHasta } = await admin.rpc("registrar_fallo_pin", { p_worker: worker.user_id });
+    if (bloqueadoHasta && new Date(bloqueadoHasta as string) > new Date()) {
+      return bloqueado();
+    }
     return credencialesInvalidas();
   }
+
+  await admin.from("worker_login_failures").delete().eq("worker_user_id", worker.user_id);
 
   const { data: userData, error: userErr } = await admin.auth.admin.getUserById(workerUserId);
   if (userErr || !userData?.user?.email) {
