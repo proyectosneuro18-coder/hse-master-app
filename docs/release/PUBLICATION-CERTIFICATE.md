@@ -146,3 +146,50 @@ que pudo sin tocar dinero (el endurecimiento de `search_path` en `registrar_inte
 migración 0009).
 Fecha UTC: 2026-11-02
 ```
+
+---
+
+# RE-AUDITORÍA 2026-11-09 — commit `dae6ef6` (manda sobre lo anterior)
+
+## Corregido y verificado en esta pasada
+
+| Hallazgo | Gate | Arreglo | Evidencia |
+|---|---|---|---|
+| Gerente podía cambiar `subscription_status`/`trial_ends_at`/`access_until` con su propia sesión (policy de 0007 sin límite de columnas) | 5 | 0012: `authenticated` solo `UPDATE (name)` | QA en Dev: update de estado → 42501, estado sigue `trialing`; renombrar → OK. Principal: chequeo `{name}` |
+| Trabajador podía insertar `attempts` (alimentan las competencias del Pase) y escribir `streaks` directo | 5 | 0012: se borra la policy de insert + `revoke insert/update/delete` en attempts/streaks/qr_passes | QA en Dev: insert directo → 42501; la RPC sigue guardando (racha=1). Principal: chequeo `0` |
+| PIN de 4 dígitos sin límite de intentos (10.000 combinaciones con el código de cuadrilla, que no es secreto) | 1 | 0012 + `worker-login`: 5 fallos → bloqueo 15 min, fail-closed; se limpia al entrar bien o al cambiar el PIN | QA por la ruta real (servidor local contra Dev): 401×4 → 429; PIN correcto bloqueado → 429; desbloqueo → 200; acierto reinicia contador |
+| Open redirect en `/auth/confirm?next=@otro-sitio` | 1 | solo rutas internas | Producción: `next=@ejemplo.com` → `/login?error=enlace-invalido` |
+| Sin encabezados de seguridad (solo HSTS) | 9 | CSP `frame-ancestors 'none'`, X-Frame-Options, nosniff, Referrer-Policy, Permissions-Policy | `curl -I https://www.hse-master-app.com/` en producción |
+| `robots.txt` y `sitemap.xml` redirigían al login | 9 | `app/robots.ts`, `app/sitemap.ts`, rutas públicas | Producción: ambos 200 |
+| Analítica inexistente | 10 | PostHog activo en producción | Petición a `us.i.posthog.com/e/` con 200 desde la landing publicada |
+| 0011 nunca aplicada en Principal (los retos no se guardaban) | 5 | corrida de verdad 2026-11-08 | captura: `registrar_intento(uuid,integer,boolean,date)` volatil=v |
+
+## Estado por gate
+
+| Gate | Estado | Motivo |
+|---|---|---|
+| 1 Superficie y auth | OK | Sin rutas de prueba/bypass (`rg` revisado a mano: solo comentarios "demostración"). Admin API valida owner/admin en servidor; resto protegido por RLS. Login de trabajador crea sesión con OTP server-side SOLO tras validar el PIN (credencial real), no por conocer un email — documentado como decisión. IDOR entre empresas probado en Sesión 12 (export/borrado) |
+| 2 Pagos | **BLOQUEANTE** | Matriz real sin correr contra Hotmart (requiere compra real autorizada por el dueño); sin job de reconciliación semanal |
+| 3 Claims | PARCIAL | Ver CLAIMS-LEDGER: competencias del Pase dependen del dispositivo (Gate 5) |
+| 4 Consentimiento/archivos | PARCIAL | Sin ledger versionado de consentimiento; sin Storage (N/A); export/borrado OK |
+| 5 RPC y estado | **BLOQUEANTE** | `registrar_intento` recibe `p_passed`/`p_score` del cliente como autoridad: un trabajador con conocimientos técnicos puede marcar lecciones aprobadas sin responderlas → competencias falsas en el Pase QR que ve el supervisor. Requiere calificación en servidor |
+| 6 IA | N/A | Sin IA en ejecución |
+| 7 Dinero | PARCIAL | Ledger con `amount`/moneda por transacción; sin conciliación contra liquidación de Hotmart (sin ventas aún) |
+| 8 UX honesta | OK (sin cambios) | Revisado en sesiones de pantalla |
+| 9 Repo/release | PARCIAL | CI verde (lint/tsc/build/audit: 0 high/critical, 4 moderate + 2 low registrados); **sin tests automáticos ni Playwright en CI**; sin `/api/version`; canario P8 y rollback sin probar; sin runbook |
+| 10 Analítica/piloto | PARCIAL | Analítica OK; sin piloto cerrado con 5-10 compradores del ICP |
+
+## Veredicto
+
+```text
+VEREDICTO: NO APTO (2026-11-09, commit dae6ef6)
+
+Bloqueantes:
+1. Gate 5 — competencias del Pase dependen del cliente (p_passed). Corrección propuesta:
+   calificar en el servidor (la RPC recibe la respuesta elegida, no "aprobado") y limitar a
+   las lecciones desbloqueadas/1 nueva por día.
+2. Gate 2 — matriz de pago real sin probar (pide compra de prueba real: autorización del dueño)
+   + job de reconciliación de suscripciones inexistente.
+
+Avance real vs. 2026-11-02: ambientes separados, analítica, export/borrado, 5 huecos de
+seguridad cerrados y verificados en producción.

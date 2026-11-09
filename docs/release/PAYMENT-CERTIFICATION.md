@@ -50,3 +50,11 @@ idempotencia, FSM), pero:
 3. Falta el job de reconciliación semanal.
 
 No se ejecuta ninguna compra real sin que el dueño lo autorice primero.
+
+## Re-auditoría 2026-11-09 (commit `dae6ef6`)
+
+- El punto 1 del veredicto de arriba ("allowlist apagada") ya estaba RESUELTO el 2026-11-02.
+- NUEVO: el gerente ya no puede escribir `subscription_status`/`trial_ends_at`/`access_until` con
+  su sesión (0012, verificado en Dev con 42501). Antes podía activarse un plan sin pagar.
+- Sigue **NO APTO**: ninguna fila de la matriz real se probó contra Hotmart (requiere compra de
+  prueba real autorizada por el dueño) y no existe el job semanal de reconciliación.

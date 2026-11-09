@@ -33,3 +33,11 @@ separado de esta promesa — no se vende como capacidad propia, es un botón de 
   los 9 pasos de onboarding, emails transaccionales) — se revisaron los claims de mayor peso
   (precio, prueba, reembolso, mecánica de hábito). Un barrido completo queda para antes del
   piloto cerrado (Gate 10).
+
+## Re-auditoría 2026-11-09 (commit `dae6ef6`)
+
+| Claim | Estado nuevo | Motivo |
+|---|---|---|
+| "El Pase" — competencias verificables por el supervisor | **PARCIAL** | Desde 0012 nadie puede insertar intentos directo, pero `registrar_intento` todavía recibe `p_passed` del celular: alguien con conocimientos técnicos puede marcar lecciones aprobadas sin responderlas. Hasta calificar en el servidor, el Pase prueba "hizo su reto diario", no "domina las 9 reglas". |
+| "Racha de seguridad" | real | 0011 corrida de verdad en Principal (2026-11-08); antes los retos no se guardaban en producción. |
+| Medición/analítica | real | PostHog activo en producción (2026-11-09). |

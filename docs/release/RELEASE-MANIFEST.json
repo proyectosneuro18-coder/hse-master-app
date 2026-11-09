@@ -1,11 +1,12 @@
 {
-  "git_sha": "b013d3a4f4cb26512c23851a66317b39d26fd07c",
+  "git_sha": "dae6ef689a41eca39580f1d178705593fa7d6183",
   "git_branch": "master",
-  "vercel_deployment_id": "PENDIENTE — el agente no tiene acceso al panel de Vercel; el dueño debe confirmar en Vercel → Deployments que el despliegue de Production usa este git_sha",
-  "production_url": "https://hse-master-app.com (dominio propio, conectado y propagado) · https://hse-master-app.vercel.app (URL de Vercel)",
-  "db_migration": "0009_search_path_hardening.sql (la más reciente en el repo — el dueño debe confirmarla corrida en Supabase; 0001-0008 ya confirmadas corridas en sesiones anteriores, 0009 es nueva de esta auditoría)",
-  "built_at": "2026-11-02T00:00:00-05:00",
-  "evidence_commit": "b013d3a4f4cb26512c23851a66317b39d26fd07c",
-  "supabase_project": "PENDIENTE — confirmar project-ref exacto en el panel de Supabase del dueño (un solo proyecto 'Principal' usado como dev y producción a la vez, ver PUBLICATION-CERTIFICATE.md)",
-  "nota": "Este manifiesto describe el estado del REPOSITORIO en el momento de la auditoría (2026-11-02). No certifica por sí solo que producción esté sirviendo este commit exacto — esa verificación requiere que el dueño confirme el deployment activo en Vercel y compare el SHA mostrado ahí contra git_sha."
+  "vercel_deployment_id": "NOT_VERIFIED — Vercel no expone el id sin el panel; la publicación de este SHA se verificó desde afuera: los encabezados nuevos (X-Frame-Options, CSP frame-ancestors), /robots.txt y /sitemap.xml existen SOLO en este commit y responden en producción desde 2026-11-09",
+  "production_url": "https://www.hse-master-app.com (dominio sin www redirige 308) · https://hse-master-app.vercel.app",
+  "db_migration": "0012_integridad_permisos.sql — corrida en Principal (vutlmf…) y en Dev (rcvgqa…) el 2026-11-09; chequeo final {name} / 0 / 1 en ambas (capturas del dueño). 0011 corrida de verdad en Principal el 2026-11-08 (firma con date, volatil=v).",
+  "built_at": "2026-11-09",
+  "evidence_commit": "dae6ef689a41eca39580f1d178705593fa7d6183",
+  "supabase_project": "Production: vutlmftwbsbypqdndadh ('proyectosneuro18-coder's Project') · Dev: rcvgqazaialftwhsbukh ('HSE Master App - Dev'); .env.local apunta a Dev",
+  "api_version_endpoint": "NO EXISTE todavía (recomendado por Gate 9)",
+  "nota": "Los commits de documentación posteriores a dae6ef6 no cambian código."
 }

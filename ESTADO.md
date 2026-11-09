@@ -1,5 +1,5 @@
 # ESTADO — HSE Master App
-Última actualización: 2026-11-01 | Sesión actual: 9 (cerrada)
+Última actualización: 2026-11-09 | Sesión actual: 14 (re-auditoría de integridad, NO APTO — ver Sesión 14 abajo)
 
 ✅ Panel del Gerente de HSE (app/panel): ACEPTADO CON OBSERVACIONES por decisión explícita del usuario (2026-10-31), mismo patrón que landing/paywall/app-principal — no con el veredicto pleno del gate. 7 rondas de revisor-visual: 26/40·9/20 → 28/40·12/20 → 29/40·14/20 → 30/40·13/20 → 29/40·14/20 → 31/40·14/20 → 31/40·15/20 (última, veredicto en docs/revisiones/panel-veredicto.md). Nunca cruzó ≥36/40 Y ≥16/20 (craft quedó a 1 punto del umbral, usabilidad nunca pasó de 31). El usuario pidió una ronda extra enfocada en profundidad (ronda 7): subió craft de 14→15 (fondo con degradé visible en todo el lienzo + primer nivel "hundido" real en inputs/chip de código) pero el nivel hundido quedó limitado a piezas chicas/dentro de modales — subir más requeriría una pasada de rediseño, no solo ajustes. Informado de esto, el usuario decidió aceptar y seguir — es una pantalla interna del Gerente de HSE, no una de las 4 que deciden el dinero.
    Funcionalidad SÍ completa y verificada: agregar/editar/desactivar trabajador con "Deshacer" real, renombrar/archivar cuadrilla vacía (con Deshacer), código de acceso, validación en vivo del PIN, estado de suscripción. Se corrigió en el camino un bug real: el filtro de "archivar" rompía silenciosamente la lista de cuadrillas si la migración de BD no había corrido — ahora es resiliente (reintenta sin el filtro).
@@ -345,6 +345,24 @@ petición. tsc + lint + build (con y sin clave) limpios. Evidencia: docs/revisio
 bug de migración que las pantallas del trabajador en la Sesión 11) — restaurada a DM Sans, como en
 el diseño aprobado. Evidencia: docs/revisiones/landing-tipografia-corregida-375.png.
 [x] HECHO 2026-11-09: cuenta PostHog (US Cloud, plan Free, sin grabaciones/heatmaps/autocapture, sin conectar Supabase ni GitHub) + NEXT_PUBLIC_POSTHOG_KEY en Vercel (Production, tipo Config; HOST sin poner = usa el default US del código) + redeploy. Verificado: la clave está en el código publicado y la página de ventas envía a us.i.posthog.com/e/ con respuesta 200.
+
+## Sesión 14 — Re-auditoría de integridad (61) (2026-11-09, NO APTO)
+Detalle completo: `docs/release/PUBLICATION-CERTIFICATE.md` → "RE-AUDITORÍA 2026-11-09".
+Cerrados y verificados (commit `dae6ef6`, migración `0012_integridad_permisos.sql` corrida en Dev
+Y en Principal, chequeo {name}/0/1 en ambas): gerente ya no puede escribir su estado de pago
+(solo `name`); trabajador ya no inserta attempts/streaks directo; PIN con bloqueo de 15 min tras
+5 fallos (fail-closed — la tabla DEBE existir antes de publicar código que la use); open redirect
+en `/auth/confirm`; encabezados de seguridad; robots.txt/sitemap.xml públicos. QA en Dev 13/13
+(script en scratchpad, datos QA borrados). Producción verificada con curl tras el deploy.
+Bloqueantes que quedan:
+1. pase-competencias-cliente — `registrar_intento` recibe `p_passed` del celular. Propuesta:
+   la RPC recibe la respuesta elegida y califica contra `lessons.content.respuesta_correcta`;
+   la cola sin señal guarda también la respuesta. Ojo: la respuesta correcta viaja al celular
+   (se muestra la explicación), así que limitar también lecciones aprobables por día.
+2. Matriz de pago real contra Hotmart (compra de prueba, autorización del dueño) + job semanal de
+   reconciliación de suscripciones.
+Pendiente no bloqueante: tests automáticos/Playwright en CI, `/api/version`, canario P8 +
+rollback, runbook, ledger de consentimiento versionado, CSP completa de scripts, piloto ICP.
 
 
 ## Problemas conocidos ⚠️

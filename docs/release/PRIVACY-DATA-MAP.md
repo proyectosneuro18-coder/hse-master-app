@@ -52,3 +52,21 @@ Supabase (base de datos), Vercel (hosting), Resend (emails transaccionales), Hot
 código. Falta el autoservicio de exportación/borrado y el ledger de consentimiento versionado
 para una certificación plena — ninguno de los dos requiere tocar dinero, así que quedan como
 mejora técnica pendiente, no bloqueante para seguir operando a bajo volumen.
+
+## Actualización 2026-11-09 (re-auditoría, commit `dae6ef6`)
+
+- **Exportar/borrar**: RESUELTO desde la Sesión 12 (punto 1 arriba). El veredicto de este
+  artefacto ya no depende de eso.
+- **Medición de producto (PostHog, US Cloud)**: activa en producción desde 2026-11-09. Finalidad:
+  embudo y activación. Sin nombre, correo ni PIN en ninguna petición (verificado en Sesión 13 con
+  clave falsa interceptando peticiones). Sin grabación de sesiones, sin mapas de calor, sin
+  autocaptura (desactivados en el código y en el panel de PostHog). Persistencia en el navegador
+  solo si el visitante acepta el aviso de cookies; si no, en memoria. `person_profiles:
+  identified_only`. Retención: la del plan Free de PostHog (1 año).
+- **Intentos de PIN fallidos**: nueva tabla `worker_login_failures` (0012) — solo id del
+  trabajador, contador y hasta cuándo está bloqueado; sin PIN ni IP. Se borra al entrar bien, al
+  cambiar el PIN y en cascada al borrar al trabajador. Solo la lee el servidor.
+- Siguen abiertos: ledger de consentimiento versionado (punto 3) y retención de logs de Vercel en
+  la política (punto 4) — no bloqueantes a bajo volumen.
+
+**Veredicto actualizado: PARCIAL (aceptable para piloto cerrado).**
