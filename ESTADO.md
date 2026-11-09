@@ -344,8 +344,8 @@ petición. tsc + lint + build (con y sin clave) limpios. Evidencia: docs/revisio
 🐛 Corregido de paso: la letra base de landing/onboarding/paywall caía a Times New Roman (mismo
 bug de migración que las pantallas del trabajador en la Sesión 11) — restaurada a DM Sans, como en
 el diseño aprobado. Evidencia: docs/revisiones/landing-tipografia-corregida-375.png.
-[ ] Pendiente del usuario: crear la cuenta de PostHog y poner `NEXT_PUBLIC_POSTHOG_KEY` (+ HOST)
-    en Vercel (Production) y redesplegar.
+[x] HECHO 2026-11-09: cuenta PostHog (US Cloud, plan Free, sin grabaciones/heatmaps/autocapture, sin conectar Supabase ni GitHub) + NEXT_PUBLIC_POSTHOG_KEY en Vercel (Production, tipo Config; HOST sin poner = usa el default US del código) + redeploy. Verificado: la clave está en el código publicado y la página de ventas envía a us.i.posthog.com/e/ con respuesta 200.
+
 
 ## Problemas conocidos ⚠️
 - tipografia-restaurada-sin-revisor (2026-11-07) — la corrección de letra base en landing/onboarding/
